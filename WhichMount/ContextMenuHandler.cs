@@ -39,11 +39,16 @@ public class ContextMenuHandler : IDisposable
 
     private void CheckMount(IMenuItemClickedArgs args)
     {
-        var player = _pluginInterface.ClientState.LocalPlayer;
-
-        if (player != null)
+        if (args.Target is not MenuTargetDefault menuTargetDefault)
         {
-            var mountId = player.MountId;
+            return;
+        }
+
+        var name = menuTargetDefault.TargetName; 
+
+        if (name != null)
+        {
+            var mountId = 1;
 
             if (mountId != 0)
             {
@@ -57,7 +62,7 @@ public class ContextMenuHandler : IDisposable
         }
     }
     
-    private string GetMountNameById(uint mountId)
+    private string GetMountNameById(int mountId)
     {
 
         return "Sample Mount Name";

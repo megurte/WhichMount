@@ -5,21 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2aa77cc1-35ff-4e7d-aef7-65e5d56f91e9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.SamplePlugin/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WhichMount/ContextMenuHandler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WhichMount/Service1231.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WhichMount/WhichMount.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WhichMount/WhichMountMain.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WhichMount/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin.sln" beforeDir="false" afterPath="$PROJECT_DIR$/WhichMount.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/Configuration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WhichMount/Configuration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/Dalamud.Plugin.Bootstrap.targets" beforeDir="false" afterPath="$PROJECT_DIR$/WhichMount/Dalamud.Plugin.Bootstrap.targets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/Plugin.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/SamplePlugin.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/SamplePlugin.json" beforeDir="false" afterPath="$PROJECT_DIR$/WhichMount/WhichMount.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/Windows/ConfigWindow.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/Windows/MainWindow.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/packages.lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SamplePlugin/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SamplePlugin/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WhichMount/ContextMenuHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WhichMount/ContextMenuHandler.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,13 +20,16 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/551a9ebfcbe04f8991efcae7c071304b52b810/84/2d5b2519/Task.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5b4612186f5d4c5fbf5de6d9c1ea8e57269410/3c/7db1e6f1/IDalamudPluginInterface.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5b4612186f5d4c5fbf5de6d9c1ea8e57269410/6e/005b63b5/IMenuItemClickedArgs.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5b4612186f5d4c5fbf5de6d9c1ea8e57269410/7e/1e12b8f6/MenuTargetDefault.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5b4612186f5d4c5fbf5de6d9c1ea8e57269410/85/ae43bf35/MenuTarget.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5b4612186f5d4c5fbf5de6d9c1ea8e57269410/e0/c5e4fc1c/INotificationManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5b4612186f5d4c5fbf5de6d9c1ea8e57269410/ef/5c81d590/IMenuArgs.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5b4612186f5d4c5fbf5de6d9c1ea8e57269410/f8/25538c49/IClientState.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../DalamudPackager-master/DalamudPackager/DalamudPackager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WhichMount/Configuration.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/WhatMountIsThis/WhichMountLocal/WhichMount/ContextMenuHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WhichMount/ContextMenuHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/WhatMountIsThis/WhichMountLocal/WhichMount/ContextMenuHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WhichMount/WhichMount.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WhichMount/WhichMountMain.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WhichMount/packages.lock.json" root0="FORCE_HIGHLIGHTING" />
@@ -47,6 +37,7 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -87,13 +78,31 @@
       <option name="presentableId" value="Default" />
       <updated>1721750655941</updated>
       <workItem from="1721750657078" duration="1162000" />
-      <workItem from="1721751953641" duration="4765000" />
+      <workItem from="1721751953641" duration="5385000" />
     </task>
+    <task id="LOCAL-00001" summary="Adding context menu handler and init configuration">
+      <option name="closed" value="true" />
+      <created>1721763740537</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1721763740537</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Adding context menu handler and init configuration">
+      <option name="closed" value="true" />
+      <created>1721763783777</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1721763783777</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -107,5 +116,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Adding context menu handler and init configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding context menu handler and init configuration" />
   </component>
 </project>
