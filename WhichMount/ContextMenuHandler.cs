@@ -40,15 +40,14 @@ public class ContextMenuHandler : IDisposable
     private void CheckMount(IMenuItemClickedArgs args)
     {
         var player = _pluginInterface.ClientState.LocalPlayer;
-        args.Target
 
         if (player != null)
         {
-            var mountId = player.MountId; // Получение текущего маунта игрока
+            var mountId = player.MountId;
 
             if (mountId != 0)
             {
-                var mountName = GetMountNameById(mountId); // Метод для получения имени маунта по ID
+                var mountName = GetMountNameById(mountId);
                 _chatGui.Print($"Current Mount: {mountName}");
             }
             else
@@ -60,11 +59,6 @@ public class ContextMenuHandler : IDisposable
     
     private string GetMountNameById(uint mountId)
     {
-        // Здесь можно добавить код для получения имени маунта по его ID
-        // Например, используя кэш данных игры или базы данных
-
-        // Пример: 
-        // return mountDatabase.GetMountName(mountId);
 
         return "Sample Mount Name";
     }
