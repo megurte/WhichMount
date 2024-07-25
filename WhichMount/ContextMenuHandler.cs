@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -6,6 +7,8 @@ using Dalamud.Game.Gui.ContextMenu;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using HtmlAgilityPack;
 using Lumina.Excel.GeneratedSheets;
+using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
 
 namespace WhichMount;
  
@@ -15,10 +18,34 @@ public class ContextMenuHandler
 {
     private const string WikiUrl = "https://ffxiv.consolegameswiki.com/wiki/Mounts";
     private const int WebTableIndex = 7;
+
+    private readonly IDalamudPluginInterface _pluginInterface;
+    private readonly IChatGui _chatGui;
+    private readonly IDataManager _dataManager;
+    private readonly IObjectTable _objectTable;
+    private readonly IContextMenu _contextMenu;
+    private readonly Configuration _configuration;
+
+    public ContextMenuHandler(
+        IDalamudPluginInterface pluginInterface,
+        IChatGui chatGui, 
+        IDataManager dataManager, 
+        IObjectTable objectTable, 
+        IContextMenu contextMenu,
+        Configuration configuration)
+    {
+        _pluginInterface = pluginInterface;
+        _chatGui = chatGui;
+        _dataManager = dataManager;
+        _objectTable = objectTable;
+        _contextMenu = contextMenu;
+        _configuration = configuration;
+        _contextMenu.OnMenuOpened += OnOpenContextMenu;
+    }
     
     private void OnOpenContextMenu(IMenuOpenedArgs menuOpenedArgs)
     {
-        if (!Service.Interface.UiBuilder.ShouldModifyUi || !IsMenuValid(menuOpenedArgs))
+        if (!_pluginInterface.UiBuilder.ShouldModifyUi || !IsMenuValid(menuOpenedArgs))
         {
             return;
         }
@@ -38,7 +65,7 @@ public class ContextMenuHandler
             return;
         }
 
-        var targetCharacter = Service.ObjectTable.SearchById(menuTargetDefault.TargetObjectId);
+        var targetCharacter = _objectTable.SearchById(menuTargetDefault.TargetObjectId);
 
         if (targetCharacter != null)
         {
@@ -47,28 +74,30 @@ public class ContextMenuHandler
             if (mountId != 0)
             {
                 var mountName = GetMountNameById(mountId);
-                
-                Service.ChatGui.Print($"{targetCharacter.Name}'s Mount Name: {mountName}");
+                _chatGui.Print($"{targetCharacter.Name}'s mount: {mountName}");
                 GetMountAcquiredByAsync(mountName);
             }
             else
             {
-                Service.ChatGui.Print("No mount is currently active.");
+                _chatGui.Print("No mount is currently active.");
             }
         }
     }
     
     private async void GetMountAcquiredByAsync(string mountName)
     {
-        var acquiredBy = await GetMountAcquiredBy(mountName);
-        Service.ChatGui.Print($"Source: {acquiredBy}");
+        var requestedStrings = await GetMountAcquiredBy(mountName, _configuration);
+        foreach (var item in requestedStrings)
+        {
+            _chatGui.Print(item);
+        }
     }
     
-    private static async Task<string> GetMountAcquiredBy(string mountName)
+    private static async Task<List<string>> GetMountAcquiredBy(string mountName, Configuration configuration)
     {
-        var url = WikiUrl;
+        var requestResult = new List<string>();
         var httpClient = new HttpClient();
-        var response = await httpClient.GetStringAsync(url);
+        var response = await httpClient.GetStringAsync(WikiUrl);
         var htmlDocument = new HtmlDocument();
         htmlDocument.LoadHtml(response);
 
@@ -76,7 +105,8 @@ public class ContextMenuHandler
 
         if (mountTables == null || mountTables.Count < 8)
         {
-            return "Mount table not found";
+            requestResult.Add("mount table not found");
+            return requestResult;
         }
 
         var mountTable = mountTables[WebTableIndex];
@@ -84,14 +114,15 @@ public class ContextMenuHandler
 
         if (mountNodes == null || mountNodes.Count == 0)
         {
-            return "Mount rows not found";
+            requestResult.Add("mount rows not found");
+            return requestResult;
         }
 
         foreach (var mountNode in mountNodes.Skip(1))
         {
             var cells = mountNode.SelectNodes("td");
 
-            if (cells != null && cells.Count >= 3)
+            if (cells is {Count: >= 3})
             {
                 var nameNode = cells[0].SelectSingleNode(".//a");
                 if (nameNode != null)
@@ -99,24 +130,37 @@ public class ContextMenuHandler
                     var name = nameNode.InnerText.Trim();
                     if (string.Equals(name, mountName, StringComparison.OrdinalIgnoreCase))
                     {
+                        if (configuration.ShowAvailability)
+                        {
+                            var availability = cells[5].InnerText.Trim();
+                            requestResult.Add($"{availability}");
+                        }
+
+                        if (configuration.ShowSeats)
+                        {
+                            var seats = cells[4].InnerText.Trim();
+                            requestResult.Add($"Number of seats: {seats}");
+                        }
                         var acquiredBy = cells[3].InnerText.Trim();
-                        return Utils.WikiStringConverter.ConvertString(acquiredBy);
+                        requestResult.Add($"Source: {Utils.WikiStringConverter.ConvertString(acquiredBy)}");
+                        return requestResult;
                     }
                 }
             }
         }
-
-        return "Acquired information not found";
+        
+        requestResult.Add("source information not found");
+        return requestResult;
     }
     
     private string GetMountNameById(uint mountId)
     {
-        var mountData = Service.DataManager.GetExcelSheet<Mount>()!.GetRow(mountId);
+        var mountData = _dataManager.GetExcelSheet<Mount>()!.GetRow(mountId);
         
         if (mountData != null)
         {
             var name = Utils.SeStringConverter
-                            .ParseSeStringLumina(Service.DataManager.GetExcelSheet<Mount>()!.GetRow(mountData.RowId)?.Singular);
+                            .ParseSeStringLumina(_dataManager.GetExcelSheet<Mount>()!.GetRow(mountData.RowId)?.Singular);
             return name;
         }
 
@@ -151,15 +195,10 @@ public class ContextMenuHandler
 
         return false;
     }
-    
-    public void Enable()
-    {
-        Service.ContextMenu.OnMenuOpened += OnOpenContextMenu;
-    }
 
     public void Dispose()
     {
-        Service.ContextMenu.OnMenuOpened -= OnOpenContextMenu;
+        _contextMenu.OnMenuOpened -= OnOpenContextMenu;
     }
 }
 
