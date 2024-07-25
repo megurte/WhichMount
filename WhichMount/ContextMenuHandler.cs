@@ -133,7 +133,10 @@ public class ContextMenuHandler
                         if (configuration.ShowAvailability)
                         {
                             var availability = cells[5].InnerText.Trim();
-                            requestResult.Add($"{availability}");
+                            var availabilityText = availability == "1"
+                                                       ? "This mount is currently obtainable"
+                                                       : "This mount is NOT currently obtainable";
+                            requestResult.Add($"{availabilityText}");
                         }
 
                         if (configuration.ShowSeats)
