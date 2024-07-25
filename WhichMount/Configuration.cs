@@ -1,9 +1,7 @@
 ﻿using Dalamud.Configuration;
-using Dalamud.Plugin;
 using System;
-using WhichMount;
 
-namespace SamplePlugin;
+namespace WhichMount;
 
 [Serializable]
 public class Configuration : IPluginConfiguration
@@ -12,6 +10,6 @@ public class Configuration : IPluginConfiguration
     
     public void Save()
     {
-        WhichMountMain.PluginInterface.SavePluginConfig(this);
+        Service.Interface.SavePluginConfig(this);
     }
 }

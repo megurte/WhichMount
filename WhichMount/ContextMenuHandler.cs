@@ -1,30 +1,24 @@
 ﻿using System;
-using Dalamud.Game;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Dalamud.Game.Gui.ContextMenu;
-using Dalamud.IoC;
-using Dalamud.Plugin;
-using Dalamud.Plugin.Services;
-using FFXIVClientStructs.FFXIV.Common.Math;
-using ImGuiNET;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
+using HtmlAgilityPack;
+using Lumina.Excel.GeneratedSheets;
 
 namespace WhichMount;
  
-public class ContextMenuHandler : IDisposable
+#pragma warning disable CA1416
+
+public class ContextMenuHandler
 {
-    private readonly IDalamudPluginInterface _pluginInterface;
-    private readonly IContextMenu _contextMenu;
-    private readonly IChatGui _chatGui;
-
-    public ContextMenuHandler(IDalamudPluginInterface pluginInterface, IContextMenu contextMenu, IChatGui chatGui)
-    {
-        _pluginInterface = pluginInterface;
-        _contextMenu = contextMenu;
-        _chatGui = chatGui;
-    }
-
+    private const string WikiUrl = "https://ffxiv.consolegameswiki.com/wiki/Mounts";
+    private const int WebTableIndex = 7;
+    
     private void OnOpenContextMenu(IMenuOpenedArgs menuOpenedArgs)
     {
-        if (!_pluginInterface.UiBuilder.ShouldModifyUi || !IsMenuValid(menuOpenedArgs))
+        if (!Service.Interface.UiBuilder.ShouldModifyUi || !IsMenuValid(menuOpenedArgs))
         {
             return;
         }
@@ -33,39 +27,102 @@ public class ContextMenuHandler : IDisposable
         {
             PrefixChar = 'M',
             Name = "Search Mount",
-            OnClicked = CheckMount,
+            OnClicked = CheckMount
         });
     }
 
-    private void CheckMount(IMenuItemClickedArgs args)
+    private unsafe void CheckMount(IMenuItemClickedArgs args)
     {
         if (args.Target is not MenuTargetDefault menuTargetDefault)
         {
             return;
         }
 
-        var name = menuTargetDefault.TargetName; 
+        var targetCharacter = Service.ObjectTable.SearchById(menuTargetDefault.TargetObjectId);
 
-        if (name != null)
+        if (targetCharacter != null)
         {
-            var mountId = 1;
-
+            var mountId = ((Character*) targetCharacter.Address)->Mount.MountId;
+            
             if (mountId != 0)
             {
                 var mountName = GetMountNameById(mountId);
-                _chatGui.Print($"Current Mount: {mountName}");
+                var newString = mountName[..^1]; // TODO HARDCODE 
+
+                Service.ChatGui.Print($"{targetCharacter.Name}'s Mount Name: {newString}");
+                
+                GetMountAcquiredByAsync(newString);
             }
             else
             {
-                _chatGui.Print("No mount is currently active.");
+                Service.ChatGui.Print("No mount is currently active.");
             }
         }
     }
     
-    private string GetMountNameById(int mountId)
+    private async void GetMountAcquiredByAsync(string mountName)
     {
+        var acquiredBy = await GetMountAcquiredBy(mountName);
+        Service.ChatGui.Print($"Acquired By: {acquiredBy}");
+    }
+    
+    private static async Task<string> GetMountAcquiredBy(string mountName)
+    {
+        var url = WikiUrl;
+        var httpClient = new HttpClient();
+        var response = await httpClient.GetStringAsync(url);
+        var htmlDocument = new HtmlDocument();
+        htmlDocument.LoadHtml(response);
 
-        return "Sample Mount Name";
+        var mountTables = htmlDocument.DocumentNode.SelectNodes("//table[contains(@class, 'sortable')]");
+
+        if (mountTables == null || mountTables.Count < 8)
+        {
+            return "Mount table not found";
+        }
+
+        var mountTable = mountTables[WebTableIndex];
+        var mountNodes = mountTable.SelectNodes(".//tr");
+
+        if (mountNodes == null || mountNodes.Count == 0)
+        {
+            return "Mount rows not found";
+        }
+
+        foreach (var mountNode in mountNodes.Skip(1))
+        {
+            var cells = mountNode.SelectNodes("td");
+
+            if (cells != null && cells.Count >= 3)
+            {
+                var nameNode = cells[0].SelectSingleNode(".//a");
+                if (nameNode != null)
+                {
+                    var name = nameNode.InnerText.Trim();
+                    if (string.Equals(name, mountName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        var acquiredBy = cells[3].InnerText.Trim();
+                        return Utils.WikiStringConverter.ConvertString(acquiredBy);
+                    }
+                }
+            }
+        }
+
+        return "Acquired information not found";
+    }
+    
+    private string GetMountNameById(uint mountId)
+    {
+        var mountData = Service.DataManager.GetExcelSheet<Mount>()!.GetRow(mountId);
+        
+        if (mountData != null)
+        {
+            var name = Utils.SeStringConverter
+                            .ParseSeStringLumina(Service.DataManager.GetExcelSheet<Mount>()!.GetRow(mountData.RowId)?.Plural);
+            return name;
+        }
+
+        return "Mount not found";
     }
     
     private static bool IsMenuValid(IMenuArgs menuOpenedArgs)
@@ -74,7 +131,7 @@ public class ContextMenuHandler : IDisposable
         {
             return false;
         }
-
+        
         // ReSharper disable once ConvertSwitchStatementToSwitchExpression
         switch (menuOpenedArgs.AddonName)
         {
@@ -89,7 +146,7 @@ public class ContextMenuHandler : IDisposable
             case "_PartyList":
             case "LinkShell":
             case "CrossWorldLinkshell":
-            case "ContentMemberList": // Eureka/Bozja/...
+            case "ContentMemberList":
             case "BlackList":
                 return menuTargetDefault.TargetName != string.Empty;
         }
@@ -99,16 +156,13 @@ public class ContextMenuHandler : IDisposable
     
     public void Enable()
     {
-        _contextMenu.OnMenuOpened += OnOpenContextMenu;
-    }
-
-    public void Disable()
-    {
-        _contextMenu.OnMenuOpened -= OnOpenContextMenu;
+        Service.ContextMenu.OnMenuOpened += OnOpenContextMenu;
     }
 
     public void Dispose()
     {
-        _contextMenu.OnMenuOpened -= OnOpenContextMenu;
+        Service.ContextMenu.OnMenuOpened -= OnOpenContextMenu;
     }
 }
+
+#pragma warning restore CA1416

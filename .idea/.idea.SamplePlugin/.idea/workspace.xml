@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2aa77cc1-35ff-4e7d-aef7-65e5d56f91e9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SamplePlugin/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SamplePlugin/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WhichMount/ContextMenuHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WhichMount/ContextMenuHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WhichMount/WhichMount.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WhichMount/WhichMount.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WhichMount/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WhichMount/packages.lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +30,7 @@
     <setting file="file://$PROJECT_DIR$/WhichMount/Configuration.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://E:/WhatMountIsThis/WhichMountLocal/WhichMount/ContextMenuHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WhichMount/ContextMenuHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/WhatMountIsThis/WhichMountLocal/WhichMount/ContextMenuHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://E:/WhatMountIsThis/WhichMountLocal/WhichMount/ContextMenuHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WhichMount/WhichMount.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WhichMount/WhichMountMain.cs" root0="FORCE_HIGHLIGHTING" />
@@ -78,7 +80,7 @@
       <option name="presentableId" value="Default" />
       <updated>1721750655941</updated>
       <workItem from="1721750657078" duration="1162000" />
-      <workItem from="1721751953641" duration="5385000" />
+      <workItem from="1721751953641" duration="7858000" />
     </task>
     <task id="LOCAL-00001" summary="Adding context menu handler and init configuration">
       <option name="closed" value="true" />
@@ -96,7 +98,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721763783777</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="commit to test setup">
+      <option name="closed" value="true" />
+      <created>1721764343570</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1721764343570</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -117,6 +127,7 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Adding context menu handler and init configuration" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding context menu handler and init configuration" />
+    <MESSAGE value="commit to test setup" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit to test setup" />
   </component>
 </project>

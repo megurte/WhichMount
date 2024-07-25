@@ -3,7 +3,7 @@
   <Import Project="Dalamud.Plugin.Bootstrap.targets"/>
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework> <!-- или другая версия, соответствующая вашим требованиям -->
+    <TargetFramework>net8.0</TargetFramework> <!-- или другая версия, соответствующая вашим требованиям -->
     <Version>0.0.0.1</Version>
     <Description>Searching for other player's mount</Description>
     <PackageProjectUrl>https://github.com/goatcorp/SamplePlugin</PackageProjectUrl>
@@ -22,18 +22,6 @@
     <Content Include="..\..\DalamudPackager-master\DalamudPackager.sln">
       <Link>DalamudPackager-master\DalamudPackager.sln</Link>
     </Content>
-    <Content Include="..\..\DalamudPackager-master\DalamudPackager\buildMultiTargeting\DalamudPackager.props">
-      <Link>DalamudPackager-master\DalamudPackager\buildMultiTargeting\DalamudPackager.props</Link>
-    </Content>
-    <Content Include="..\..\DalamudPackager-master\DalamudPackager\build\DalamudPackager.props">
-      <Link>DalamudPackager-master\DalamudPackager\build\DalamudPackager.props</Link>
-    </Content>
-    <Content Include="..\..\DalamudPackager-master\DalamudPackager\build\DalamudPackager.targets">
-      <Link>DalamudPackager-master\DalamudPackager\build\DalamudPackager.targets</Link>
-    </Content>
-    <Content Include="..\..\DalamudPackager-master\DalamudPackager\DalamudPackager.csproj">
-      <Link>DalamudPackager-master\DalamudPackager\DalamudPackager.csproj</Link>
-    </Content>
     <Content Include="..\..\DalamudPackager-master\LICENCE">
       <Link>DalamudPackager-master\LICENCE</Link>
     </Content>
@@ -47,12 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\DalamudPackager-master\DalamudPackager\DalamudPackager.cs">
-      <Link>DalamudPackager-master\DalamudPackager\DalamudPackager.cs</Link>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
     <PackageReference Include="Microsoft.Build" Version="17.10.4" />
     <PackageReference Include="YamlDotNet" Version="16.0.0" />
   </ItemGroup>
