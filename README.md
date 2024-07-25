@@ -1,4 +1,4 @@
-# Dalamud Helper Plugin
+# Dalamud Mount Search Plugin
 A Final Fantasy XIV Dalamud plugin that shows information about other players' mounts and their acquisition methods via the target's context menu button.
 
 The plugin has a configuration that is controlled by the Dalamud QL XIV environment.
