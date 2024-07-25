@@ -47,11 +47,9 @@ public class ContextMenuHandler
             if (mountId != 0)
             {
                 var mountName = GetMountNameById(mountId);
-                var newString = mountName[..^1]; // TODO HARDCODE 
-
-                Service.ChatGui.Print($"{targetCharacter.Name}'s Mount Name: {newString}");
                 
-                GetMountAcquiredByAsync(newString);
+                Service.ChatGui.Print($"{targetCharacter.Name}'s Mount Name: {mountName}");
+                GetMountAcquiredByAsync(mountName);
             }
             else
             {
@@ -63,7 +61,7 @@ public class ContextMenuHandler
     private async void GetMountAcquiredByAsync(string mountName)
     {
         var acquiredBy = await GetMountAcquiredBy(mountName);
-        Service.ChatGui.Print($"Acquired By: {acquiredBy}");
+        Service.ChatGui.Print($"Source: {acquiredBy}");
     }
     
     private static async Task<string> GetMountAcquiredBy(string mountName)
@@ -118,7 +116,7 @@ public class ContextMenuHandler
         if (mountData != null)
         {
             var name = Utils.SeStringConverter
-                            .ParseSeStringLumina(Service.DataManager.GetExcelSheet<Mount>()!.GetRow(mountData.RowId)?.Plural);
+                            .ParseSeStringLumina(Service.DataManager.GetExcelSheet<Mount>()!.GetRow(mountData.RowId)?.Singular);
             return name;
         }
 
