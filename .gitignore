@@ -1,8 +1,4 @@
 .vs/
 obj/
 bin/
-.idea/**
-*.suo
-*.userosscache
-*.sln.docstates
 *.user

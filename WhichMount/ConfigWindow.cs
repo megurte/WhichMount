@@ -31,9 +31,15 @@ public class ConfigWindow : IDisposable
         if (!_showConfig)
             return;
 
-        ImGui.SetNextWindowSize(new Vector2(200, 100), ImGuiCond.FirstUseEver);
-        ImGui.SetNextWindowSizeConstraints(new Vector2(200, 100), new Vector2(250, 100));
+        ImGui.SetNextWindowSizeConstraints(new Vector2(250, 150), new Vector2(250, 150));
         ImGui.Begin($"{_whichMountPlugin.Name} configuration", ref _showConfig, ImGuiWindowFlags.NoCollapse);
+        
+        var showMountId = _configuration.ShowMountId;
+        if (ImGui.Checkbox("Mount ID", ref showMountId))
+        {
+            _configuration.ShowMountId = showMountId;
+            _configuration.Save();
+        }
         
         var showAvailability = _configuration.ShowAvailability;
         if (ImGui.Checkbox("Show obtainable", ref showAvailability))

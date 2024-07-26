@@ -73,6 +73,11 @@ public class ContextMenuHandler
             
             if (mountId != 0)
             {
+                if (_configuration.ShowMountId)
+                {
+                    _chatGui.Print($"Mount ID: {mountId}");
+                }
+                
                 var mountName = GetMountNameById(mountId);
                 _chatGui.Print($"{targetCharacter.Name}'s mount: {mountName}");
                 GetMountAcquiredByAsync(mountName);
