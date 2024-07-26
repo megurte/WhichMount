@@ -4,7 +4,7 @@
     "Punchline": "Show mount information of other players", 
     "Description": "Plugin adds the “Mount Search” button to the context menu on the target, which displays information about the mount and the method of obtaining it in the chat. In the settings, you can enable options that add to the output information the current availability of transportation in the game and the number of seating places", 
     "ApplicableVersion": "any", 
-    "RepoUrl": "https://github.com/megurte/whichmount",
+    "RepoUrl": "https://github.com/megurte/WhichMount",
     "DownloadLinkInstall": "https://github.com/megurte/WhichMount/releases/download/0.1.0.0_beta/WhichMountBeta.zip",
     "DownloadLinkUpdate": "https://github.com/megurte/WhichMount/releases/download/0.1.0.0_beta/WhichMountBeta.zip",
     "DownloadLinkTesting": "https://github.com/megurte/WhichMount/releases/download/0.1.0.0_beta/WhichMountBeta.zip",
