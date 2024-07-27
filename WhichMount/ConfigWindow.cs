@@ -1,6 +1,7 @@
 ﻿using System;
 using Dalamud.Game.Command;
 using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Common.Math;
 using ImGuiNET;
 
@@ -12,15 +13,22 @@ public class ConfigWindow : IDisposable
 {
     private readonly WhichMountPlugin _whichMountPlugin;
     private readonly Configuration _configuration;
+    private readonly ICommandManager _commandManager;
     private bool _showConfig;
-    
-    public ConfigWindow(IDalamudPluginInterface pluginInterface, WhichMountPlugin whichMount, Configuration configuration)
+
+    public ConfigWindow(
+        IDalamudPluginInterface pluginInterface,
+        WhichMountPlugin whichMount,
+        Configuration configuration,
+        ICommandManager commandManager)
     {
         _whichMountPlugin = whichMount;
         _configuration = configuration;
+        _commandManager = commandManager;
+        
         pluginInterface.UiBuilder.Draw += Draw;
         pluginInterface.UiBuilder.OpenConfigUi += () => _showConfig = true;
-        Service.CommandManager.AddHandler("/mountsconfig", new CommandInfo((_, _) => _showConfig ^= true)
+        _commandManager.AddHandler("/mountsconfig", new CommandInfo((_, _) => _showConfig ^= true)
         {
             HelpMessage = "Open mount search configuration."
         });
@@ -60,7 +68,7 @@ public class ConfigWindow : IDisposable
 
     public void Dispose()
     {
-        Service.CommandManager.RemoveHandler("/mountsconfig");
+        _commandManager.RemoveHandler("/mountsconfig");
     }
 }
 

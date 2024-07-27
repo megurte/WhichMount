@@ -130,9 +130,11 @@ public class ContextMenuHandler
             if (cells is {Count: >= 3})
             {
                 var nameNode = cells[0].SelectSingleNode(".//a");
+                
                 if (nameNode != null)
                 {
                     var name = nameNode.InnerText.Trim();
+                    
                     if (string.Equals(name, mountName, StringComparison.OrdinalIgnoreCase))
                     {
                         if (configuration.ShowAvailability)
@@ -175,7 +177,7 @@ public class ContextMenuHandler
         return "Mount not found";
     }
     
-    private static bool IsMenuValid(IMenuArgs menuOpenedArgs)
+    private bool IsMenuValid(IMenuArgs menuOpenedArgs)
     {
         if (menuOpenedArgs.Target is not MenuTargetDefault menuTargetDefault)
         {
@@ -198,12 +200,13 @@ public class ContextMenuHandler
             case "CrossWorldLinkshell":
             case "ContentMemberList":
             case "BlackList":
-                return menuTargetDefault.TargetName != string.Empty;
+                return menuTargetDefault.TargetName != string.Empty 
+                       && Utils.Validation.IsWorldValid(menuTargetDefault.TargetHomeWorld.Id);
         }
 
         return false;
     }
-
+    
     public void Dispose()
     {
         _contextMenu.OnMenuOpened -= OnOpenContextMenu;

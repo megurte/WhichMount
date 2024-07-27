@@ -18,6 +18,7 @@ public class WhichMountPlugin : IDalamudPlugin
     private readonly IDataManager _dataManager;
     private readonly IObjectTable _objectTable;
     private readonly IContextMenu _contextMenu;
+    private readonly ICommandManager _commandManager;
     
     public WhichMountPlugin(IDalamudPluginInterface pluginInterface) 
     {
@@ -29,9 +30,10 @@ public class WhichMountPlugin : IDalamudPlugin
         _dataManager = Service.DataManager;
         _objectTable = Service.ObjectTable;
         _contextMenu = Service.ContextMenu;
+        _commandManager = Service.CommandManager;
 
         _contextMenuHandler = new ContextMenuHandler(_pluginInterface, _chatGui, _dataManager, _objectTable, _contextMenu, _configuration);
-        _configWindow = new ConfigWindow(_pluginInterface, this, _configuration);
+        _configWindow = new ConfigWindow(_pluginInterface, this, _configuration, _commandManager);
     }
     
     public void Dispose()
