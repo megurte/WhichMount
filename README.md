@@ -10,4 +10,5 @@ Available options:
 
 The code uses data from the [FFXIV wiki](https://ffxiv.consolegameswiki.com/wiki/FF14_Wiki) to get detailed information about the searched mount.
 
-To Install the plugin itself use raw json as experimental link `https://raw.githubusercontent.com/megurte/WhichMount/master/WhichMount/WhichMount.json`
+To Install the plugin itself use raw json as experimental link
+`https://raw.githubusercontent.com/megurte/WhichMount/master/WhichMount/WhichMount.json`
