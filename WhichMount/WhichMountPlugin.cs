@@ -1,5 +1,6 @@
 ﻿using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using DalamudInjector;
 
 namespace WhichMount;
 
@@ -12,6 +13,8 @@ public class WhichMountPlugin : IDalamudPlugin
     private Configuration _configuration;
     private ContextMenuHandler _contextMenuHandler;
 
+    private readonly ServiceInstaller _serviceInstaller;
+    private readonly ServiceManager _service;
     private readonly ConfigWindow _configWindow;
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly IChatGui _chatGui;
@@ -20,18 +23,20 @@ public class WhichMountPlugin : IDalamudPlugin
     private readonly IContextMenu _contextMenu;
     private readonly ICommandManager _commandManager;
     
-    public WhichMountPlugin(IDalamudPluginInterface pluginInterface) 
+    public WhichMountPlugin(IDalamudPluginInterface pluginInterface)
     {
+        _pluginInterface = pluginInterface;
         _configuration = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration(pluginInterface);
 
-        pluginInterface.Create<Service>();
-        _pluginInterface = Service.Interface;
-        _chatGui = Service.ChatGui;
-        _dataManager = Service.DataManager;
-        _objectTable = Service.ObjectTable;
-        _contextMenu = Service.ContextMenu;
-        _commandManager = Service.CommandManager;
-
+        _serviceInstaller = new ServiceInstaller(pluginInterface);
+        _service = _serviceInstaller.Service;
+        
+        _chatGui = _service.GetService<IChatGui>();
+        _dataManager = _service.GetService<IDataManager>();
+        _objectTable = _service.GetService<IObjectTable>();
+        _contextMenu = _service.GetService<IContextMenu>();
+        _commandManager = _service.GetService<ICommandManager>();
+        
         _contextMenuHandler = new ContextMenuHandler(_pluginInterface, _chatGui, _dataManager, _objectTable, _contextMenu, _configuration);
         _configWindow = new ConfigWindow(_pluginInterface, this, _configuration, _commandManager);
     }

@@ -18,7 +18,7 @@ public class ContextMenuHandler
 {
     private const string WikiUrl = "https://ffxiv.consolegameswiki.com/wiki/Mounts";
     private const int WebTableIndex = 7;
-
+    
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly IChatGui _chatGui;
     private readonly IDataManager _dataManager;
@@ -201,7 +201,7 @@ public class ContextMenuHandler
             case "ContentMemberList":
             case "BlackList":
                 return menuTargetDefault.TargetName != string.Empty 
-                       && Utils.Validation.IsWorldValid(menuTargetDefault.TargetHomeWorld.Id);
+                       && Utils.Validation.IsWorldValid(menuTargetDefault.TargetHomeWorld.Id, _dataManager);
         }
 
         return false;

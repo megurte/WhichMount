@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Dalamud.Plugin.Services;
 using Lumina.Excel.GeneratedSheets;
 using Lumina.Text;
 
@@ -19,14 +20,14 @@ public static class Utils
 
     public readonly struct Validation
     {
-        public static bool IsWorldValid(uint worldId)
+        public static bool IsWorldValid(uint worldId, IDataManager dataManager)
         {
-            return IsWorldValid(GetWorld(worldId));
+            return IsWorldValid(GetWorld(worldId, dataManager));
         }
     
-        public static World GetWorld(uint worldId)
+        public static World GetWorld(uint worldId, IDataManager dataManager)
         {
-            var worldSheet = Service.DataManager.GetExcelSheet<World>()!;
+            var worldSheet = dataManager.GetExcelSheet<World>()!;
             var world = worldSheet.FirstOrDefault(x => x.RowId == worldId);
             if (world == null)
             {
