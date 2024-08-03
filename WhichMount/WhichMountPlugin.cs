@@ -10,9 +10,8 @@ public class WhichMountPlugin : IDalamudPlugin
 {
     public string Name => "Which Mount";
 
-    private Configuration _configuration;
-    private ContextMenuHandler _contextMenuHandler;
-
+    private readonly Configuration _configuration;
+    private readonly ContextMenuHandler _contextMenuHandler;
     private readonly ServiceInstaller _serviceInstaller;
     private readonly ServiceManager _service;
     private readonly ConfigWindow _configWindow;

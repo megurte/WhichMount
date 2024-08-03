@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework> <!-- или другая версия, соответствующая вашим требованиям -->
-    <Version>0.1.0.0</Version>
+    <Version>1.0.0.0</Version>
     <Description>Searching for other player's mount</Description>
     <PackageProjectUrl>https://github.com/megurte/whichmount</PackageProjectUrl>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+  	<Content Include="..\Icon\icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
     <Reference Include="DalamudInjector">
       <HintPath>..\..\..\DalamudInjector\DalamudInjector\bin\Release\DalamudInjector.dll</HintPath>
     </Reference>
