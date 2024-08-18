@@ -3,7 +3,7 @@
   <Import Project="Dalamud.Plugin.Bootstrap.targets"/>
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework> <!-- или другая версия, соответствующая вашим требованиям -->
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Version>1.0.0.0</Version>
     <Description>Searching for other player's mount</Description>
     <PackageProjectUrl>https://github.com/megurte/whichmount</PackageProjectUrl>
@@ -24,8 +24,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>false</Visible>
     </Content>
-    <Reference Include="DalamudInjector">
-      <HintPath>..\..\..\DalamudInjector\DalamudInjector\bin\Release\DalamudInjector.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+  	<ProjectReference Include="..\DalamudInjector\DalamudInjector\DalamudInjector.csproj" />
   </ItemGroup>
 </Project>

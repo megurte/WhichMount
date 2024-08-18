@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    "net8.0": {
+    "net8.0-windows7.0": {
       "DalamudPackager": {
         "type": "Direct",
         "requested": "[2.1.13, )",
@@ -110,6 +110,13 @@
         "type": "Transitive",
         "resolved": "8.0.0",
         "contentHash": "7V0I8tPa9V7UxMx/+7DIwkhls5ouaEMQx6l/GwGm1Y8kJQ61On9B/PxCXFLbgu5/C47g0BP2CUYs+nMv1+Oaqw=="
+      },
+      "dalamudinjector": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.Build": "[17.10.4, )",
+          "Microsoft.Extensions.DependencyInjection": "[9.0.0-preview.6.24327.7, )"
+        }
       }
     }
   }

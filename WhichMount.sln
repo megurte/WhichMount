@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhichMount", "WhichMount\WhichMount.csproj", "{13C812E9-0D42-4B95-8646-40EEBF30636F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DalamudInjector", "DalamudInjector", "{27507861-C582-4A6D-8C3E-453BCA93EA48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalamudInjector", "DalamudInjector\DalamudInjector\DalamudInjector.csproj", "{E5AF2D71-C60A-4967-882B-F69625E25E21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,11 +19,18 @@ Global
 		{13C812E9-0D42-4B95-8646-40EEBF30636F}.Debug|x64.Build.0 = Debug|x64
 		{13C812E9-0D42-4B95-8646-40EEBF30636F}.Release|x64.ActiveCfg = Release|x64
 		{13C812E9-0D42-4B95-8646-40EEBF30636F}.Release|x64.Build.0 = Release|x64
+		{E5AF2D71-C60A-4967-882B-F69625E25E21}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E5AF2D71-C60A-4967-882B-F69625E25E21}.Debug|x64.Build.0 = Debug|Any CPU
+		{E5AF2D71-C60A-4967-882B-F69625E25E21}.Release|x64.ActiveCfg = Release|Any CPU
+		{E5AF2D71-C60A-4967-882B-F69625E25E21}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B17E85B1-5F60-4440-9F9A-3DDE877E8CDF}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E5AF2D71-C60A-4967-882B-F69625E25E21} = {27507861-C582-4A6D-8C3E-453BCA93EA48}
 	EndGlobalSection
 EndGlobal
