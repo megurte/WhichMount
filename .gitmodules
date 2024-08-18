@@ -1,0 +1,3 @@
+[submodule "DalamudInjector"]
+	path = DalamudInjector
+	url = https://github.com/megurte/DalamudInjector.git
