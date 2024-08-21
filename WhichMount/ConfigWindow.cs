@@ -39,7 +39,7 @@ public class ConfigWindow : IDisposable
         if (!_showConfig)
             return;
 
-        ImGui.SetNextWindowSizeConstraints(new Vector2(250, 150), new Vector2(250, 150));
+        ImGui.SetNextWindowSizeConstraints(new Vector2(250, 200), new Vector2(250, 200));
         ImGui.Begin($"{_whichMountPlugin.Name} configuration", ref _showConfig, ImGuiWindowFlags.NoCollapse);
         
         var showMountId = _configuration.ShowMountId;
@@ -60,6 +60,27 @@ public class ConfigWindow : IDisposable
         if (ImGui.Checkbox("Show number of seats", ref showSeats))
         {
             _configuration.ShowSeats = showSeats;
+            _configuration.Save();
+        }
+        
+        var showHasActions = _configuration.ShowHasActions;
+        if (ImGui.Checkbox("Has mounts unique actions or not", ref showHasActions))
+        {
+            _configuration.ShowHasActions = showHasActions;
+            _configuration.Save();
+        }
+        
+        var showHasUniqueMusic = _configuration.ShowHasUniqueMusic;
+        if (ImGui.Checkbox("Has mounts unique BGM or not", ref showHasUniqueMusic))
+        {
+            _configuration.ShowHasUniqueMusic = showHasUniqueMusic;
+            _configuration.Save();
+        }
+        
+        var showMusic = _configuration.ShowMusic;
+        if (ImGui.Checkbox("Show name of mounts music", ref showMusic))
+        {
+            _configuration.ShowMusic = showMusic;
             _configuration.Save();
         }
         

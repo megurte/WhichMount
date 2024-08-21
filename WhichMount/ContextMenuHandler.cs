@@ -9,6 +9,8 @@ using HtmlAgilityPack;
 using Lumina.Excel.GeneratedSheets;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using WhichMount.Models;
+using WhichMount.Utils;
 
 namespace WhichMount;
  
@@ -25,6 +27,8 @@ public class ContextMenuHandler
     private readonly IObjectTable _objectTable;
     private readonly IContextMenu _contextMenu;
     private readonly Configuration _configuration;
+
+    private HashSet<Mount> _uniqueMusicMounts = new();
 
     public ContextMenuHandler(
         IDalamudPluginInterface pluginInterface,
@@ -54,39 +58,51 @@ public class ContextMenuHandler
         {
             PrefixChar = 'M',
             Name = "Search Mount",
-            OnClicked = CheckMount
+            OnClicked = FetchAndDisplayMountInfo 
         });
     }
 
-    private unsafe void CheckMount(IMenuItemClickedArgs args)
+    private unsafe void FetchAndDisplayMountInfo (IMenuItemClickedArgs args)
     {
-        if (args.Target is not MenuTargetDefault menuTargetDefault)
+        if (args.Target is not MenuTargetDefault menuTargetDefault) return;
+        
+        var targetCharacter = _objectTable.SearchById(menuTargetDefault.TargetObjectId);
+
+        if (targetCharacter == null)
         {
             return;
         }
-
-        var targetCharacter = _objectTable.SearchById(menuTargetDefault.TargetObjectId);
-
-        if (targetCharacter != null)
+        
+        var mountId = ((Character*) targetCharacter.Address)->Mount.MountId;
+        
+        if (mountId == 0)
         {
-            var mountId = ((Character*) targetCharacter.Address)->Mount.MountId;
-            
-            if (mountId != 0)
-            {
-                if (_configuration.ShowMountId)
-                {
-                    _chatGui.Print($"Mount ID: {mountId}");
-                }
-                
-                var mountName = GetMountNameById(mountId);
-                _chatGui.Print($"{targetCharacter.Name}'s mount: {mountName}");
-                GetMountAcquiredByAsync(mountName);
-            }
-            else
-            {
-                _chatGui.Print("No mount is currently active.");
-            }
+            _chatGui.Print("No mount is currently active.");
+            return;
         }
+        
+        var mountModel = new MountModel(_dataManager, mountId);
+
+        if (!mountModel.TryInitMountData())
+        {
+            _chatGui.Print("Cannot find mount");
+            return;
+        }
+        
+        _chatGui.Print($"{targetCharacter.Name}'s mount: {mountModel.Name}");
+        
+        if (_configuration.ShowMountId)
+            _chatGui.Print($"Mount ID: {mountId}");
+        if (_configuration.ShowSeats) 
+            _chatGui.Print($"Number of seats: {mountModel.NumberSeats}");
+        if (_configuration.ShowHasActions)
+            _chatGui.Print($"Has actions: {(mountModel.HasActions ? "Yes" : "No")}");
+        if (_configuration.ShowHasUniqueMusic)
+            _chatGui.Print($"Has uniqueMusic: {(mountModel.HasUniqueMusic ? "Yes" : "No")}");
+        if (_configuration.ShowMusic)
+            _chatGui.Print($"Music: {mountModel.MusicName}");
+                
+        //GetMountAcquiredByAsync(mountName);
     }
     
     private async void GetMountAcquiredByAsync(string mountName)
@@ -152,7 +168,7 @@ public class ContextMenuHandler
                             requestResult.Add($"Number of seats: {seats}");
                         }
                         var acquiredBy = cells[3].InnerText.Trim();
-                        requestResult.Add($"Source: {Utils.WikiStringConverter.ConvertString(acquiredBy)}");
+                        requestResult.Add($"Source: {CommonUtils.WikiStringConverter.ConvertString(acquiredBy)}");
                         return requestResult;
                     }
                 }
@@ -169,7 +185,7 @@ public class ContextMenuHandler
         
         if (mountData != null)
         {
-            var name = Utils.SeStringConverter
+            var name = CommonUtils.SeStringConverter
                             .ParseSeStringLumina(_dataManager.GetExcelSheet<Mount>()!.GetRow(mountData.RowId)?.Singular);
             return name;
         }
@@ -201,7 +217,7 @@ public class ContextMenuHandler
             case "ContentMemberList":
             case "BlackList":
                 return menuTargetDefault.TargetName != string.Empty 
-                       && Utils.Validation.IsWorldValid(menuTargetDefault.TargetHomeWorld.Id, _dataManager);
+                       && CommonUtils.Validation.IsWorldValid(menuTargetDefault.TargetHomeWorld.Id, _dataManager);
         }
 
         return false;

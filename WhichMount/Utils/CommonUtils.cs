@@ -3,9 +3,9 @@ using Dalamud.Plugin.Services;
 using Lumina.Excel.GeneratedSheets;
 using Lumina.Text;
 
-namespace WhichMount;
+namespace WhichMount.Utils;
 
-public static class Utils
+public static class CommonUtils
 {
     public readonly struct SeStringConverter
     {
