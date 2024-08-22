@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -16,10 +17,22 @@ namespace WhichMount;
  
 #pragma warning disable CA1416
 
+
 public class ContextMenuHandler
 {
     private const string WikiUrl = "https://ffxiv.consolegameswiki.com/wiki/Mounts";
     private const int WebTableIndex = 7;
+    private static readonly string csvFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "mounts_list.csv");
+
+    private enum TargetData
+    {
+        Name = 0,
+        Icon = 1,
+        AcquisitionType = 2,
+        AcquiredBy = 3,
+        Seats = 4,
+        IsObtainable = 5
+    }
     
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly IChatGui _chatGui;
@@ -90,6 +103,7 @@ public class ContextMenuHandler
         }
         
         _chatGui.Print($"{targetCharacter.Name}'s mount: {mountModel.Name}");
+        _chatGui.Print($"Acquired by: {GetDataByTable(mountModel.Name, TargetData.AcquiredBy)}");
         
         if (_configuration.ShowMountId)
             _chatGui.Print($"Mount ID: {mountId}");
@@ -101,93 +115,43 @@ public class ContextMenuHandler
             _chatGui.Print($"Has uniqueMusic: {(mountModel.HasUniqueMusic ? "Yes" : "No")}");
         if (_configuration.ShowMusic)
             _chatGui.Print($"Music: {mountModel.MusicName}");
-                
-        //GetMountAcquiredByAsync(mountName);
+        if (_configuration.ShowAvailability)
+            _chatGui.Print($"Is currently obtainable: {(GetDataByTable(mountModel.Name, TargetData.IsObtainable) == "1" 
+                                                            ? "Yes" : "No")}");
     }
-    
-    private async void GetMountAcquiredByAsync(string mountName)
+
+    private string GetDataByTable(string mountName, TargetData targetData)
     {
-        var requestedStrings = await GetMountAcquiredBy(mountName, _configuration);
-        foreach (var item in requestedStrings)
-        {
-            _chatGui.Print(item);
-        }
-    }
-    
-    private static async Task<List<string>> GetMountAcquiredBy(string mountName, Configuration configuration)
-    {
-        var requestResult = new List<string>();
-        var httpClient = new HttpClient();
-        var response = await httpClient.GetStringAsync(WikiUrl);
-        var htmlDocument = new HtmlDocument();
-        htmlDocument.LoadHtml(response);
+        // TODO do from web
+        var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "mounts_list.csv");
 
-        var mountTables = htmlDocument.DocumentNode.SelectNodes("//table[contains(@class, 'sortable')]");
-
-        if (mountTables == null || mountTables.Count < 8)
+        if (!File.Exists(filePath))
         {
-            requestResult.Add("mount table not found");
-            return requestResult;
+            return "File not found";
         }
 
-        var mountTable = mountTables[WebTableIndex];
-        var mountNodes = mountTable.SelectNodes(".//tr");
+        var lines = File.ReadAllLines(filePath);
 
-        if (mountNodes == null || mountNodes.Count == 0)
+        if (lines.Length < 2)
         {
-            requestResult.Add("mount rows not found");
-            return requestResult;
+            return "No data found in file";
         }
 
-        foreach (var mountNode in mountNodes.Skip(1))
-        {
-            var cells = mountNode.SelectNodes("td");
+        var headers = lines[0].Split(',');
 
-            if (cells is {Count: >= 3})
+        if ((int)targetData >= headers.Length)
+        {
+            return "Invalid column index";
+        }
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            var columns = lines[i].Split(',');
+
+            if (columns[0].Trim().Equals(mountName, StringComparison.OrdinalIgnoreCase))
             {
-                var nameNode = cells[0].SelectSingleNode(".//a");
-                
-                if (nameNode != null)
-                {
-                    var name = nameNode.InnerText.Trim();
-                    
-                    if (string.Equals(name, mountName, StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (configuration.ShowAvailability)
-                        {
-                            var availability = cells[5].InnerText.Trim();
-                            var availabilityText = availability == "1"
-                                                       ? "This mount is currently obtainable"
-                                                       : "This mount is NOT currently obtainable";
-                            requestResult.Add($"{availabilityText}");
-                        }
-
-                        if (configuration.ShowSeats)
-                        {
-                            var seats = cells[4].InnerText.Trim();
-                            requestResult.Add($"Number of seats: {seats}");
-                        }
-                        var acquiredBy = cells[3].InnerText.Trim();
-                        requestResult.Add($"Source: {CommonUtils.WikiStringConverter.ConvertString(acquiredBy)}");
-                        return requestResult;
-                    }
-                }
+                return columns[(int)targetData].Trim();
             }
-        }
-        
-        requestResult.Add("source information not found");
-        return requestResult;
-    }
-    
-    private string GetMountNameById(uint mountId)
-    {
-        var mountData = _dataManager.GetExcelSheet<Mount>()!.GetRow(mountId);
-        
-        if (mountData != null)
-        {
-            var name = CommonUtils.SeStringConverter
-                            .ParseSeStringLumina(_dataManager.GetExcelSheet<Mount>()!.GetRow(mountData.RowId)?.Singular);
-            return name;
         }
 
         return "Mount not found";
