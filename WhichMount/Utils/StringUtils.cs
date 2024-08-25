@@ -19,4 +19,6 @@ public static class StringUtils
         var textInfo = culture.TextInfo;
         return textInfo.ToTitleCase(str);
     }
+    
+    public static string ConvertString(this string text) => text?.Replace("&#160;", string.Empty) ?? string.Empty;
 }

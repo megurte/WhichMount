@@ -27,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+  	<EmbeddedResource Include="Resources\MountList.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
   	<ProjectReference Include="..\DalamudInjector\DalamudInjector\DalamudInjector.csproj" />
   </ItemGroup>
 </Project>

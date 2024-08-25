@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using Dalamud.Game.Gui.ContextMenu;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
@@ -17,23 +18,18 @@ namespace WhichMount;
  
 #pragma warning disable CA1416
 
+public enum TargetData
+{
+    Name = 0,
+    Icon = 1,
+    AcquisitionType = 2,
+    AcquiredBy = 3,
+    Seats = 4,
+    IsObtainable = 5
+}
 
 public class ContextMenuHandler
 {
-    private const string WikiUrl = "https://ffxiv.consolegameswiki.com/wiki/Mounts";
-    private const int WebTableIndex = 7;
-    private static readonly string csvFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "mounts_list.csv");
-
-    private enum TargetData
-    {
-        Name = 0,
-        Icon = 1,
-        AcquisitionType = 2,
-        AcquiredBy = 3,
-        Seats = 4,
-        IsObtainable = 5
-    }
-    
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly IChatGui _chatGui;
     private readonly IDataManager _dataManager;
@@ -94,67 +90,16 @@ public class ContextMenuHandler
             return;
         }
         
-        var mountModel = new MountModel(_dataManager, mountId);
+        var mountModel = new MountModel(_dataManager, mountId, targetCharacter.Name.ToString());
 
-        if (!mountModel.TryInitMountData())
+        if (!mountModel.TryInitData())
         {
             _chatGui.Print("Cannot find mount");
             return;
         }
-        
-        _chatGui.Print($"{targetCharacter.Name}'s mount: {mountModel.Name}");
-        _chatGui.Print($"Acquired by: {GetDataByTable(mountModel.Name, TargetData.AcquiredBy)}");
-        
-        if (_configuration.ShowMountId)
-            _chatGui.Print($"Mount ID: {mountId}");
-        if (_configuration.ShowSeats) 
-            _chatGui.Print($"Number of seats: {mountModel.NumberSeats}");
-        if (_configuration.ShowHasActions)
-            _chatGui.Print($"Has actions: {(mountModel.HasActions ? "Yes" : "No")}");
-        if (_configuration.ShowHasUniqueMusic)
-            _chatGui.Print($"Has uniqueMusic: {(mountModel.HasUniqueMusic ? "Yes" : "No")}");
-        if (_configuration.ShowMusic)
-            _chatGui.Print($"Music: {mountModel.MusicName}");
-        if (_configuration.ShowAvailability)
-            _chatGui.Print($"Is currently obtainable: {(GetDataByTable(mountModel.Name, TargetData.IsObtainable) == "1" 
-                                                            ? "Yes" : "No")}");
-    }
 
-    private string GetDataByTable(string mountName, TargetData targetData)
-    {
-        // TODO do from web
-        var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "mounts_list.csv");
-
-        if (!File.Exists(filePath))
-        {
-            return "File not found";
-        }
-
-        var lines = File.ReadAllLines(filePath);
-
-        if (lines.Length < 2)
-        {
-            return "No data found in file";
-        }
-
-        var headers = lines[0].Split(',');
-
-        if ((int)targetData >= headers.Length)
-        {
-            return "Invalid column index";
-        }
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            var columns = lines[i].Split(',');
-
-            if (columns[0].Trim().Equals(mountName, StringComparison.OrdinalIgnoreCase))
-            {
-                return columns[(int)targetData].Trim();
-            }
-        }
-
-        return "Mount not found";
+        var view = new ChatView(_chatGui, _configuration);
+        view.BindModel(mountModel);
     }
     
     private bool IsMenuValid(IMenuArgs menuOpenedArgs)

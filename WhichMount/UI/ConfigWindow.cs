@@ -5,7 +5,7 @@ using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Common.Math;
 using ImGuiNET;
 
-namespace WhichMount;
+namespace WhichMount.UI;
 
 #pragma warning disable CA1416
 
