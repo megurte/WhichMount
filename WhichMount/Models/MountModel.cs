@@ -78,6 +78,6 @@ public class MountModel {
             }
         }
 
-        return "Mount not found";
+        return "Information not found";
     }
 }

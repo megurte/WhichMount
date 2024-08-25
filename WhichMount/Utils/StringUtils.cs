@@ -5,7 +5,7 @@ namespace WhichMount.Utils;
 
 public static class StringUtils
 {
-    public static CultureInfo Culture { get; set; } = new CultureInfo("en-US"); // TODO move to constants
+    public static CultureInfo Culture { get; set; } = new ("en-US");
     
     public static string ToTitleCase(this string str) {
         return ToTitleCase(str, Culture);
