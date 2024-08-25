@@ -20,5 +20,5 @@ public static class StringUtils
         return textInfo.ToTitleCase(str);
     }
     
-    public static string ConvertString(this string text) => text?.Replace("&#160;", string.Empty) ?? string.Empty;
+    public static string ConvertString(this string text) => text.Replace("&#160;", string.Empty);
 }
