@@ -36,19 +36,6 @@ public class MountModel {
         }
     }
 
-    private Dictionary<uint, BGM> _mountMusics
-    {
-        get
-        {
-            if (_mountMusics == null)
-            {
-                return _dataManager.Excel.GetSheet<BGM>()!.ToDictionary(k => k.RowId, v => v);
-            }
-
-            return _mountMusics;
-        }
-    }
-
     public MountModel(IDataManager dataManager, uint id, string owner)
     {
         _dataManager = dataManager;
@@ -93,12 +80,4 @@ public class MountModel {
 
         return "Mount not found";
     }
-
-    //TODO
-    /*public string MusicName()
-    {
-        _mountMusics.TryGetValue(_mountItem.RideBGM.Row, out var bgm);
-        return bgm.
-    }*/
-    public string MusicName => _mountItem.RideBGM.Value.ToString();
 }

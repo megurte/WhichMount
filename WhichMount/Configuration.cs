@@ -15,7 +15,6 @@ public class Configuration : IPluginConfiguration
     public bool ShowSeats { get; set; } = false;
     public bool ShowHasActions { get; set; } = false;
     public bool ShowHasUniqueMusic { get; set; } = false;
-    public bool ShowMusic { get; set; } = false;
     
     public Configuration(IDalamudPluginInterface pluginInterface)
     {

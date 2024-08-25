@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Dalamud.Game.Gui.ContextMenu;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using HtmlAgilityPack;
 using Lumina.Excel.GeneratedSheets;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;

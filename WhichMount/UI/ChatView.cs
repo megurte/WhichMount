@@ -1,3 +1,4 @@
+using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Plugin.Services;
 using WhichMount.Models;
 using WhichMount.Utils;
@@ -29,8 +30,6 @@ public class ChatView : IViewBinder
             _chatGui.Print($"Has actions: {(model.HasActions ? "Yes" : "No")}");
         if (_configuration.ShowHasUniqueMusic)
             _chatGui.Print($"Has uniqueMusic: {(model.HasUniqueMusic ? "Yes" : "No")}");
-        if (_configuration.ShowMusic)
-            _chatGui.Print($"Music: {model.MusicName}");
         if (_configuration.ShowAvailability)
             _chatGui.Print($"Is currently obtainable: {(model.GetDataByTable(TargetData.IsObtainable) == "1" ? "Yes" : "No")}");
     }

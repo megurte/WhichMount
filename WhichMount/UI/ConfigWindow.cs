@@ -77,13 +77,6 @@ public class ConfigWindow : IDisposable
             _configuration.Save();
         }
         
-        var showMusic = _configuration.ShowMusic;
-        if (ImGui.Checkbox("Show name of mounts music", ref showMusic))
-        {
-            _configuration.ShowMusic = showMusic;
-            _configuration.Save();
-        }
-        
         ImGui.End();
     }
 
