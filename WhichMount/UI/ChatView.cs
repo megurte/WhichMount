@@ -28,7 +28,7 @@ public class ChatView : IViewBinder
         if (_configuration.ShowHasActions)
             _chatGui.Print($"Has actions: {(model.HasActions ? "Yes" : "No")}");
         if (_configuration.ShowHasUniqueMusic)
-            _chatGui.Print($"Has uniqueMusic: {(model.HasUniqueMusic ? "Yes" : "No")}");
+            _chatGui.Print($"Has unique music: {(model.HasUniqueMusic ? "Yes" : "No")}");
         if (_configuration.ShowAvailability)
             _chatGui.Print($"Is currently obtainable: {(model.GetDataByTable(TargetData.IsObtainable) == "1" ? "Yes" : "No")}");
         _chatGui.Print("===================");

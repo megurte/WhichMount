@@ -64,7 +64,7 @@ public class MountModel {
             using var reader = new StreamReader(stream);
             while (reader.ReadLine() is { } line)
             {
-                var columns = line.Split(',');
+                var columns = line.Split('|');
 
                 if (columns[(int)TargetData.Name].Equals(Name, StringComparison.OrdinalIgnoreCase))
                 {
