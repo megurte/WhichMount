@@ -66,14 +66,17 @@ public class MountModel {
             {
                 var columns = line.Split('|');
 
-                if (columns[(int)TargetData.Name].Equals(Name, StringComparison.OrdinalIgnoreCase))
+                if (uint.TryParse(columns[(int)TargetData.Id], out var mountId))
                 {
-                    if (targetData >= 0 && (int)targetData < columns.Length)
+                    if (mountId == Id)
                     {
-                        return columns[(int)targetData];
-                    }
+                        if (targetData >= 0 && (int)targetData < columns.Length)
+                        {
+                            return columns[(int)targetData];
+                        }
                             
-                    return $"Invalid targetData index: {targetData}";
+                        return $"Invalid targetData index: {targetData}";
+                    }
                 }
             }
         }

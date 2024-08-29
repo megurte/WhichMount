@@ -14,11 +14,12 @@ namespace WhichMount;
 public enum TargetData
 {
     Name = 0,
-    Icon = 1,
-    AcquisitionType = 2,
-    AcquiredBy = 3,
-    Seats = 4,
-    IsObtainable = 5
+    Id = 1,
+    Icon = 2,
+    AcquisitionType = 3,
+    AcquiredBy = 4,
+    Seats = 5,
+    IsObtainable = 6
 }
 
 public class ContextMenuHandler
