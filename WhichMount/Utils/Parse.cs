@@ -47,11 +47,12 @@ public class Parse
                     var mountId = mount?.RowId.ToString() ?? "Unknown ID";
 
                     var rowData = new string[cells.Count + 1];
-                    rowData[0] = cells[0].InnerText.Trim();
-                    rowData[1] = mountId;
+                    rowData[0] = name.Replace("|", "").Trim();
+                    rowData[1] = mountId;                     
                     for (int i = 1; i < cells.Count; i++)
                     {
-                        rowData[i + 1] = cells[i].InnerText.Trim();
+                        var cellText = cells[i].InnerText.Trim().Replace("|", "");
+                        rowData[i + 1] = string.IsNullOrEmpty(cellText) ? "" : cellText; 
                     }
                     mountsData.Add(rowData);
                 }
