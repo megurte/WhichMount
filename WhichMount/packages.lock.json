@@ -8,6 +8,12 @@
         "resolved": "2.1.13",
         "contentHash": "rMN1omGe8536f4xLMvx9NwfvpAc9YFFfeXJ1t4P4PE6Gu8WCIoFliR1sh07hM+bfODmesk/dvMbji7vNI+B/pQ=="
       },
+      "HtmlAgilityPack": {
+        "type": "Direct",
+        "requested": "[1.11.64, )",
+        "resolved": "1.11.64",
+        "contentHash": "5GtlZ7Y/L1k5zBokuOGW96PVTItRv/QCUJWlXiZ5YvYN2DI8wFto+WXBxkF55DdG0WabAG/F3ghqOMGdo89Rlg=="
+      },
       "Microsoft.Build": {
         "type": "Direct",
         "requested": "[17.10.4, )",
