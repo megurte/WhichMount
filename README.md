@@ -3,6 +3,7 @@ A Final Fantasy XIV Dalamud plugin that shows information about other players' m
 
 To install the plugin, use official [FFXIV QuickLauncher](https://github.com/goatcorp/FFXIVQuickLauncher) and download it from the `All Plugins` section.
 
+## Configuration
 The plugin has a configuration that is controlled by the Dalamud QL XIV environment.
 * Type `/mountsconfig` in the in-game chat command to open the configuration window or use the main Dalamud plugin window with the `Settings` button.
 
