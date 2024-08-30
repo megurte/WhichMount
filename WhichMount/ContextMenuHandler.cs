@@ -11,17 +11,6 @@ namespace WhichMount;
  
 #pragma warning disable CA1416
 
-public enum TargetData
-{
-    Name = 0,
-    Id = 1,
-    Icon = 2,
-    AcquisitionType = 3,
-    AcquiredBy = 4,
-    Seats = 5,
-    IsObtainable = 6
-}
-
 public class ContextMenuHandler
 {
     private readonly IDalamudPluginInterface _pluginInterface;

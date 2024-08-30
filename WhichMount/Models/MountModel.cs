@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +8,17 @@ using Lumina.Excel.GeneratedSheets;
 using WhichMount.Utils;
 
 namespace WhichMount.Models;
+
+public enum TargetData
+{
+    Name = 0,
+    Id = 1,
+    Icon = 2,
+    AcquisitionType = 3,
+    AcquiredBy = 4,
+    Seats = 5,
+    IsObtainable = 6
+}
 
 public class MountModel {
     
