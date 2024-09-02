@@ -13,5 +13,6 @@ Available options:
 * **Show Number of Seats**: Displays the number of people that can ride the mount.
 * **Has unique actions**: Shows if mount has uniq actions or not.
 * **Has unique BGM**: Shows if mount has own music or not.
+* **Added in patch**: Shows the patch adding a mount to the game.
 
   
