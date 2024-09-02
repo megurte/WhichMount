@@ -31,6 +31,8 @@ public class ChatView : IViewBinder
             _chatGui.Print($"Has unique music: {(model.HasUniqueMusic ? "Yes" : "No")}");
         if (_configuration.ShowAvailability)
             _chatGui.Print($"Is currently obtainable: {(model.GetDataByTable(TargetData.IsObtainable) == "1" ? "Yes" : "No")}");
+        if (_configuration.AddedInPatch)
+            _chatGui.Print($"Added in patch {model.GetDataByTable(TargetData.Patch)}");
         _chatGui.Print("===================");
     }
 }

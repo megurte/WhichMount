@@ -17,7 +17,9 @@ public enum TargetData
     AcquisitionType = 3,
     AcquiredBy = 4,
     Seats = 5,
-    IsObtainable = 6
+    IsObtainable = 6,
+    CashShop = 7,
+    Patch = 8,
 }
 
 public class MountModel {
@@ -68,29 +70,31 @@ public class MountModel {
     {
         var assembly = Assembly.GetExecutingAssembly();
         using var stream = assembly.GetManifestResourceStream(ResourceName);
-        
-        if (stream is {CanRead: true})
+    
+        if (stream is not {CanRead: true})
         {
-            using var reader = new StreamReader(stream);
-            while (reader.ReadLine() is { } line)
-            {
-                var columns = line.Split('|');
-
-                if (uint.TryParse(columns[(int)TargetData.Id], out var mountId))
-                {
-                    if (mountId == Id)
-                    {
-                        if (targetData >= 0 && (int)targetData < columns.Length)
-                        {
-                            return columns[(int)targetData];
-                        }
-                            
-                        return $"Invalid targetData index: {targetData}";
-                    }
-                }
-            }
+            return "Stream is not available or not readable.";
         }
 
-        return "Information not found";
+        using var reader = new StreamReader(stream);
+
+        while (reader.ReadLine() is { } line)
+        {
+            var columns = line.Split('|');
+
+            if (!uint.TryParse(columns[(int)TargetData.Id], out var mountId) || mountId != Id)
+            {
+                continue;
+            }
+
+            if (targetData < 0 || (int)targetData >= columns.Length)
+            {
+                return $"Invalid targetData index: {targetData}";
+            }
+
+            return columns[(int)targetData];
+        }
+
+        return "Data not found.";
     }
 }
