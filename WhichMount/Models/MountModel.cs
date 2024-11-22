@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using WhichMount.Utils;
 
 namespace WhichMount.Models;
@@ -28,20 +28,19 @@ public class MountModel {
     public string Owner { get; }
     public string Name => _mountItem.Singular.ToDalamudString().ToTitleCase();
     public int NumberSeats => _mountItem.ExtraSeats + 1;
-    public bool HasActions => _mountItem.MountAction.Row != 0;
+    public bool HasActions => _mountItem.MountAction.RowId != 0;
     public bool HasUniqueMusic => _uniqueMusicMounts.Contains(_mountItem);
     
     private const string ResourceName = "WhichMount.Resources.MountList.csv";
     
     private readonly IDataManager _dataManager;
-    private Mount? _mountItem;
+    private Mount _mountItem;
     private HashSet<Mount> _uniqueMusicMounts
     {
         get
         {
             return _dataManager.Excel.GetSheet<Mount>()!
-                               .Where(mount => mount.RideBGM != null)
-                               .GroupBy(mount => mount.RideBGM.Row)
+                               .GroupBy(mount => mount.RideBGM.RowId)
                                .Where(group => group.Count() == 1)
                                .Select(group => group.First())
                                .ToHashSet();
@@ -58,10 +57,10 @@ public class MountModel {
     public bool TryInitData()
     {
         _mountItem = GetMountObject(Id);
-        return _mountItem != null;
+        return !Name.IsNullOrEmpty();
     }
     
-    public Mount? GetMountObject(uint mountId)
+    public Mount GetMountObject(uint mountId)
     {
         return _dataManager.GetExcelSheet<Mount>()!.GetRow(mountId);
     }
