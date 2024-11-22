@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <Version>1.0.0.1</Version>
+    <Version>1.0.0.3</Version>
     <Description>Searching for other player's mount</Description>
     <PackageProjectUrl>https://github.com/megurte/whichmount</PackageProjectUrl>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
@@ -13,10 +13,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <PackageReference Include="HtmlAgilityPack" Version="1.11.64" />
     <PackageReference Include="Microsoft.Build" Version="17.10.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-preview.6.24327.7" />
     <PackageReference Include="YamlDotNet" Version="16.0.0" />
+=======
+    <PackageReference Include="Microsoft.Build" Version="17.12.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="YamlDotNet" Version="16.2.0" />
+>>>>>>> origin/master
+  <Import Project="Dalamud.Plugin.Bootstrap.targets" />
+    <Version>1.0.0.3</Version>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.64" />
+    <PackageReference Include="Microsoft.Build" Version="17.12.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="YamlDotNet" Version="16.2.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -77,6 +77,13 @@ public class ConfigWindow : IDisposable
             _configuration.Save();
         }
         
+        var addedInPatch = _configuration.AddedInPatch;
+        if (ImGui.Checkbox("Added in patch", ref addedInPatch))
+        {
+            _configuration.AddedInPatch = addedInPatch;
+            _configuration.Save();
+        }
+        
         ImGui.End();
     }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dalamud.Game.Gui.ContextMenu;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using WhichMount.Models;
@@ -11,16 +11,6 @@ namespace WhichMount;
  
 #pragma warning disable CA1416
 
-public enum TargetData
-{
-    Name = 0,
-    Icon = 1,
-    AcquisitionType = 2,
-    AcquiredBy = 3,
-    Seats = 4,
-    IsObtainable = 5
-}
-
 public class ContextMenuHandler
 {
     private readonly IDalamudPluginInterface _pluginInterface;
@@ -29,9 +19,7 @@ public class ContextMenuHandler
     private readonly IObjectTable _objectTable;
     private readonly IContextMenu _contextMenu;
     private readonly Configuration _configuration;
-
-    private HashSet<Mount> _uniqueMusicMounts = new();
-
+    
     public ContextMenuHandler(
         IDalamudPluginInterface pluginInterface,
         IChatGui chatGui, 
@@ -72,6 +60,7 @@ public class ContextMenuHandler
 
         if (targetCharacter == null)
         {
+            _chatGui.Print("Character not found");
             return;
         }
         
@@ -117,9 +106,12 @@ public class ContextMenuHandler
             case "LinkShell":
             case "CrossWorldLinkshell":
             case "ContentMemberList":
-            case "BlackList":
+            case "BeginnerChatList":
                 return menuTargetDefault.TargetName != string.Empty 
-                       && CommonUtils.Validation.IsWorldValid(menuTargetDefault.TargetHomeWorld.Id, _dataManager);
+                       && CommonUtils.Validation.IsWorldValid(menuTargetDefault.TargetHomeWorld.RowId, _dataManager);
+            case "BlackList":
+            case "MuteList":
+                return menuTargetDefault.TargetName != string.Empty;
         }
 
         return false;
