@@ -38,6 +38,7 @@ public class WhichMountPlugin : IDalamudPlugin
         _contextMenu = _service.GetService<IContextMenu>();
         _commandManager = _service.GetService<ICommandManager>();
 
+        _chatGui.Print("Init");
         ParseMounts();
         _contextMenuHandler = new ContextMenuHandler(_pluginInterface, _chatGui, _dataManager, _objectTable, _contextMenu, _configuration);
         _configWindow = new ConfigWindow(_pluginInterface, this, _configuration, _commandManager);

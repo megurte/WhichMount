@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using HtmlAgilityPack;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 
 namespace WhichMount.Utils;
 
