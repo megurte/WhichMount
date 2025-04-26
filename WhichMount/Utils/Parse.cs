@@ -22,13 +22,13 @@ public class Parse
         htmlDocument.LoadHtml(response);
 
         var mountTables = htmlDocument.DocumentNode.SelectNodes("//table[contains(@class, 'sortable')]");
-        if (mountTables == null || mountTables.Count <= 7)
+        if (mountTables == null)
         {
             Console.WriteLine("Mount table not found.");
             return;
         }
 
-        var mountTable = mountTables[7];
+        var mountTable = mountTables[8];
         var rows = mountTable.SelectNodes(".//tr").Skip(1); // Skip header row
 
         var mountsData = new List<string[]>();
