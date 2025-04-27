@@ -19,7 +19,7 @@ public class ChatView : IViewBinder
     {
         _chatGui.Print("===================");
         _chatGui.Print($"{model.Owner}'s mount: {model.Name}");
-        _chatGui.Print($"Acquired by: {model.GetDataByTable(TargetData.AcquiredBy).ConvertString()}");
+        _chatGui.Print($"Acquired by: {model.GetDataByTable(TargetData.AcquiredBy)}");
         
         if (_configuration.ShowMountId)
             _chatGui.Print($"Mount ID: {model.Id}");
