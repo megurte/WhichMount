@@ -17,7 +17,7 @@ public class ChatView : IViewBinder
     
     public void BindModel(MountModel model)
     {
-                
+        _chatGui.Print("===================");
         _chatGui.Print($"{model.Owner}'s mount: {model.Name}");
         _chatGui.Print($"Acquired by: {model.GetDataByTable(TargetData.AcquiredBy).ConvertString()}");
         
