@@ -41,7 +41,7 @@ public class Parse
                 var nameNode = cells[0].SelectSingleNode(".//a");
                 if (nameNode != null)
                 {
-                    var name = nameNode.InnerText.Trim();
+                    var name = HtmlEntity.DeEntitize(nameNode.InnerText.Trim()).Replace('\u00A0', ' ');
                     var mount = dataManager.GetExcelSheet<Mount>()?.FirstOrDefault(m => 
                         string.Equals(m.Singular.ToDalamudString().ToString(), name, StringComparison.OrdinalIgnoreCase));
                     var mountId = mount?.RowId.ToString() ?? "Unknown ID";
@@ -51,7 +51,9 @@ public class Parse
                     rowData[1] = mountId;                     
                     for (int i = 1; i < cells.Count; i++)
                     {
-                        var cellText = cells[i].InnerText.Trim().Replace("|", "");
+                        var cellText = HtmlEntity.DeEntitize(cells[i].InnerText.Trim())
+                                                 .Replace('\u00A0', ' ')
+                                                 .Replace("|", "");
                         rowData[i + 1] = string.IsNullOrEmpty(cellText) ? "" : cellText; 
                     }
                     mountsData.Add(rowData);
