@@ -2,6 +2,7 @@
 A Final Fantasy XIV Dalamud plugin that shows information about other players' mounts and their acquisition methods via the target's context menu button.
 
 To install the plugin, use official [FFXIV QuickLauncher](https://github.com/goatcorp/FFXIVQuickLauncher) and download it from the `All Plugins` section.
+In that case,  [releases](https://github.com/megurte/WhichMount/releases) doesn't support latest version of the plugin. Checkout [dalamud plagins](https://github.com/goatcorp/DalamudPluginsD17/blob/main/stable/WhichMount/manifest.toml) for the latest one. 
 
 ## Configuration
 The plugin has a configuration that is controlled by the Dalamud QL XIV environment.
