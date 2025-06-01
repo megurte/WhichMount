@@ -13,6 +13,7 @@ Alpaca|344||Quest Reward (Main Scenario Quests)|Reward for completing the Main S
 Alte Roite|126||Raids|Guaranteed drop upon completion of  Deltascape V4.0 (Savage)|1|1|0|4.0
 Amaro|187||Leveling|Awarded from the Achievement   A Life of Adventure IV by getting every Disciple of War and Disciple of Magic that starts below level 80 (excluding Reaper and Sage) to level 80.|1|1|0|5.0
 Amber Draught Chocobo|52||Campaigns|Purchased from any Calamity Salvager for 8   Gold Chocobo Feathers. Gold Chocobo Feathers can be obtained through the Recruit a Friend campaign, or through World Population Balancing Incentives.|2|1|0|3.0
+Ancient Airship|383||Field Operations (Occult Crescent)|Purchase from the Expedition Antiquarian in South Horn for  5,000 Enlightenment Silver Pieces.|4|1|0|7.25
 Anden III|311||Custom Deliveries|Complete the quest A Labor of Leaf which requires Custom Delivery level 5 with Anden.|1|1|0|6.3
 Antelope Doe|242||Ishgardian Restoration|Purchased from Enie in The Firmament for  8,400 Skybuilders' Scrips.|1|1|0|5.5
 Antelope Stag|243||Ishgardian Restoration|Purchased from Enie in The Firmament for 30   Fête Tokens.|1|1|0|5.5
@@ -28,6 +29,7 @@ Auspicious Kamuy|144||Trials|Random drop upon completion of  The Jade Stoa (Extr
 Automatoise|353||The Hunt|Purchased from Ryubool Ja at Tuliyollal (X:13.9 Y:13.5)  for  3,200 Sack of Nuts.|1|1|0|7.0
 Barreltender|356||Gathering|Purchased from Splendors Vendor in Solution Nine (X:9.1, Y:13.2) for 100   Mount Tokens (effectively  100,000 Orange Gatherers' Scrips).|1|1|0|7.1
 Brachiosaur|283||The Hunt|Purchased from Ryubool Ja at Tuliyollal (X:13.9 Y:13.5)  for  3,200 Sack of Nuts.|1|1|0|7.1
+Branchbearer (Mount)|0||Society merchant|Purchased from Veerul Ja for  18 Mamool Ja Nanook after achieving Trusted (rank 4) reputation with the Mamool Ja society.|1|1|0|7.25
 Battle Bear|123||Duties as a Tank|Awarded from the Achievement   Tank You, Warrior III by completing 300 dungeons (lv. 61 and above), extreme trials (lv. 61 and above), high-level duty roulette dungeons, or duty roulette leveling duties as a   Warrior.|1|1|0|4.0
 Battle Lion|122||Duties as a Tank|Awarded from the Achievement   Tank You, Paladin III by completing 300 dungeons (lv. 61 and above), extreme trials (lv. 61 and above), high-level duty roulette dungeons, or duty roulette leveling duties as a   Paladin.|1|1|0|4.0
 Battle Panther|124||Duties as a Tank|Awarded from the Achievement   Tank You, Dark Knight III by completing 300 dungeons (lv. 61 and above), extreme trials (lv. 61 and above), high-level duty roulette dungeons, or duty roulette leveling duties as a   Dark Knight.|1|1|0|4.0
@@ -40,7 +42,7 @@ Black Pegasus|100||Deep Dungeons|Random drop from   Gold-trimmed Sacks obtained 
 Blackjack|312||Gold Saucer|Purchased from the Gold Saucer Attendant for  4,000,000 MGP.|4|1|0|6.3
 Blissful Kamuy|115||Trials|Random drop upon completion of  Emanation (Extreme) or purchased from Eschina for 99   Bliss Totems.|1|1|0|4.0
 Bluefeather Lynx|293||Trials|Random drop upon completion of  The Minstrel's Ballad: Endsinger's Aria or purchased from Nesvaaz for 99   Ultimatum Totems.|1|1|0|6.1
-Bomb Palanquin|27||Tribal merchant|Purchased from Kobold Vendor for  120,000 gil after achieving Trusted (rank 4) reputation with the Kobold Tribe.|1|1|0|2.2
+Bomb Palanquin|27||Society merchant|Purchased from Kobold Vendor for  120,000 gil after achieving Trusted (rank 4) reputation with the Kobold Tribe.|1|1|0|2.2
 Boreas|43||Trials|Random drop upon completion of  The Akh Afah Amphitheatre (Extreme).|1|1|0|2.4
 Broken Heart (left)|153||Seasonal Event|Reward for completing the Seasonal Event Quest Lessons in Love
 Purchased from the House Valentione Maid for 6 Valentione's Day Chocolates during Valentione's Day (2018).
@@ -51,8 +53,8 @@ Purchased from the House Valentione Maid for 6 Valentione's Day Chocolates durin
 Burabura Chochin|321||Variant Dungeons|Awarded from the Achievement   Mononopeke by unlocking all exorcism records on  Mount Rokkon.|1|1|0|6.45
 Calydontis|266||Wondrous Tails|Purchased from Khloe Aliapoh for 1   Khloe's Gold Certificate of Commendation
 Purchased from Faux Commander in Idyllshire (x5.7,y6.1) for  600 Faux Leaf|1|1|0|6.0
-Cavalry Drake|19||Tribal merchant|Purchased from Amalj'aa Vendor for  120,000 gil after achieving Trusted (rank 4) reputation with the Amalj'aa Tribe.|1|1|0|2.1
-Cavalry Elbst|26||Tribal merchant|Purchased from Sahagin Vendor for  120,000 gil after achieving Trusted (rank 4) reputation with the Sahagin Tribe.|1|1|0|2.2
+Cavalry Drake|19||Society merchant|Purchased from Amalj'aa Vendor for  120,000 gil after achieving Trusted (rank 4) reputation with the Amalj'aa Tribe.|1|1|0|2.1
+Cavalry Elbst|26||Society merchant|Purchased from Sahagin Vendor for  120,000 gil after achieving Trusted (rank 4) reputation with the Sahagin Tribe.|1|1|0|2.2
 Centurio Tiger|127||The Hunt (Elite Marks)|Awarded from the Achievement   You Got Game by defeating 3,000 Rank A Elite Marks and 2,000 Rank S Elite Marks.|1|1|0|4.0
 Cerberus|235||Field Operations (Save the Queen)|Awarded from the Achievement   Savage Queen of Swords I by completing the level 80 duty  Delubrum Reginae (Savage).|4|1|0|5.4
 Ceremony Chocobo|41||Online Store|Included with a Gold or Platinum Ceremony of Eternal Bonding plan: 
@@ -68,7 +70,7 @@ Chrysomallos|317||Purchased with Gil|Purchased from Edelina in Mor Dhona (x22,y5
 Circus Ahriman|194||Seasonal Event|Reward for completing the Seasonal Event Quest Fear and Delight during All Saints' Wake (2019).
  Final Fantasy XIV Online Store - ($12 / £7.44 / €9 / ¥1320)|1|1|1|5.0
 Citrine Carbuncle|139||Online Store|Final Fantasy XIV Online Store - ($24 / £13.80 / €16.80 / ¥2530) (account-wide)|1|1|1|4.1
-Cloud Mallow|86||Tribal merchant|Purchased from Mogmul Mogbelly in The Churning Mists (x16,y29) for  200,000 gil after achieving Rank 7 (Sworn) with the Moogle Tribe.|1|1|0|3.3
+Cloud Mallow|86||Society merchant|Purchased from Mogmul Mogbelly in The Churning Mists (x16,y29) for  200,000 gil after achieving Rank 7 (Sworn) with the Moogle Tribe.|1|1|0|3.3
 Coeurl|8||Collector's Edition|Reward for purchasing the Collector's Edition or Digital Collector's Edition of A Realm Reborn. (account-wide)|1|1|1|2.0
 Company Chocobo|1||Grand Company|Purchased from The Immortal Flames, The Order of the Twin Adder or The Maelstrom vendor for  200 Company Seals after joining one of the Grand Companies.|1|1|0|2.0
 Construct 14|213||Field Operations (Save the Queen)|Purchased from Resistance Quartermaster in  The Bozjan Southern Front for  180 Bozjan Clusters.|1|1|0|5.35
@@ -81,10 +83,11 @@ Dark Lanner|90||Trials|Random drop upon completion of  The Minstrel's Ballad: Ni
 Deinonychus|212||Field Operations (Save the Queen)|Drops in The Dalriada - Final Boss Chest|1|1|0|5.55
 Demi-Ozma|186||Field Operations (Eureka)|Awarded from the Achievement "  We're on Your Side I" by completing  The Baldesion Arsenal in  The Forbidden Land, Eureka Hydatos.|1|1|0|4.5
 Demi-Phoinix|265||Raids|Guaranteed drop upon completion of  Asphodelos: The Fourth Circle (Savage).|1|1|0|6.05
+Demon Haul|372||Field Operations (Occult Crescent)|Attain the achievement   A Fork to Be Reckoned With I by completing  The Forked Tower: Blood.|1|1|0|7.25
 Demonic Lanner|104||Trials|Random drop upon completion of  Containment Bay Z1T9 (Extreme) or purchased from Bertana for 99   Demon Totems.|1|1|0|3.5
 Dhalmel|208||Ishgardian Restoration|Potential reward from the Kupo of Fortune.|1|1|0|5.21
 Diamond Gwiber|249||Trials|Random drop upon completion of  The Cloud Deck (Extreme) or purchased from C'intana for 99   Diamond Totems.|1|1|0|5.5
-Direwolf|35||Tribal merchant|Purchased from Ixali Vendor in North Shroud (X:24.9 Y:22.7) for  120,000 gil after achieving Sworn (Rank 7) reputation with the Ixali Tribe.|1|1|0|2.35
+Direwolf|35||Society merchant|Purchased from Ixali Vendor in North Shroud (X:24.9 Y:22.7) for  120,000 gil after achieving Sworn (Rank 7) reputation with the Ixali Tribe.|1|1|0|2.35
 Disembodied Head|92||Deep Dungeons|Purchased with 10   Gelmorran Potsherds from E-Una-Kotor in the South Shroud at Quarrymill (x25,y20.6). Gelmorran Potsherds are obtained from  Palace of the Dead.|1|1|0|3.35
 Dodo|159||Deep Dungeons|Random drop from   Platinum-haloed Sacks received on floors 71-100 of  Heaven-on-High.|1|1|0|4.35
 Draught Chocobo|34||Campaigns (Recruit a Friend)|Recruit a friend through the Recruit a Friend Campaign. The recruiter will receive the Draught Chocobo after the friend has subscribed for 90 days.|2|1|0|2.3
@@ -131,15 +134,15 @@ Gloria-class Airship|80||PvP|Awarded from the Achievement   Blood Born IV by win
 Gobwalker|58||Raids|Guaranteed drop upon completion of  Alexander - The Burden of the Father (Savage).|1|1|0|3.05
 Goobbue|4||Legacy|Reward for people who played the 1.0 version of Final Fantasy XIV.|1|0|0|1.20b
 Goten|95||PvP (Collaboration Event)|Awarded from the Achievement   Fatal Feast by winning 30 The Feast or Crystalline Conflict PvP matches with a Garo title.|1|1|0|3.5
-Great Vessel of Ronka|215||Tribal merchant|Purchased from Yuqurl Manl in Rak'tika Greatwood for  18 Qitari Compliments after achieving Rank 7 (Sworn) reputation with the Qitari Tribe.|1|1|0|5.2
+Great Vessel of Ronka|215||Society merchant|Purchased from Yuqurl Manl in Rak'tika Greatwood for  18 Qitari Compliments after achieving Rank 7 (Sworn) reputation with the Qitari Tribe.|1|1|0|5.2
 Griffin|54||Collector's Edition|Reward for purchasing the Collector's Edition or Digital Collector's Edition of Heavensward. (account-wide)|1|1|1|3.0
 Grani|170||Collector's Edition|Reward for purchasing the Collector's Edition or Digital Collector's Edition of Shadowbringers. (account-wide)|1|1|1|5.0
 Gullfaxi|30||Trials|Random drop upon completion of  The Navel (Extreme).|1|1|0|2.2
 Gwiber of Light|226||Trials|Random drop upon completion of  The Seat of Sacrifice (Extreme) or purchased from Fathard for 99   Totems of Light.|1|1|0|5.3
 Hallowed Kamuy|182||Trials|Random drop upon completion of  The Wreath of Snakes (Extreme) or purchased from Eschina for 99   Seiryu Totems.|1|1|0|4.5
 High Mobility Vacuum Suit|385||Achievements|Complete the   Out of This World achivement by earning a cosmic class score of 500,000 points as every Disciple of the Hand and Land..|1|1|0|7.21
-Hippo Cart|287||Tribal merchant|Purchased from Ghanta in Thavnair for  18 Arkasodara Pana after achieving Rank 7 (Sworn) reputation with the Arkasodara Tribe.|1|1|0|6.15
-His Royal Headness On Parade|388||??????|??????|1|1|0|7.2
+Hippo Cart|287||Society merchant|Purchased from Ghanta in Thavnair for  18 Arkasodara Pana after achieving Rank 7 (Sworn) reputation with the Arkasodara Tribe.|1|1|0|6.15
+His Royal Headness On Parade|388||Online Store|Final Fantasy XIV Online Store - ($24 / £13.80 / €16.80 / ¥2530) (account-wide)|1|1|1|7.2
 Hovering Hot Pot|362||??????|??????|1|1|0|7.2
 Hybodus|218||Gathering (Fisher)|Complete the achievement   No More Fish in the Sea II by scoring at least 10,000 points during a single ocean fishing voyage.|1|1|0|5.2
 Incitatus|231||Wondrous Tails|Purchased from Khloe Aliapoh for 1   Khloe's Gold Certificate of Commendation
@@ -162,10 +165,10 @@ Jibanyan Couch|228||Collaboration Event|Awarded from the Achievement   More Inve
 Juedi|166||Deep Dungeons|Speak with the Cast-off Confederate with all 4 Empyrean Accessories from  Heaven-on-High in your inventory.|1|1|0|4.35
 Kingly Peacock|214||Online Store|Final Fantasy XIV Online Store - ($24 / £13.80 / €16.80 / ¥2530) (account-wide)|1|1|1|5.2
 Kirin|47||Trials - Quest reward|Reward for completing the Sidequest "A Legend for a Legend" after acquiring the 6 Nightmare Mounts (excluding the one called "Nightmare") from A Realm Reborn extreme trials.|1|1|0|2.5
-Kongamato|72||Tribal merchant|Purchased from Vath Stickpeddler for  200,000 gil after achieving Sworn (Rank 7) reputation with the Vath Tribe.|1|1|0|3.2
+Kongamato|72||Society merchant|Purchased from Vath Stickpeddler for  200,000 gil after achieving Sworn (Rank 7) reputation with the Vath Tribe.|1|1|0|3.2
 Korpokkur Kolossus|142||Gold Saucer|Purchased from the Gold Saucer Attendant for  750,000 MGP|1|1|0|4.1
 Landerwaffe|245||Trials - Quest reward|Reward for completing the Sidequest "The Dragon Made" after acquiring the 7 Gwiber mounts from Shadowbringers extreme trials.|2|1|0|5.5
-Laurel Goobbue|20||Tribal merchant|Purchased from Sylphic Vendor for  120,000 gil after achieving Trusted (Rank 4) reputation with the Sylph Tribe.|1|1|0|2.1
+Laurel Goobbue|20||Society merchant|Purchased from Sylphic Vendor for  120,000 gil after achieving Trusted (Rank 4) reputation with the Sylph Tribe.|1|1|0|2.1
 Legacy Chocobo|5||Legacy|The Legacy Campaign, a loyalty reward available to players who stuck with 1.x during the rough periods and subscribed to the game for at least 90 days.|1|0|0|2.0
 Legendary Kamuy|133||Trials|Random drop upon completion of  The Minstrel's Ballad: Shinryu's Domain or purchased from Eschina for 99   Shinryu Totems.|1|1|0|4.1
 Level Checker|268||FATE reward|Purchased from Nesvaaz in Radz-at-Han (x11,y10) for 12   Chi Bolt from the FATE Omicron Recall: Killing Order|1|1|0|6.0
@@ -201,7 +204,7 @@ Magitek Sky Armor|174||PvP|Purchased from the Mark Quartermaster in The Wolves' 
 Magna Roader|176||PvP (ranked)|Awarded to the Top 100 players of each data center at the end of The Feast (Season 11).|1|0|0|4.5
 Manacutter|55||Quest Reward (Main Scenario Quests)|Reward for completing the Main Scenario Quest Into the Aery.|1|1|0|3.0
 Managarm|93||Campaigns|Purchased from any Calamity Salvager for 8   Gold Chocobo Feathers. Gold Chocobo Feathers can be obtained through the Recruit a Friend campaign, or through World Population Balancing Incentives.|1|1|0|4.1
-Marid|146||Tribal merchant|Purchased from Madhura in Gyr Abania for  18 Ananta Dreamstaff after achieving Rank 7 (Sworn) reputation with the Ananta Tribe.|1|1|0|4.2
+Marid|146||Society merchant|Purchased from Madhura in Gyr Abania for  18 Ananta Dreamstaff after achieving Rank 7 (Sworn) reputation with the Ananta Tribe.|1|1|0|4.2
 Markab|40||Trials|Random drop upon completion of  The Striking Tree (Extreme)|1|1|0|2.3
 Maxima Roader|179||PvP (ranked)|Awarded to the Top 100 players of each data center at the end of The Feast (Season 12).|1|0|0|4.5
 Mechanical Lotus|279||Online Store|Final Fantasy XIV Online Store - ($24 / £13.80 / €16.80 / ¥2530) (account-wide)|1|1|1|6.2
@@ -211,9 +214,9 @@ Megashiba|294||Online Store|Final Fantasy XIV Online Store - ($24 / £13.80 / �
 Mehwapyarra|348||FATE reward|Purchased from Uah'shepya in Solution Nine (X:8.6, Y:13.5) for 12   Ttokrrone Scales from the FATE The Serpentlord Seethes.|1|1|0|7.0
 Menoetius|203||PvP (ranked)|Awarded to the Top 100 players of each data center at the end of The Feast (Season 15).|1|0|0|5.2
 Midgardsormr|50||Quest Reward (Main Scenario Quests)|Reward for completing the Main Scenario Quest Fetters of Lament.|1|1|0|3.0
-Mikoshi|164||Tribal merchant|Purchased from Gyosho in The Azim Steppe for  20 Namazu Koban after achieving Rank 8 (Bloodsworn) reputation with the Namazu Tribe.|1|1|0|4.3
-Miw Miisv|298||Tribal merchant|Purchased from N-0598 in Ultima Thule for  18 Omicron Omnitoken upon reaching Sworn (Rank 7) reputation.|1|1|0|6.25
-Moon-hopper|285||Tribal merchant|Purchased from Coiningway in Mare Lamentorum for  18 upon reaching Sworn (Rank 7) reputation.|1|1|0|6.35
+Mikoshi|164||Society merchant|Purchased from Gyosho in The Azim Steppe for  20 Namazu Koban after achieving Rank 8 (Bloodsworn) reputation with the Namazu Tribe.|1|1|0|4.3
+Miw Miisv|298||Society merchant|Purchased from N-0598 in Ultima Thule for  18 Omicron Omnitoken upon reaching Sworn (Rank 7) reputation.|1|1|0|6.25
+Moon-hopper|285||Society merchant|Purchased from Coiningway in Mare Lamentorum for  18 upon reaching Sworn (Rank 7) reputation.|1|1|0|6.35
 Model O|173||Raids|Guaranteed drop upon completion of  Alphascape V4.0 (Savage).|1|1|0|4.4
 Monowheel S1|349||Raids|Guaranteed drop upon completion of  AAC Light-heavyweight M4 (Savage).|1|1|0|7.05
 Morbol|200||Raids|Awarded from the Achievement   True Blue. The achievement is acquired by getting the Achievements   Blue Unchained and   Masked Conqueror by clearing  The Binding Coil of Bahamut - Turn 5,  The Second Coil of Bahamut - Turn 4,  The Final Coil of Bahamut - Turn 4,  Alexander - The Burden of the Father (Savage),  Alexander - The Burden of the Son (Savage), and  Alexander - The Soul of the Creator (Savage) with a synced full party of Blue Mages without the use of The Echo.|1|1|0|5.15
@@ -233,18 +236,19 @@ Parade Chocobo|44||Player Commendations|Awarded from the Achievement   Leaving a
 Peatie|336||Seasonal Event|Acquired during the Little Ladies' Day & Hatching-tide (2024) Seasonal Event.
  Final Fantasy XIV Online Store - ($12 / £7.44 / €9 / ¥1320)|1|1|1|6.5
 Pegasus|67||Ishgardian Restoration|Purchased from Enie in The Firmament for  4,200 Skybuilders' Scrips.|1|1|0|3.1
+Petalodus (Mount)|0||Field Operations (Occult Crescent)|Purchase from the Expedition Antiquarian in South Horn for 99   Sanguinite.|1|1|0|7.25
 Phaethon|313||Treasure Hunt|Purchased from Nesvaaz in Radz-at-Han (10.6, 10) for 3   Burning Horns obtained from  The Shifting Gymnasion Agonon.|1|1|0|6.3
 Pinky|314||Treasure Hunt|Purchased from Nesvaaz in Radz-at-Han (10.6, 10) for 3   Exciting Tonics obtained from  The Excitatron 6000. Can also drop directly in that dungeon.|1|1|0|6.3
 Pod 602|284||Gold Saucer|Purchased from the Gold Saucer Attendant for  300,000 MGP after clearing  The Tower at Paradigm's Breach.|1|1|0|6.1
 Polar Bear|250||Seasonal Event|Acquired in 2021 Seasonal Event Moonfire Faire (2021),
  Final Fantasy XIV Online Store - ($12 / £7.44 / €9 / ¥1320)|1|1|1|5.5
-Portly Porxie|201||Tribal merchant|Purchased from Jul Oul in Il Mheg for  18 Fae Fancy after achieving Rank 7 (Sworn) reputation with the Pixie Tribe.|1|1|0|5.1
+Portly Porxie|201||Society merchant|Purchased from Jul Oul in Il Mheg for  18 Fae Fancy after achieving Rank 7 (Sworn) reputation with the Pixie Tribe.|1|1|0|5.1
 Porxie King|274||Promotion|Lawson Promotion (Japan)
 Gong Cha promotion for ordering 3 drinks (July - August, 2024 in North America, Europe, Oceania)|1|0|0|6.0
 Prototype Conveyor|163||PvP (ranked)|Awarded to the Top 100 players of each data center at the end of The Feast (Season 8).|1|0|0|4.3
 Prototype Roader|239||PvP (ranked)|Awarded to the Top 100 players of each data center at the end of The Feast (Season 16).|1|0|0|5.4
 Pteranodon|216||Ishgardian Restoration|Awarded from the Achievement   Castle in the Sky by earning 500,000 points toward your skyward score as every Disciple of the Hand and Disciple of Land.|1|1|0|5.21
-Punutiy|358||Tribal merchant|Purchased from Pavli in Kozama'uka (x37, y16)  for  18 after reaching Respected (Rank 5) reputation with the Turali Travel Agency.|1|1|0|7.1
+Punutiy|358||Society merchant|Purchased from Pavli in Kozama'uka (x37, y16)  for  18 after reaching Respected (Rank 5) reputation with the Turali Travel Agency.|1|1|0|7.1
 Qeziigural|352||Treasure Hunt|Purchased from Uah'shepya in Solution Nine (X:8.6, Y:13.5) for 3   Twilight Gemstones obtained from  Cenote Ja Ja Gural.|1|1|0|7.05
 Quaqua|338||Criterion Dungeons|Purchased from Trisassant in Old Sharlayan for  100 Aloalo Coins.|1|1|0|6.51
 Raigo|102||PvP (Collaboration Event)|Awarded from the Achievement   Furious Fatalities by winning 60 Frontline, The Feast, Crystalline Conflict, or Rival Wings PVP matches with a Garo title.|1|1|0|3.5
@@ -258,7 +262,7 @@ Reveling Kamuy|116||Trials|Random drop upon completion of  The Pool of Tribute (
 Rhiyes|330||Collaboration Event|Purchased from MGF Trader in The Gold Saucer for  410 MGF (Fall Guys Collaboration).|1|0|0|6.51
 Rising Phoenix|320||Seasonal Event|The Rising (2023)
  Final Fantasy XIV Online Store - ($12 / £7.44 / €9 / ¥1320)|1|1|1|6.48
-Rolling Tankard|223||Tribal merchant|Purchased from Mizutt in Lakeland for  18 Hammered Frogment after achieving Rank 7 (Sworn) reputation with the Dwarf Tribe.|1|1|0|5.3
+Rolling Tankard|223||Society merchant|Purchased from Mizutt in Lakeland for  18 Hammered Frogment after achieving Rank 7 (Sworn) reputation with the Dwarf Tribe.|1|1|0|5.3
 Rose Lanner|76||Trials|Random drop upon completion of  Thok ast Thok (Extreme) or purchased from Bertana for 99   Hive Totems.|1|1|0|3.0
 Round Lanner|77||Trials|Random drop upon completion of  The Minstrel's Ballad: Thordan's Reign or purchased from Bertana for 99   Heavens' Ward Helm Fragments.|1|1|0|3.0
 Rroneek|350||Gathering|Purchased from Splendors Vendor in Solution Nine (X:9.1, Y:13.2) for 100   Mount Tokens (effectively  100,000 Orange Gatherers' Scrips).|1|1|0|7.0
@@ -268,7 +272,7 @@ Sabotender de la Luna|333||Wondrous Tails|Purchased from Khloe Aliapoh for 1   K
 Purchased from Faux Commander in Idyllshire (x5.7,y6.1) for  600 Faux Leaf|1|1|0|6.5
 Sabotender Emperador|180||Gold Saucer|Purchased from the Gold Saucer Attendant for  2,000,000 MGP.|1|1|0|4.5
 Safeguard System|168||PvP|Awarded from the Achievement   Front and Center V by winning 100 Frontline PvP matches.|1|1|0|4.3
-Sanuwa|53||Tribal merchant|Purchased from Luna Vanu in The Sea of Clouds for  200,000 gil after achieving Rank 7 (Sworn) reputation with the Vanu Vanu Tribe.|1|1|0|3.1
+Sanuwa|53||Society merchant|Purchased from Luna Vanu in The Sea of Clouds for  200,000 gil after achieving Rank 7 (Sworn) reputation with the Vanu Vanu Tribe.|1|1|0|3.1
 SDS Fenrir|71||Online Store|Final Fantasy XIV Online Store - ($29.99 / £19.99 / €23.99 / ¥2310) (account-wide)|1|1|1|4.4
 Set Of Ceruleum Balloons|310||Online Store|Final Fantasy XIV Online Store - ($24 / £13.80 / €16.80 / ¥2530) (account-wide)|1|1|1|6.3
 Serpent Warsteed|37||PvP|Awarded from the Achievement   A Line in the Glade IV by winning 100 Frontline PvP matches with The Order of the Twin Adder (as the real Grand Company, not the one assigned during the match).|1|1|0|2.3
@@ -291,7 +295,7 @@ Starlight Bear|99||Seasonal Event|Reward for completing the Seasonal Event Quest
 Starlight Steed|302||Seasonal Event|Reward for completing the Seasonal Event Quest The Ghost of Starlight Present during Starlight Celebration (2022).
  Final Fantasy XIV Online Store - ($12 / £7.44 / €9 / ¥1320)|1|1|1|6.25
 Storm Warsteed|36||PvP|Awarded from the Achievement   A Line in the Storm IV by winning 100 Frontline PvP matches with The Maelstrom (as the real Grand Company, not the one assigned during the match).|1|1|0|2.3
-Striped Ray|136||Tribal merchant|Purchased from Shikitahe in The Ruby Sea for  12 Kojin Sango after achieving Rank 8 (Bloodsworn) reputation with the Kojin Tribe.|1|1|0|4.1
+Striped Ray|136||Society merchant|Purchased from Shikitahe in The Ruby Sea for  12 Kojin Sango after achieving Rank 8 (Bloodsworn) reputation with the Kojin Tribe.|1|1|0|4.1
 Sunforged|305||Raids|Guaranteed drop upon completion of  Abyssos: The Eighth Circle (Savage).|1|1|0|6.2
 Sunspun Cumulus|195||Online Store|Final Fantasy XIV Online Store - ($12 / £7.44 / €9 / ¥1320)|1|1|1|5.0
 Syldra|111||Collector's Edition|Reward for purchasing the Collector's Edition or Digital Collector's Edition of Stormblood. (account-wide)|1|1|1|4.0
@@ -300,7 +304,7 @@ Traveling Supporter|297||PvP Series Malmstones|PvP Series 4 Malmstones - Level 2
 Triceratops|190||The Hunt (Elite Marks)|Awarded from the Achievement   Nuts for Nutsy by defeating 2,000 A Rank Elite Marks and 1,000 S Rank Elite Marks in Shadowbringers areas.|1|1|0|5.0
 Troll|288||Wondrous Tails|Purchased from Khloe Aliapoh for 1   Khloe's Gold Certificate of Commendation
 Purchased from Faux Commander in Idyllshire (x5.7,y6.1) for  600 Faux Leaf|1|1|0|6.1
-True Griffin|148||Tribal merchant|Purchased from Madhura in Gyr Abania for  18 Ananta Dreamstaff after achieving Rank 8 (Bloodsworn) reputation with the Ananta Tribe.|1|1|0|4.2
+True Griffin|148||Society merchant|Purchased from Madhura in Gyr Abania for  18 Ananta Dreamstaff after achieving Rank 8 (Bloodsworn) reputation with the Ananta Tribe.|1|1|0|4.2
 Twintania|59||Campaigns|Purchased from any Calamity Salvager for 15   Gold Chocobo Feathers. Gold Chocobo Feathers can be obtained through the Recruit a Friend campaign, or through World Population Balancing Incentives.|1|1|0|3.0
 Ty'aitya|342||Shared FATEs|Purchased from Edelina in Mor Dhona (x22,y5) for 500   Turali Bicolor Gemstone Voucher (effectively  50,000 Bicolor Gemstones)|1|1|0|7.0
 Typhon|154||Gold Saucer|Purchased from the Gold Saucer Attendant in Gold Saucer for  750,000 MGP.|1|1|0|4.4
