@@ -14,7 +14,6 @@ public class MountListWindow : IDisposable
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly IDataManager _dataManager;
     private readonly List<MountModel> _mounts = new();
-    private readonly IChatGui _chatGui;
     private readonly CashContainer _cashContainer;
     
     private bool _isOpen = false;
@@ -25,11 +24,10 @@ public class MountListWindow : IDisposable
     private bool _showUniqueBgm = true;
     private bool _showPatch = true;
     
-    public MountListWindow(IDalamudPluginInterface pluginInterface, IDataManager dataManager, IChatGui chatGui, CashContainer cashContainer)
+    public MountListWindow(IDalamudPluginInterface pluginInterface, IDataManager dataManager, CashContainer cashContainer)
     {
         _pluginInterface = pluginInterface;
         _dataManager = dataManager;
-        _chatGui = chatGui;
         _cashContainer = cashContainer;
         LoadMounts();
 
@@ -56,7 +54,6 @@ public class MountListWindow : IDisposable
         }
 
         _mounts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
-        _chatGui.Print("Inited window");
     }
 
     public void Draw()

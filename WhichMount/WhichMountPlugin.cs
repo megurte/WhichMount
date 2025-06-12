@@ -43,12 +43,23 @@ public class WhichMountPlugin : IDalamudPlugin
 
         _cashContainer = new CashContainer(_dataManager);
         _contextMenuHandler = new ContextMenuHandler(_pluginInterface, _chatGui, _dataManager, _objectTable, _contextMenu, _configuration, _cashContainer);
-        _mountListWindow = new MountListWindow(_pluginInterface, _dataManager, _chatGui, _cashContainer);
-        _configWindow = new ConfigWindow(_pluginInterface, this, _configuration, _commandManager);
-        
+        _mountListWindow = new MountListWindow(_pluginInterface, _dataManager, _cashContainer);
+        _configWindow = new ConfigWindow(_pluginInterface, this, _configuration);
+
+        RegisterCommands();
+    }
+
+    private void RegisterCommands()
+    {
+        _pluginInterface.UiBuilder.OpenConfigUi += _configWindow.Show;
+
+        _commandManager.AddHandler("/mountsconfig", new CommandInfo((_, _) => _configWindow.Show())
+        {
+            HelpMessage = "Open mount search configuration."
+        });
         _commandManager.AddHandler("/mountlist", new CommandInfo((_, _) => _mountListWindow.Show())
         {
-            HelpMessage = "Show mount list."
+            HelpMessage = "Show mount database."
         });
     }
     
@@ -57,6 +68,9 @@ public class WhichMountPlugin : IDalamudPlugin
         _contextMenuHandler.Dispose();
         _configWindow.Dispose();
         _mountListWindow.Dispose();
+
+        _pluginInterface.UiBuilder.OpenConfigUi -= _configWindow.Show;
+        _commandManager.RemoveHandler("/mountsconfig");
         _commandManager.RemoveHandler("/mountlist");
     }
 }

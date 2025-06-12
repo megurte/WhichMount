@@ -11,28 +11,21 @@ namespace WhichMount.UI;
 
 public class ConfigWindow : IDisposable
 {
+    private readonly IDalamudPluginInterface _pluginInterface;
     private readonly WhichMountPlugin _whichMountPlugin;
     private readonly Configuration _configuration;
-    private readonly ICommandManager _commandManager;
     private bool _showConfig;
 
-    public ConfigWindow(
-        IDalamudPluginInterface pluginInterface,
-        WhichMountPlugin whichMount,
-        Configuration configuration,
-        ICommandManager commandManager)
+    public ConfigWindow(IDalamudPluginInterface pluginInterface, WhichMountPlugin whichMount, Configuration configuration)
     {
+        _pluginInterface = pluginInterface;
         _whichMountPlugin = whichMount;
         _configuration = configuration;
-        _commandManager = commandManager;
         
-        pluginInterface.UiBuilder.Draw += Draw;
-        pluginInterface.UiBuilder.OpenConfigUi += () => _showConfig = true;
-        _commandManager.AddHandler("/mountsconfig", new CommandInfo((_, _) => _showConfig ^= true)
-        {
-            HelpMessage = "Open mount search configuration."
-        });
+        _pluginInterface.UiBuilder.Draw += Draw;
     }
+
+    public void Show() => _showConfig = true;
     
     private void Draw()
     {
@@ -89,7 +82,7 @@ public class ConfigWindow : IDisposable
 
     public void Dispose()
     {
-        _commandManager.RemoveHandler("/mountsconfig");
+        _pluginInterface.UiBuilder.Draw -= Draw;
     }
 }
 
