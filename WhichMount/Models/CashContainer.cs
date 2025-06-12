@@ -4,16 +4,20 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Dalamud.Plugin.Services;
+using Lumina.Excel;
 using Lumina.Excel.Sheets;
 
 namespace WhichMount.Models;
 
-public class CashContainer
+public class CashContainer : IDisposable
 {
+    public List<MountModel> MountModels => _mountModelList;
+    
     private HashSet<uint> _bgmMountCash;
-    private readonly Dictionary<uint, Dictionary<TargetData, string>> _tableData = new();
-
+    private Dictionary<uint, Dictionary<TargetData, string>> _tableData = new();
+    private ExcelSheet<Mount>? _excelSheet;
     private readonly IDataManager _dataManager;
+    private readonly List<MountModel> _mountModelList = new();
     
     public CashContainer(IDataManager dataManager)
     {
@@ -23,11 +27,24 @@ public class CashContainer
 
     private void InitCashedData()
     {
-        _bgmMountCash = _dataManager.Excel.GetSheet<Mount>()!
-                                   .GroupBy(mount => mount.RideBGM.RowId)
-                                   .Where(group => group.Count() == 1)
-                                   .Select(group => group.First().RowId)
-                                   .ToHashSet();
+        _bgmMountCash = _dataManager.Excel
+                                    .GetSheet<Mount>()
+                                    .GroupBy(mount => mount.RideBGM.RowId)
+                                    .Where(group => group.Count() == 1)
+                                    .Select(group => group.First().RowId)
+                                    .ToHashSet();
+        
+        _excelSheet = _dataManager.GetExcelSheet<Mount>();
+        
+        foreach (var mount in _excelSheet)
+        {
+            var model = new MountModel(_dataManager, this, mount.RowId, "N/A");
+            if (model.TryInitData())
+            {
+                _mountModelList.Add(model);
+                CacheTableData(model.Id);
+            }
+        }
     }
     
     public void CacheTableData(uint mountId)
@@ -69,5 +86,11 @@ public class CashContainer
     public bool HasUniqueMusic(uint mountId)
     {
         return _bgmMountCash.Contains(mountId);
+    }
+
+    public void Dispose()
+    {
+        _bgmMountCash.Clear();
+        _tableData.Clear();
     }
 }

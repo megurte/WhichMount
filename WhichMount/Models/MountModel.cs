@@ -27,6 +27,7 @@ public class MountModel {
     
     public uint Id { get; }
     public string Owner { get; }
+    public uint IconId => _mountItem.Icon;
     public string Name => _mountItem.Singular.ToDalamudString().ToTitleCase();
     public int NumberSeats => _mountItem.ExtraSeats + 1;
     public bool HasActions => _mountItem.MountAction.RowId != 0;

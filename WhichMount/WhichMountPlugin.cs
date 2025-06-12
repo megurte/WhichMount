@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.Command;
+using Dalamud.Interface.Textures;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using DalamudInjector;
@@ -13,6 +14,9 @@ public class WhichMountPlugin : IDalamudPlugin
 {
     public string Name => "Which Mount";
 
+    private const string ConfigCommand = "/mountsconfig";
+    private const string MountDataBaseCommand = "/mountlist";
+
     private readonly Configuration _configuration;
     private readonly ContextMenuHandler _contextMenuHandler;
     private readonly ServiceInstaller _serviceInstaller;
@@ -25,6 +29,8 @@ public class WhichMountPlugin : IDalamudPlugin
     private readonly IDataManager _dataManager;
     private readonly IObjectTable _objectTable;
     private readonly IContextMenu _contextMenu;
+    private readonly ITextureProvider _textureProvider;
+
     private readonly ICommandManager _commandManager;
 
     public WhichMountPlugin(IDalamudPluginInterface pluginInterface)
@@ -40,10 +46,10 @@ public class WhichMountPlugin : IDalamudPlugin
         _objectTable = _service.GetService<IObjectTable>();
         _contextMenu = _service.GetService<IContextMenu>();
         _commandManager = _service.GetService<ICommandManager>();
-
+        _textureProvider = _service.GetService<ITextureProvider>();
         _cashContainer = new CashContainer(_dataManager);
         _contextMenuHandler = new ContextMenuHandler(_pluginInterface, _chatGui, _dataManager, _objectTable, _contextMenu, _configuration, _cashContainer);
-        _mountListWindow = new MountListWindow(_pluginInterface, _dataManager, _cashContainer);
+        _mountListWindow = new MountListWindow(_pluginInterface, _cashContainer, _textureProvider, _chatGui);
         _configWindow = new ConfigWindow(_pluginInterface, this, _configuration);
 
         RegisterCommands();
@@ -53,11 +59,11 @@ public class WhichMountPlugin : IDalamudPlugin
     {
         _pluginInterface.UiBuilder.OpenConfigUi += _configWindow.Show;
 
-        _commandManager.AddHandler("/mountsconfig", new CommandInfo((_, _) => _configWindow.Show())
+        _commandManager.AddHandler(ConfigCommand, new CommandInfo((_, _) => _configWindow.Show())
         {
             HelpMessage = "Open mount search configuration."
         });
-        _commandManager.AddHandler("/mountlist", new CommandInfo((_, _) => _mountListWindow.Show())
+        _commandManager.AddHandler(MountDataBaseCommand, new CommandInfo((_, _) => _mountListWindow.Show())
         {
             HelpMessage = "Show mount database."
         });
@@ -68,6 +74,7 @@ public class WhichMountPlugin : IDalamudPlugin
         _contextMenuHandler.Dispose();
         _configWindow.Dispose();
         _mountListWindow.Dispose();
+        _cashContainer.Dispose();
 
         _pluginInterface.UiBuilder.OpenConfigUi -= _configWindow.Show;
         _commandManager.RemoveHandler("/mountsconfig");

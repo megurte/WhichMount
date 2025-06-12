@@ -1,4 +1,5 @@
-﻿using Dalamud.Plugin;
+﻿using Dalamud.Interface.Textures;
+using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using DalamudInjector;
 
@@ -20,6 +21,7 @@ public class ServiceInstaller
         Service.AddDalamudService<IObjectTable>(pluginInterface);
         Service.AddDalamudService<IContextMenu>(pluginInterface);
         Service.AddDalamudService<ICommandManager>(pluginInterface);
+        Service.AddDalamudService<ITextureProvider>(pluginInterface);
         Service.CreateProvider();
     }
 }
