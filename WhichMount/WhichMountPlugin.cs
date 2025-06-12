@@ -1,6 +1,8 @@
-﻿using Dalamud.Plugin;
+﻿using Dalamud.Game.Command;
+using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using DalamudInjector;
+using WhichMount.Models;
 using WhichMount.UI;
 
 namespace WhichMount;
@@ -16,13 +18,15 @@ public class WhichMountPlugin : IDalamudPlugin
     private readonly ServiceInstaller _serviceInstaller;
     private readonly ServiceManager _service;
     private readonly ConfigWindow _configWindow;
+    private readonly MountListWindow _mountListWindow;
+    private readonly CashContainer _cashContainer;
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly IChatGui _chatGui;
     private readonly IDataManager _dataManager;
     private readonly IObjectTable _objectTable;
     private readonly IContextMenu _contextMenu;
     private readonly ICommandManager _commandManager;
-    
+
     public WhichMountPlugin(IDalamudPluginInterface pluginInterface)
     {
         _pluginInterface = pluginInterface;
@@ -37,14 +41,23 @@ public class WhichMountPlugin : IDalamudPlugin
         _contextMenu = _service.GetService<IContextMenu>();
         _commandManager = _service.GetService<ICommandManager>();
 
-        _contextMenuHandler = new ContextMenuHandler(_pluginInterface, _chatGui, _dataManager, _objectTable, _contextMenu, _configuration);
+        _cashContainer = new CashContainer(_dataManager);
+        _contextMenuHandler = new ContextMenuHandler(_pluginInterface, _chatGui, _dataManager, _objectTable, _contextMenu, _configuration, _cashContainer);
+        _mountListWindow = new MountListWindow(_pluginInterface, _dataManager, _chatGui, _cashContainer);
         _configWindow = new ConfigWindow(_pluginInterface, this, _configuration, _commandManager);
+        
+        _commandManager.AddHandler("/mountlist", new CommandInfo((_, _) => _mountListWindow.Show())
+        {
+            HelpMessage = "Show mount list."
+        });
     }
     
     public void Dispose()
     {
         _contextMenuHandler.Dispose();
         _configWindow.Dispose();
+        _mountListWindow.Dispose();
+        _commandManager.RemoveHandler("/mountlist");
     }
 }
 
