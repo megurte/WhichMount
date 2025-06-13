@@ -1,8 +1,8 @@
 {
     "Author": "Megurt",
     "Name": "Which Mount",
-    "Punchline": "Show mount information of other players",
-    "Description": "Plugin adds a 'Mount Search' button to the target's context menu, showing information in chat about the mount and how to obtain it. Settings allow you to include the current availability of the mount in the game and other details.",
+    "Punchline": "Check what mount someone is using and browse the full mount collection.",
+    "Description": "Adds a 'Mount Search' option to the target's context menu, displaying mount information and acquisition details in the chat. Also includes a searchable mount database with detailed navigation.",
     "ApplicableVersion": "any",
     "InternalName": "WhichMount",
     "RepoUrl": "https://github.com/megurte/WhichMount",
@@ -12,5 +12,9 @@
         "Search",
         "Information",
         "GameData"
+    ],
+    "ImageUrls": [
+        "https://raw.githubusercontent.com/megurte/WhichMount/master/Icon/example1.png",
+        "https://raw.githubusercontent.com/megurte/WhichMount/master/Icon/example2.png"
     ]
 }
