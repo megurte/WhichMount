@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dalamud.Interface.Textures;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
@@ -20,6 +21,7 @@ public class MountListWindow : IDisposable
     private readonly IChatGui _chatGui;
 
     private bool _isOpen = false;
+    private string _searchTerm = string.Empty;
 
     private bool _showMountId = true;
     private bool _showSeats = true;
@@ -51,7 +53,7 @@ public class MountListWindow : IDisposable
             return;
 
         ImGui.SetNextWindowSizeConstraints(
-            new Vector2(1400, 150),
+            new Vector2(1400, 175),
             new Vector2(1400, float.MaxValue)
         );
         
@@ -60,6 +62,9 @@ public class MountListWindow : IDisposable
         if (!ImGui.Begin("WhichMount List", ref _isOpen, ImGuiWindowFlags.NoCollapse))
             return;
         
+        DrawSearchBar();
+        ImGui.Separator();
+
         ImGui.Text("Show columns:");
         ImGui.SameLine(); ImGui.Checkbox("Mount ID", ref _showMountId);
         ImGui.SameLine(); ImGui.Checkbox("Seats", ref _showSeats);
@@ -79,24 +84,42 @@ public class MountListWindow : IDisposable
         ImGui.End();
     }
 
+    private void DrawSearchBar()
+    {
+        ImGui.Text("Search:");
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(300);
+        ImGui.InputText("##MountSearch", ref _searchTerm, 128);
+    }
+
     private void DrawTable(int columnCount)
     {
-        var flags = ImGuiTableFlags.Borders
-                    | ImGuiTableFlags.RowBg
-                    | ImGuiTableFlags.ScrollY
-                    | ImGuiTableFlags.Resizable;    
+        var filtered = FilterTableEntities();
+        if (filtered.Count == 0)
+        {
+            ImGui.TextColored(new Vector4(1f, 0.7f, 0.7f, 1f), "No mounts found");
+            return;
+        }
         
-        var tableSize = ImGui.GetContentRegionAvail();
+        var flags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg;
+        var rowHeight = 66f;
+        var headerHeight = ImGui.GetTextLineHeightWithSpacing();
+        var spacing = ImGui.GetStyle().ItemSpacing.Y;
 
-        if (ImGui.BeginTable("MountsTable", columnCount, flags, new Vector2(-1, tableSize.Y)))
+        var visibleCount = filtered.Count;
+
+        var totalHeight = headerHeight + (visibleCount * rowHeight) + spacing;
+
+        if (ImGui.BeginTable("MountsTable", columnCount, flags, new Vector2(-1, totalHeight)))
         {
             ImGui.TableSetupScrollFreeze(0, 1);
 
             SetupTableColumns();
 
             ImGui.TableHeadersRow();
-
-            foreach (var mount in _mounts)
+            
+            
+            foreach (var mount in filtered)
             {
                 // Exclude mounts that doesn't exist in the game 
                 if (mount.IconId == 0) continue;
@@ -107,26 +130,24 @@ public class MountListWindow : IDisposable
 
                 AddTextColumn(mount.Name);
 
-                if (_showMountId)
-                    AddTextColumn(mount.Id.ToString());
-
-                if (_showSeats)
-                    AddTextColumn(mount.NumberSeats.ToString());
-
-                if (_showActions)
-                    AddTextColumn(mount.HasActions ? "Yes" : "No");
-
-                if (_showUniqueBgm)
-                    AddTextColumn(mount.HasUniqueMusic ? "Yes" : "No");
-
-                if (_showPatch)
-                    AddTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.Patch));
+                if (_showMountId) AddTextColumn(mount.Id.ToString());
+                if (_showSeats) AddTextColumn(mount.NumberSeats.ToString());
+                if (_showActions) AddTextColumn(mount.HasActions ? "Yes" : "No");
+                if (_showUniqueBgm) AddTextColumn(mount.HasUniqueMusic ? "Yes" : "No");
+                if (_showPatch) AddTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.Patch));
                 
                 AddTextResizableColumn(_cashContainer.GetCachedData(mount.Id, TargetData.AcquiredBy));
             }
 
             ImGui.EndTable();
         }
+    }
+
+    private List<MountModel> FilterTableEntities()
+    {
+        return string.IsNullOrWhiteSpace(_searchTerm) 
+                   ? _mounts 
+                   : _mounts.Where(m => m.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
     }
 
     private void SetupTableColumns()
@@ -138,7 +159,7 @@ public class MountListWindow : IDisposable
         if (_showActions) ImGui.TableSetupColumn("Actions", ImGuiTableColumnFlags.WidthFixed, 70);
         if (_showUniqueBgm) ImGui.TableSetupColumn("Unique BGM", ImGuiTableColumnFlags.WidthFixed, 90);
         if (_showPatch) ImGui.TableSetupColumn("Patch", ImGuiTableColumnFlags.WidthFixed, 60);
-        ImGui.TableSetupColumn("Acquired By", ImGuiTableColumnFlags.WidthStretch, 1.0f);
+        ImGui.TableSetupColumn("Acquired By", ImGuiTableColumnFlags.WidthFixed, 746f);
     }
 
     private static void AddTextColumn(string msg)
