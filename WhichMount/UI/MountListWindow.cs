@@ -10,11 +10,9 @@ using WhichMount.Models;
 
 namespace WhichMount.UI;
 
-// TODO search and sorting order
-
 public class MountListWindow : IDisposable
 {
-    private List<MountModel> _mounts => _cashContainer.MountModels;
+    private List<MountModel> Mounts => _cashContainer.MountModels;
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly CashContainer _cashContainer;
     private readonly ITextureProvider _textureProvider;
@@ -44,7 +42,7 @@ public class MountListWindow : IDisposable
 
     private void SortMounts()
     {
-        _mounts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+        Mounts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
     }
 
     public void Draw()
@@ -118,7 +116,6 @@ public class MountListWindow : IDisposable
 
             ImGui.TableHeadersRow();
             
-            
             foreach (var mount in filtered)
             {
                 // Exclude mounts that doesn't exist in the game 
@@ -146,8 +143,8 @@ public class MountListWindow : IDisposable
     private List<MountModel> FilterTableEntities()
     {
         return string.IsNullOrWhiteSpace(_searchTerm) 
-                   ? _mounts 
-                   : _mounts.Where(m => m.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                   ? Mounts 
+                   : Mounts.Where(m => m.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
     }
 
     private void SetupTableColumns()
