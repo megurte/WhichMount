@@ -103,9 +103,7 @@ public class MountListWindow : IDisposable
         var rowHeight = 66f;
         var headerHeight = ImGui.GetTextLineHeightWithSpacing();
         var spacing = ImGui.GetStyle().ItemSpacing.Y;
-
         var visibleCount = filtered.Count;
-
         var totalHeight = headerHeight + (visibleCount * rowHeight) + spacing;
 
         if (ImGui.BeginTable("MountsTable", columnCount, flags, new Vector2(-1, totalHeight)))
