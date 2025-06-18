@@ -19,9 +19,11 @@ public class ServiceInstaller
         Service.AddDalamudService<IChatGui>(pluginInterface);
         Service.AddDalamudService<IDataManager>(pluginInterface);
         Service.AddDalamudService<IObjectTable>(pluginInterface);
+        Service.AddDalamudService<IClientState>(pluginInterface);
         Service.AddDalamudService<IContextMenu>(pluginInterface);
         Service.AddDalamudService<ICommandManager>(pluginInterface);
         Service.AddDalamudService<ITextureProvider>(pluginInterface);
+        Service.AddDalamudService<IGameInteropProvider>(pluginInterface);
         Service.CreateProvider();
     }
 }

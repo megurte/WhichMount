@@ -23,6 +23,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>false</Visible>
     </Content>
+    <Content Include="..\Icon\example1.png">      
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+    <Content Include="..\Icon\example2.png">  
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>   
+      <Visible>false</Visible>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

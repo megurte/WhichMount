@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.Command;
-using Dalamud.Interface.Textures;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using DalamudInjector;
@@ -23,15 +22,17 @@ public class WhichMountPlugin : IDalamudPlugin
     private readonly ServiceManager _service;
     private readonly ConfigWindow _configWindow;
     private readonly MountListWindow _mountListWindow;
+    private readonly MountInfoTooltip _mountInfoTooltip;
     private readonly CashContainer _cashContainer;
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly IChatGui _chatGui;
     private readonly IDataManager _dataManager;
     private readonly IObjectTable _objectTable;
     private readonly IContextMenu _contextMenu;
-    private readonly ITextureProvider _textureProvider;
-
+    private readonly IClientState _clientState;
     private readonly ICommandManager _commandManager;
+    private readonly ITextureProvider _textureProvider;
+    private readonly IGameInteropProvider _gameInteropProvider;
 
     public WhichMountPlugin(IDalamudPluginInterface pluginInterface)
     {
@@ -45,14 +46,18 @@ public class WhichMountPlugin : IDalamudPlugin
         _dataManager = _service.GetService<IDataManager>();
         _objectTable = _service.GetService<IObjectTable>();
         _contextMenu = _service.GetService<IContextMenu>();
+        _clientState = _service.GetService<IClientState>();
         _commandManager = _service.GetService<ICommandManager>();
         _textureProvider = _service.GetService<ITextureProvider>();
+        _gameInteropProvider = _service.GetService<IGameInteropProvider>();
         _cashContainer = new CashContainer(_dataManager);
         _contextMenuHandler = new ContextMenuHandler(_pluginInterface, _chatGui, _dataManager, _objectTable, _contextMenu, _configuration, _cashContainer);
         _mountListWindow = new MountListWindow(_pluginInterface, _cashContainer, _textureProvider, _chatGui);
+        _mountInfoTooltip = new MountInfoTooltip(_pluginInterface, _textureProvider, _clientState, _gameInteropProvider, _chatGui, _cashContainer);
         _configWindow = new ConfigWindow(_pluginInterface, this, _configuration);
 
         RegisterCommands();
+        _mountInfoTooltip.Initialize();
     }
 
     private void RegisterCommands()
@@ -75,6 +80,7 @@ public class WhichMountPlugin : IDalamudPlugin
         _configWindow.Dispose();
         _mountListWindow.Dispose();
         _cashContainer.Dispose();
+        _mountInfoTooltip.Dispose();
 
         _pluginInterface.UiBuilder.OpenConfigUi -= _configWindow.Show;
         _commandManager.RemoveHandler("/mountsconfig");
