@@ -1,15 +1,14 @@
 ﻿using System;
-using Dalamud.Game.Command;
 using Dalamud.Plugin;
-using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Common.Math;
 using ImGuiNET;
+using WhichMount.ComponentInjector;
 
 namespace WhichMount.UI;
 
 #pragma warning disable CA1416
 
-public class ConfigWindow : IDisposable
+public class ConfigWindow : IPluginComponent, IInitializable
 {
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly WhichMountPlugin _whichMountPlugin;
@@ -21,7 +20,10 @@ public class ConfigWindow : IDisposable
         _pluginInterface = pluginInterface;
         _whichMountPlugin = whichMount;
         _configuration = configuration;
-        
+    }
+    
+    public void Initialize()
+    {
         _pluginInterface.UiBuilder.Draw += Draw;
     }
 
@@ -80,7 +82,7 @@ public class ConfigWindow : IDisposable
         ImGui.End();
     }
 
-    public void Dispose()
+    public void Release()
     {
         _pluginInterface.UiBuilder.Draw -= Draw;
     }

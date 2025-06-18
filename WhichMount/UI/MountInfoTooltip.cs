@@ -1,40 +1,25 @@
-using System;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Hooking;
-using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using WhichMount.ComponentInjector;
 using WhichMount.Models;
 using WhichMount.Utils;
 
 namespace WhichMount.UI;
 
-public unsafe class MountInfoTooltip : IDisposable, IInitializable
+public unsafe class MountInfoTooltip : IInitializable, IPluginComponent
 {
     private readonly IGameInteropProvider _gameInteropProvider;
-    private readonly IChatGui _chatGui;
     private readonly CashContainer _cashContainer;
-    private readonly IDalamudPluginInterface _pluginInterface;
-    private readonly ITextureProvider _textureProvider;
-    private readonly IClientState _clientState;
     
     private Hook<AgentHUD.Delegates.UpdateTargetInfo> _updateTargetInfoHook;
 
-    public MountInfoTooltip(
-        IDalamudPluginInterface pluginInterface,
-        ITextureProvider textureProvider,
-        IClientState clientState,
-        IGameInteropProvider gameInteropProvider,
-        IChatGui chatGui,
-        CashContainer cashContainer)
+    public MountInfoTooltip(IGameInteropProvider gameInteropProvider, CashContainer cashContainer)
     {
-        _pluginInterface = pluginInterface;
-        _textureProvider = textureProvider;
-        _clientState = clientState;
         _gameInteropProvider = gameInteropProvider;
-        _chatGui = chatGui;
         _cashContainer = cashContainer;
     }
 
@@ -70,16 +55,15 @@ public unsafe class MountInfoTooltip : IDisposable, IInitializable
 
             if (chara->EntityId != localPlayer->EntityId)
             {
-
                 var isUnlocked = PlayerState.Instance()->IsMountUnlocked(chara->Mount.MountId);
-                sb.Append(isUnlocked ? "Unlocked" : "");
+                sb.Append(isUnlocked ? "Unlocked" : "Locked");
             }
 
             TargetStatusUtils.AddPermanentStatus(0, 216201, 0, 0, default, sb.ToString());
         }
     }
 
-    public void Dispose()
+    public void Release()
     {
         _updateTargetInfoHook.Disable();
     }

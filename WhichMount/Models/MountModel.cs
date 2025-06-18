@@ -23,8 +23,8 @@ public enum TargetData
     Patch = 8,
 }
 
-public class MountModel {
-    
+public class MountModel 
+{
     public uint Id { get; }
     public string Owner { get; }
     public uint IconId => _mountItem.Icon;

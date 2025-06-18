@@ -6,10 +6,11 @@ using System.Reflection;
 using Dalamud.Plugin.Services;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
+using WhichMount.ComponentInjector;
 
 namespace WhichMount.Models;
 
-public class CashContainer : IDisposable
+public class CashContainer : IPluginComponent
 {
     public List<MountModel> MountModels => _mountModelList;
     
@@ -88,7 +89,7 @@ public class CashContainer : IDisposable
         return _bgmMountCash.Contains(mountId);
     }
 
-    public void Dispose()
+    public void Release()
     {
         _bgmMountCash.Clear();
         _tableData.Clear();

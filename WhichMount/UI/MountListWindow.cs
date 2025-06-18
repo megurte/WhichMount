@@ -6,17 +6,17 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Common.Math;
 using ImGuiNET;
+using WhichMount.ComponentInjector;
 using WhichMount.Models;
 
 namespace WhichMount.UI;
 
-public class MountListWindow : IDisposable
+public class MountListWindow : IPluginComponent, IInitializable
 {
     private List<MountModel> Mounts => _cashContainer.MountModels;
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly CashContainer _cashContainer;
     private readonly ITextureProvider _textureProvider;
-    private readonly IChatGui _chatGui;
 
     private bool _isOpen = false;
     private string _searchTerm = string.Empty;
@@ -27,14 +27,16 @@ public class MountListWindow : IDisposable
     private bool _showUniqueBgm = true;
     private bool _showPatch = true;
     
-    public MountListWindow(IDalamudPluginInterface pluginInterface, CashContainer cashContainer, ITextureProvider textureProvider, IChatGui chatGui)
+    public MountListWindow(IDalamudPluginInterface pluginInterface, CashContainer cashContainer, ITextureProvider textureProvider)
     {
         _pluginInterface = pluginInterface;
         _cashContainer = cashContainer;
         _textureProvider = textureProvider;
-        _chatGui = chatGui;
+    }
+    
+    public void Initialize()
+    {
         SortMounts();
-
         _pluginInterface.UiBuilder.Draw += Draw;
     }
 
@@ -179,7 +181,7 @@ public class MountListWindow : IDisposable
     private ISharedImmediateTexture GetIcon(uint id, bool hq = false) 
         => _textureProvider.GetFromGameIcon(new GameIconLookup(id, hq));
 
-    public void Dispose()
+    public void Release()
     {
         _pluginInterface.UiBuilder.Draw -= Draw;
     }

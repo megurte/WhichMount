@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Dalamud.Game.Gui.ContextMenu;
-using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using Lumina.Excel.Sheets;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
+using WhichMount.ComponentInjector;
 using WhichMount.Models;
 using WhichMount.Utils;
 
-namespace WhichMount;
+namespace WhichMount.UI;
  
 #pragma warning disable CA1416
 
-public class ContextMenuHandler
+public class ContextMenuHandler : IPluginComponent, IInitializable
 {
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly IChatGui _chatGui;
@@ -37,6 +37,10 @@ public class ContextMenuHandler
         _contextMenu = contextMenu;
         _configuration = configuration;
         _cashContainer = cashContainer;
+    }
+    
+    public void Initialize()
+    {
         _contextMenu.OnMenuOpened += OnOpenContextMenu;
     }
     
@@ -121,7 +125,7 @@ public class ContextMenuHandler
         return false;
     }
     
-    public void Dispose()
+    public void Release()
     {
         _contextMenu.OnMenuOpened -= OnOpenContextMenu;
     }
