@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.Command;
-using Dalamud.Plugin;
+﻿using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using DalamudInjector;
 using WhichMount.ComponentInjector;
@@ -17,12 +16,10 @@ public class WhichMountPlugin : IDalamudPlugin
     private readonly Configuration _configuration;
     private readonly ServiceInstaller _serviceInstaller;
     private readonly ServiceManager _service;
-    private readonly IDalamudPluginInterface _pluginInterface;
     private readonly ComponentContainer _container;
 
     public WhichMountPlugin(IDalamudPluginInterface pluginInterface)
     {
-        _pluginInterface = pluginInterface;
         _configuration = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration(pluginInterface);
 
         _serviceInstaller = new ServiceInstaller(pluginInterface);

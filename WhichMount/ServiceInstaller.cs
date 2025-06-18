@@ -1,5 +1,4 @@
-﻿using Dalamud.Interface.Textures;
-using Dalamud.Plugin;
+﻿using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using DalamudInjector;
 

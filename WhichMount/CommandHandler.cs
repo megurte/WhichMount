@@ -16,7 +16,11 @@ public class CommandHandler : IPluginComponent, IInitializable
     private readonly ConfigWindow _configWindow;
     private readonly MountListWindow _mountListWindow;
 
-    public CommandHandler(IDalamudPluginInterface pluginInterface, ICommandManager commandManager, ConfigWindow configWindow, MountListWindow mountListWindow)
+    public CommandHandler(
+        IDalamudPluginInterface pluginInterface,
+        ICommandManager commandManager, 
+        ConfigWindow configWindow,
+        MountListWindow mountListWindow)
     {
         _pluginInterface = pluginInterface;
         _commandManager = commandManager;
@@ -46,7 +50,7 @@ public class CommandHandler : IPluginComponent, IInitializable
     public void Release()
     {
         _pluginInterface.UiBuilder.OpenConfigUi -= _configWindow.Show;
-        _commandManager.RemoveHandler("/mountsconfig");
-        _commandManager.RemoveHandler("/mountlist");
+        _commandManager.RemoveHandler(ConfigCommand);
+        _commandManager.RemoveHandler(MountDataBaseCommand);
     }
 }

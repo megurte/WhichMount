@@ -19,6 +19,7 @@ public class ComponentContainer : IComponentContainer
 
     public T BindInstance<T>(T instance)
     {
+        if (instance == null) throw new Exception("Cannot bind null instance");
         _instances[typeof(T)] = instance;
         return instance;
     }
@@ -40,7 +41,7 @@ public class ComponentContainer : IComponentContainer
         var parameters = ctor.GetParameters();
         var args = new object?[parameters.Length];
 
-        for (int i = 0; i < parameters.Length; i++)
+        for (var i = 0; i < parameters.Length; i++)
         {
             var paramType = parameters[i].ParameterType;
             if (!_instances.TryGetValue(paramType, out var dependency))
