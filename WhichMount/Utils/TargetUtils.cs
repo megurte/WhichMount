@@ -6,7 +6,7 @@ namespace WhichMount.Utils;
 
 public unsafe class TargetUtils
 {
-    public static BattleChara* GetPlayerTarget()
+    public static BattleChara* GetCurrentPlayerCharacterTarget()
     {
         var target = TargetSystem.Instance()->GetTargetObject();
         if (target == null || target->GetObjectKind() != ObjectKind.Pc)

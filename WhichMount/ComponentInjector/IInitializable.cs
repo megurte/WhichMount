@@ -1,4 +1,4 @@
-namespace WhichMount;
+namespace WhichMount.ComponentInjector;
 
 public interface IInitializable
 {

@@ -80,8 +80,8 @@ public class CashContainer : IPluginComponent
     }
 
     public string GetCachedData(uint mountId, TargetData targetData)
-        => _tableData.TryGetValue(mountId, out var data) && data.TryGetValue(targetData, out var value)
-               ? value
+        => _tableData.TryGetValue(mountId, out var data) && data.TryGetValue(targetData, out var value) 
+               ? value 
                : "Unknown";
 
     public bool HasUniqueMusic(uint mountId)

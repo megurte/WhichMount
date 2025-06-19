@@ -34,52 +34,72 @@ public class ConfigWindow : IPluginComponent, IInitializable
         if (!_showConfig)
             return;
 
-        ImGui.SetNextWindowSizeConstraints(new Vector2(250, 200), new Vector2(250, 200));
-        ImGui.Begin($"{_whichMountPlugin.Name} configuration", ref _showConfig, ImGuiWindowFlags.NoCollapse);
-        
-        var showMountId = _configuration.ShowMountId;
-        if (ImGui.Checkbox("Mount ID", ref showMountId))
+        ImGui.SetNextWindowSize(new Vector2(294, 270), ImGuiCond.Always);
+        ImGui.Begin($"{_whichMountPlugin.Name} configuration", ref _showConfig, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize);
+
+        if (ImGui.BeginTabBar("##WhichMountTabs"))
         {
-            _configuration.ShowMountId = showMountId;
-            _configuration.Save();
-        }
-        
-        var showAvailability = _configuration.ShowAvailability;
-        if (ImGui.Checkbox("Show obtainable", ref showAvailability))
-        {
-            _configuration.ShowAvailability = showAvailability;
-            _configuration.Save();
+            if (ImGui.BeginTabItem("Context Menu"))
+            {
+                DrawContextMenuTab();
+                ImGui.EndTabItem();
+            }
+
+            if (ImGui.BeginTabItem("Database Window"))
+            {
+                DrawDatabaseTab();
+                ImGui.EndTabItem();
+            }
+
+            if (ImGui.BeginTabItem("Tooltip"))
+            {
+                DrawTooltipTab();
+                ImGui.EndTabItem();
+            }
+
+            ImGui.EndTabBar();
         }
 
-        var showSeats = _configuration.ShowSeats;
-        if (ImGui.Checkbox("Show number of seats", ref showSeats))
-        {
-            _configuration.ShowSeats = showSeats;
-            _configuration.Save();
-        }
-        
-        var showHasActions = _configuration.ShowHasActions;
-        if (ImGui.Checkbox("Has mounts unique actions or not", ref showHasActions))
-        {
-            _configuration.ShowHasActions = showHasActions;
-            _configuration.Save();
-        }
-        
-        var showHasUniqueMusic = _configuration.ShowHasUniqueMusic;
-        if (ImGui.Checkbox("Has mounts unique BGM or not", ref showHasUniqueMusic))
-        {
-            _configuration.ShowHasUniqueMusic = showHasUniqueMusic;
-            _configuration.Save();
-        }
-        
-        var addedInPatch = _configuration.AddedInPatch;
-        if (ImGui.Checkbox("Added in patch", ref addedInPatch))
-        {
-            _configuration.AddedInPatch = addedInPatch;
-            _configuration.Save();
-        }
-        
         ImGui.End();
+    }
+    
+    private void DrawContextMenuTab()
+    {
+        DrawCheckbox("Enable Context Menu",         _configuration.EnableContextMenu,         v => _configuration.EnableContextMenu = v);
+        ImGui.Separator();
+        DrawCheckbox("Show Mount ID",         _configuration.ShowMountId,         v => _configuration.ShowMountId = v);
+        DrawCheckbox("Show Availability",     _configuration.ShowAvailability,     v => _configuration.ShowAvailability = v);
+        DrawCheckbox("Show Seats",            _configuration.ShowSeats,            v => _configuration.ShowSeats = v);
+        DrawCheckbox("Show Has Actions",      _configuration.ShowHasActions,       v => _configuration.ShowHasActions = v);
+        DrawCheckbox("Show Unique BGM",       _configuration.ShowHasUniqueMusic,   v => _configuration.ShowHasUniqueMusic = v);
+        DrawCheckbox("Show Patch",            _configuration.AddedInPatch,         v => _configuration.AddedInPatch = v);
+    }
+    
+    private void DrawDatabaseTab()
+    {
+        DrawCheckbox("Show Mount ID",         _configuration.ShowDatabaseMountId,         v => _configuration.ShowDatabaseMountId = v);
+        DrawCheckbox("Show Seats",            _configuration.ShowDatabaseSeats,            v => _configuration.ShowDatabaseSeats = v);
+        DrawCheckbox("Show Has Actions",      _configuration.ShowDatabaseActions,       v => _configuration.ShowDatabaseActions = v);
+        DrawCheckbox("Show Unique BGM",       _configuration.ShowDatabaseUniqueBGM,   v => _configuration.ShowDatabaseUniqueBGM = v);
+        DrawCheckbox("Show Patch",            _configuration.ShowDatabasePatch,         v => _configuration.ShowDatabasePatch = v);
+    }
+    
+    private void DrawTooltipTab()
+    {
+        DrawCheckbox("Enable Mount Tooltip on target",       _configuration.ShowTooltip,         v => _configuration.ShowTooltip = v);
+        ImGui.Separator();
+        DrawCheckbox("Show mount unlocked on character",    _configuration.ShowUnlockedTooltip, v => _configuration.ShowUnlockedTooltip = v);
+        DrawCheckbox("Show currently obtainable",           _configuration.ShowObtainableTooltip, v => _configuration.ShowObtainableTooltip = v);
+    }
+        
+    private void DrawCheckbox(string label, bool currentValue, Action<bool> setValue)
+    {
+        var value = currentValue;
+        if (ImGui.Checkbox(label, ref value))
+        {
+            setValue(value);
+            _configuration.Save();
+        }
     }
 
     public void Release()

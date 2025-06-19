@@ -6,7 +6,7 @@ using Lumina.Text.ReadOnly;
 
 namespace WhichMount.Utils;
 
-public static unsafe class TargetStatusUtils
+public static unsafe class StatusUtils
 {
     public const int MaxStatusCount = 30;
 
@@ -18,9 +18,7 @@ public static unsafe class TargetStatusUtils
         ref var statusCount = ref numberArray->IntArray[4];
         if (statusCount == MaxStatusCount)
             return;
-
-        // move statuses by 1
-
+        
         for (var i = statusCount - 1 - index; i >= index; i--)
         {
             numberArray->IntArray[5 + index + i + 1] = numberArray->IntArray[5 + index + i];
@@ -57,9 +55,9 @@ public static unsafe class TargetStatusUtils
         if (index is < 0 or >= 30)
             return;
 
-        numberArray->IntArray[5 + index] = iconId + (timeRemainingColor << 29); // shifted id is UIColor RowId
+        numberArray->IntArray[5 + index] = iconId + (timeRemainingColor << 29); // Shifted id is UIColor RowId
         numberArray->IntArray[35 + index] = 0; // CanDispel?
-        stringArray->SetValue(3 + index, timeRemaining); // time remaining
+        stringArray->SetValue(3 + index, timeRemaining); // Time remaining
         stringArray->SetValue(33 + index, tooltipText);
     }
 

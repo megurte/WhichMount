@@ -17,21 +17,21 @@ public class MountListWindow : IPluginComponent, IInitializable
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly CashContainer _cashContainer;
     private readonly ITextureProvider _textureProvider;
+    private readonly Configuration _configuration;
 
     private bool _isOpen = false;
     private string _searchTerm = string.Empty;
-
-    private bool _showMountId = true;
-    private bool _showSeats = true;
-    private bool _showActions = true;
-    private bool _showUniqueBgm = true;
-    private bool _showPatch = true;
     
-    public MountListWindow(IDalamudPluginInterface pluginInterface, CashContainer cashContainer, ITextureProvider textureProvider)
+    public MountListWindow(
+        IDalamudPluginInterface pluginInterface, 
+        CashContainer cashContainer, 
+        ITextureProvider textureProvider, 
+        Configuration configuration)
     {
         _pluginInterface = pluginInterface;
         _cashContainer = cashContainer;
         _textureProvider = textureProvider;
+        _configuration = configuration;
     }
     
     public void Initialize()
@@ -66,18 +66,18 @@ public class MountListWindow : IPluginComponent, IInitializable
         ImGui.Separator();
 
         ImGui.Text("Show columns:");
-        ImGui.SameLine(); ImGui.Checkbox("Mount ID", ref _showMountId);
-        ImGui.SameLine(); ImGui.Checkbox("Seats", ref _showSeats);
-        ImGui.SameLine(); ImGui.Checkbox("Actions", ref _showActions);
-        ImGui.SameLine(); ImGui.Checkbox("Unique BGM", ref _showUniqueBgm);
-        ImGui.SameLine(); ImGui.Checkbox("Patch", ref _showPatch);
+        ImGui.SameLine(); DrawCheckbox("Mount ID", () => _configuration.ShowDatabaseMountId, v => _configuration.ShowDatabaseMountId = v);
+        ImGui.SameLine(); DrawCheckbox("Seats", () => _configuration.ShowDatabaseSeats, v => _configuration.ShowDatabaseSeats = v);
+        ImGui.SameLine(); DrawCheckbox("Actions", () => _configuration.ShowDatabaseActions, v => _configuration.ShowDatabaseActions = v);
+        ImGui.SameLine(); DrawCheckbox("Unique BGM", () => _configuration.ShowDatabaseUniqueBGM, v => _configuration.ShowDatabaseUniqueBGM = v);
+        ImGui.SameLine(); DrawCheckbox("Patch", () => _configuration.ShowDatabasePatch, v => _configuration.ShowDatabasePatch = v);
         
         var columnCount = 3;
-        if (_showMountId) columnCount++;
-        if (_showSeats) columnCount++;
-        if (_showActions) columnCount++;
-        if (_showUniqueBgm) columnCount++;
-        if (_showPatch) columnCount++;
+        if (_configuration.ShowDatabaseMountId) columnCount++;
+        if (_configuration.ShowDatabaseSeats) columnCount++;
+        if (_configuration.ShowDatabaseActions) columnCount++;
+        if (_configuration.ShowDatabaseUniqueBGM) columnCount++;
+        if (_configuration.ShowDatabasePatch) columnCount++;
         
         DrawTable(columnCount);
 
@@ -127,11 +127,11 @@ public class MountListWindow : IPluginComponent, IInitializable
 
                 AddTextColumn(mount.Name);
 
-                if (_showMountId) AddTextColumn(mount.Id.ToString());
-                if (_showSeats) AddTextColumn(mount.NumberSeats.ToString());
-                if (_showActions) AddTextColumn(mount.HasActions ? "Yes" : "No");
-                if (_showUniqueBgm) AddTextColumn(mount.HasUniqueMusic ? "Yes" : "No");
-                if (_showPatch) AddTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.Patch));
+                if (_configuration.ShowDatabaseMountId) AddTextColumn(mount.Id.ToString());
+                if (_configuration.ShowDatabaseSeats) AddTextColumn(mount.NumberSeats.ToString());
+                if (_configuration.ShowDatabaseActions) AddTextColumn(mount.HasActions ? "Yes" : "No");
+                if (_configuration.ShowDatabaseUniqueBGM) AddTextColumn(mount.HasUniqueMusic ? "Yes" : "No");
+                if (_configuration.ShowDatabasePatch) AddTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.Patch));
                 
                 AddTextResizableColumn(_cashContainer.GetCachedData(mount.Id, TargetData.AcquiredBy));
             }
@@ -151,11 +151,11 @@ public class MountListWindow : IPluginComponent, IInitializable
     {
         ImGui.TableSetupColumn("Icon", ImGuiTableColumnFlags.WidthFixed, 64);
         ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 250f);
-        if (_showMountId) ImGui.TableSetupColumn("Mount ID", ImGuiTableColumnFlags.WidthFixed, 70);
-        if (_showSeats) ImGui.TableSetupColumn("Seats", ImGuiTableColumnFlags.WidthFixed, 50);
-        if (_showActions) ImGui.TableSetupColumn("Actions", ImGuiTableColumnFlags.WidthFixed, 70);
-        if (_showUniqueBgm) ImGui.TableSetupColumn("Unique BGM", ImGuiTableColumnFlags.WidthFixed, 90);
-        if (_showPatch) ImGui.TableSetupColumn("Patch", ImGuiTableColumnFlags.WidthFixed, 60);
+        if (_configuration.ShowDatabaseMountId) ImGui.TableSetupColumn("Mount ID", ImGuiTableColumnFlags.WidthFixed, 70);
+        if (_configuration.ShowDatabaseSeats) ImGui.TableSetupColumn("Seats", ImGuiTableColumnFlags.WidthFixed, 50);
+        if (_configuration.ShowDatabaseActions) ImGui.TableSetupColumn("Actions", ImGuiTableColumnFlags.WidthFixed, 70);
+        if (_configuration.ShowDatabaseUniqueBGM) ImGui.TableSetupColumn("Unique BGM", ImGuiTableColumnFlags.WidthFixed, 90);
+        if (_configuration.ShowDatabasePatch) ImGui.TableSetupColumn("Patch", ImGuiTableColumnFlags.WidthFixed, 60);
         ImGui.TableSetupColumn("Acquired By", ImGuiTableColumnFlags.WidthFixed, 746f);
     }
 
@@ -176,6 +176,16 @@ public class MountListWindow : IPluginComponent, IInitializable
         var icon = GetIcon(mount.IconId).GetWrapOrEmpty();
         ImGui.TableNextColumn();
         ImGui.Image(icon.ImGuiHandle, new Vector2(64, 64));
+    }
+    
+    private void DrawCheckbox(string label, Func<bool> getter, Action<bool> setter)
+    {
+        var value = getter();
+        if (ImGui.Checkbox(label, ref value))
+        {
+            setter(value);
+            _configuration.Save();
+        }
     }
 
     private ISharedImmediateTexture GetIcon(uint id, bool hq = false) 

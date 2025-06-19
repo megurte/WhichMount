@@ -1,5 +1,4 @@
-﻿using System;
-using Dalamud.Game.Gui.ContextMenu;
+﻿using Dalamud.Game.Gui.ContextMenu;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
@@ -46,10 +45,8 @@ public class ContextMenuHandler : IPluginComponent, IInitializable
     
     private void OnOpenContextMenu(IMenuOpenedArgs menuOpenedArgs)
     {
-        if (!_pluginInterface.UiBuilder.ShouldModifyUi || !IsMenuValid(menuOpenedArgs))
-        {
-            return;
-        }
+        if (!_pluginInterface.UiBuilder.ShouldModifyUi || !IsMenuValid(menuOpenedArgs)) return;
+        if (!_configuration.EnableContextMenu) return;
 
         menuOpenedArgs.AddMenuItem(new MenuItem
         {

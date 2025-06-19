@@ -19,6 +19,11 @@ public static class StringUtils
         var textInfo = culture.TextInfo;
         return textInfo.ToTitleCase(str);
     }
+
+    public static void AppendNewLine(this SeStringBuilder sb)
+    {
+        sb.Append("\n");
+    }
     
     public static string ConvertString(this string text) => text.Replace("&#160;", string.Empty);
 }

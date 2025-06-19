@@ -1,8 +1,7 @@
 using Dalamud.Plugin.Services;
 using WhichMount.Models;
-using WhichMount.Utils;
 
-namespace WhichMount;
+namespace WhichMount.UI;
 
 public class ChatView : IViewBinder
 {

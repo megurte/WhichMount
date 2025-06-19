@@ -1,6 +1,6 @@
 using WhichMount.Models;
 
-namespace WhichMount;
+namespace WhichMount.UI;
 
 public interface IViewBinder
 {
