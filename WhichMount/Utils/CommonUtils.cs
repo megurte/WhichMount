@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Dalamud.Plugin.Services;
 using Lumina.Excel.Sheets;
+using WhichMount.Models;
 
 namespace WhichMount.Utils;
 
@@ -40,5 +42,20 @@ public static class CommonUtils
                 _ => string.Empty,
             };
         }
+    }
+    
+    public static int PatchSort(this CashContainer cashContainer, MountModel a, MountModel b)
+    {
+        var patchA = cashContainer.GetCachedData(a.Id, TargetData.Patch);
+        var patchB = cashContainer.GetCachedData(b.Id, TargetData.Patch);
+
+        var isUnknownA = string.IsNullOrWhiteSpace(patchA) || patchA == "Unknown";
+        var isUnknownB = string.IsNullOrWhiteSpace(patchB) || patchB == "Unknown";
+
+        if (isUnknownA && !isUnknownB) return 1;
+        if (!isUnknownA && isUnknownB) return -1;
+        if (isUnknownA && isUnknownB) return 0;
+
+        return string.Compare(patchB, patchA, StringComparison.Ordinal);
     }
 }

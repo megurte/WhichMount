@@ -1,4 +1,3 @@
-using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Hooking;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
@@ -54,8 +53,8 @@ public unsafe class MountInfoTooltip : IInitializable, IPluginComponent
         
         var mountId = chara->Mount.MountId;
         if (mountId != 0)
-        {
-            var sb = new SeStringBuilder();
+        { 
+            var sb = new Lumina.Text.SeStringBuilder();
             var mountModel = new MountModel(_dataManager, _cashContainer, mountId, "N/A");
             mountModel.TryInitData();
             sb.Append($"{mountModel.Name}");
@@ -66,7 +65,9 @@ public unsafe class MountInfoTooltip : IInitializable, IPluginComponent
                 {
                     sb.AppendNewLine();
                     var isUnlocked = PlayerState.Instance()->IsMountUnlocked(mountId);
+                    sb.PushColorType(isUnlocked ? 43u : 518);
                     sb.Append(isUnlocked ? "Unlocked" : "Locked");
+                    sb.PopColorType();
                 }
 
                 if (_configuration.ShowObtainableTooltip)
@@ -77,13 +78,14 @@ public unsafe class MountInfoTooltip : IInitializable, IPluginComponent
                 }
             }
 
-            StatusUtils.AddPermanentStatus(0, 216201, 0, 0, default, sb.ToString());
+            StatusUtils.AddPermanentStatus(0, 216201, 0, 0, default, sb.ToSeString());
         }
     }
 
     public void Release()
     {
         _updateTargetInfoHook.Disable();
+        _updateTargetInfoHook.Dispose();
     }
 }
 

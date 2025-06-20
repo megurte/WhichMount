@@ -8,11 +8,19 @@ using FFXIVClientStructs.FFXIV.Common.Math;
 using ImGuiNET;
 using WhichMount.ComponentInjector;
 using WhichMount.Models;
+using WhichMount.Utils;
 
 namespace WhichMount.UI;
 
 public class MountListWindow : IPluginComponent, IInitializable
 {
+    private enum SortType
+    {
+        Alphabet,
+        Id,
+        Patch
+    }
+    
     private List<MountModel> Mounts => _cashContainer.MountModels;
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly CashContainer _cashContainer;
@@ -21,7 +29,8 @@ public class MountListWindow : IPluginComponent, IInitializable
 
     private bool _isOpen = false;
     private string _searchTerm = string.Empty;
-    
+    private SortType _sortType = SortType.Alphabet;
+
     public MountListWindow(
         IDalamudPluginInterface pluginInterface, 
         CashContainer cashContainer, 
@@ -44,7 +53,18 @@ public class MountListWindow : IPluginComponent, IInitializable
 
     private void SortMounts()
     {
-        Mounts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+        switch (_sortType)
+        {
+            case SortType.Alphabet:
+                Mounts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+                break;
+            case SortType.Id:
+                Mounts.Sort((a, b) => a.Id.CompareTo(b.Id));
+                break;
+            case SortType.Patch:
+                Mounts.Sort(_cashContainer.PatchSort);
+                break;
+        }
     }
 
     public void Draw()
@@ -63,6 +83,9 @@ public class MountListWindow : IPluginComponent, IInitializable
             return;
         
         DrawSearchBar();
+        ImGui.SameLine();
+        DrawSortDropdown();
+        
         ImGui.Separator();
 
         ImGui.Text("Show columns:");
@@ -185,6 +208,32 @@ public class MountListWindow : IPluginComponent, IInitializable
         {
             setter(value);
             _configuration.Save();
+        }
+    }
+    
+    private void DrawSortDropdown()
+    {
+        ImGui.Text("Sort by:");
+        ImGui.SameLine();
+
+        ImGui.PushItemWidth(150);
+        var sortTypeStr = _sortType.ToString();
+        if (ImGui.BeginCombo("##SortType", sortTypeStr))
+        {
+            foreach (var type in Enum.GetValues<SortType>())
+            {
+                var isSelected = type == _sortType;
+                if (ImGui.Selectable(type.ToString(), isSelected))
+                {
+                    _sortType = type;
+                    SortMounts();
+                }
+
+                if (isSelected)
+                    ImGui.SetItemDefaultFocus();
+            }
+
+            ImGui.EndCombo();
         }
     }
 
