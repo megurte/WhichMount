@@ -24,19 +24,10 @@ public class WhichMountPlugin : IDalamudPlugin
 
         _serviceInstaller = new ServiceInstaller(pluginInterface);
         _service = _serviceInstaller.Service;
-        _container = new ComponentContainer();
-
+        _container = _service.Container;
         _container.BindInstance(this);
         _container.BindInstance(pluginInterface);
         _container.BindInstance(_configuration);
-        _container.BindInstance(_service.GetService<IChatGui>());
-        _container.BindInstance(_service.GetService<IDataManager>());
-        _container.BindInstance(_service.GetService<IObjectTable>());
-        _container.BindInstance(_service.GetService<IContextMenu>());
-        _container.BindInstance(_service.GetService<IClientState>());
-        _container.BindInstance(_service.GetService<ICommandManager>());
-        _container.BindInstance(_service.GetService<ITextureProvider>());
-        _container.BindInstance(_service.GetService<IGameInteropProvider>());
 
         _container.Bind<CashContainer>();
         _container.Bind<ContextMenuHandler>();
