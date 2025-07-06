@@ -6,6 +6,7 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Common.Math;
 using ImGuiNET;
+using Lumina.Text;
 using WhichMount.ComponentInjector;
 using WhichMount.Models;
 using WhichMount.Utils;
@@ -18,7 +19,9 @@ public class MountListWindow : IPluginComponent, IInitializable
     {
         Alphabet,
         Id,
-        Patch
+        Patch,
+        Unlocked,
+        Locked
     }
     
     private List<MountModel> Mounts => _cashContainer.MountModels;
@@ -64,6 +67,12 @@ public class MountListWindow : IPluginComponent, IInitializable
             case SortType.Patch:
                 Mounts.Sort(_cashContainer.PatchSort);
                 break;
+            case SortType.Unlocked:
+                Mounts.Sort((a, b) => b.IsMountUnlocked.CompareTo(a.IsMountUnlocked));
+                break;
+            case SortType.Locked:
+                Mounts.Sort((a, b) => a.IsMountUnlocked.CompareTo(b.IsMountUnlocked));
+                break;
         }
     }
 
@@ -94,6 +103,7 @@ public class MountListWindow : IPluginComponent, IInitializable
         ImGui.SameLine(); DrawCheckbox("Actions", () => _configuration.ShowDatabaseActions, v => _configuration.ShowDatabaseActions = v);
         ImGui.SameLine(); DrawCheckbox("Unique BGM", () => _configuration.ShowDatabaseUniqueBGM, v => _configuration.ShowDatabaseUniqueBGM = v);
         ImGui.SameLine(); DrawCheckbox("Patch", () => _configuration.ShowDatabasePatch, v => _configuration.ShowDatabasePatch = v);
+        ImGui.SameLine(); DrawCheckbox("Unlocked", () => _configuration.ShowDatabaseUnlockStatus, v => _configuration.ShowDatabaseUnlockStatus = v);
         
         var columnCount = 3;
         if (_configuration.ShowDatabaseMountId) columnCount++;
@@ -101,6 +111,7 @@ public class MountListWindow : IPluginComponent, IInitializable
         if (_configuration.ShowDatabaseActions) columnCount++;
         if (_configuration.ShowDatabaseUniqueBGM) columnCount++;
         if (_configuration.ShowDatabasePatch) columnCount++;
+        if (_configuration.ShowDatabaseUnlockStatus) columnCount++;
         
         DrawTable(columnCount);
 
@@ -155,12 +166,22 @@ public class MountListWindow : IPluginComponent, IInitializable
                 if (_configuration.ShowDatabaseActions) AddTextColumn(mount.HasActions ? "Yes" : "No");
                 if (_configuration.ShowDatabaseUniqueBGM) AddTextColumn(mount.HasUniqueMusic ? "Yes" : "No");
                 if (_configuration.ShowDatabasePatch) AddTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.Patch));
+                if (_configuration.ShowDatabaseUnlockStatus) AddTextColumn(GetColoredText(mount.IsMountUnlocked));
                 
                 AddTextResizableColumn(_cashContainer.GetCachedData(mount.Id, TargetData.AcquiredBy));
             }
 
             ImGui.EndTable();
         }
+    }
+
+    private string GetColoredText(bool isUnlocked)
+    {
+        var sb = new SeStringBuilder();
+        sb.PushColorType(isUnlocked ? 43u : 518);
+        sb.Append(isUnlocked? "Unlocked" : "Locked");
+        sb.PopColorType();
+        return sb.ToSeString();
     }
 
     private List<MountModel> FilterTableEntities()
@@ -179,6 +200,7 @@ public class MountListWindow : IPluginComponent, IInitializable
         if (_configuration.ShowDatabaseActions) ImGui.TableSetupColumn("Actions", ImGuiTableColumnFlags.WidthFixed, 70);
         if (_configuration.ShowDatabaseUniqueBGM) ImGui.TableSetupColumn("Unique BGM", ImGuiTableColumnFlags.WidthFixed, 90);
         if (_configuration.ShowDatabasePatch) ImGui.TableSetupColumn("Patch", ImGuiTableColumnFlags.WidthFixed, 60);
+        if (_configuration.ShowDatabaseUnlockStatus) ImGui.TableSetupColumn("Unlocked", ImGuiTableColumnFlags.WidthFixed, 70);
         ImGui.TableSetupColumn("Acquired By", ImGuiTableColumnFlags.WidthFixed, 746f);
     }
 

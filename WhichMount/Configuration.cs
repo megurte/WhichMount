@@ -31,6 +31,7 @@ public class Configuration : IPluginConfiguration
     public bool ShowTooltip { get; set; } = true;
     public bool ShowUnlockedTooltip { get; set; } = true;
     public bool ShowObtainableTooltip { get; set; } = true;
+    public bool ShowDatabaseUnlockStatus { get; set; } = true;
 
     public Configuration(IDalamudPluginInterface pluginInterface)
     {

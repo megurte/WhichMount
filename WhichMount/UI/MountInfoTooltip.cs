@@ -1,3 +1,4 @@
+using System;
 using Dalamud.Hooking;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
@@ -17,7 +18,6 @@ public unsafe class MountInfoTooltip : IInitializable, IPluginComponent
     private readonly IDataManager _dataManager;
 
     private Hook<AgentHUD.Delegates.UpdateTargetInfo> _updateTargetInfoHook;
-
     public MountInfoTooltip(IGameInteropProvider gameInteropProvider, CashContainer cashContainer, Configuration configuration, IDataManager dataManager)
     {
         _gameInteropProvider = gameInteropProvider;
@@ -64,7 +64,7 @@ public unsafe class MountInfoTooltip : IInitializable, IPluginComponent
                 if (_configuration.ShowUnlockedTooltip)
                 {
                     sb.AppendNewLine();
-                    var isUnlocked = PlayerState.Instance()->IsMountUnlocked(mountId);
+                    var isUnlocked = mountModel.IsMountUnlocked;
                     sb.PushColorType(isUnlocked ? 43u : 518);
                     sb.Append(isUnlocked ? "Unlocked" : "Locked");
                     sb.PopColorType();

@@ -2,6 +2,7 @@ using System.IO;
 using System.Reflection;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Excel.Sheets;
 using WhichMount.Utils;
 
@@ -20,7 +21,7 @@ public enum TargetData
     Patch = 8,
 }
 
-public class MountModel 
+public unsafe class MountModel 
 {
     public uint Id { get; }
     public string Owner { get; }
@@ -29,6 +30,7 @@ public class MountModel
     public int NumberSeats => _mountItem.ExtraSeats + 1;
     public bool HasActions => _mountItem.MountAction.RowId != 0;
     public bool HasUniqueMusic => _cashContainer.HasUniqueMusic(Id);
+    public bool IsMountUnlocked => PlayerState.Instance()->IsMountUnlocked(Id);
     
     private const string ResourceName = "WhichMount.Resources.MountList.csv";
     
