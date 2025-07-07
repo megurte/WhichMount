@@ -75,6 +75,13 @@ public class MountListWindow : IPluginComponent, IInitializable
                 break;
         }
     }
+    
+    private (int unlocked, int total) GetUnlockStats()
+    {
+        var total = Mounts.Count;
+        var unlocked = Mounts.Count(m => m.IsMountUnlocked);
+        return (unlocked, total);
+    }
 
     public void Draw()
     {
@@ -94,7 +101,10 @@ public class MountListWindow : IPluginComponent, IInitializable
         DrawSearchBar();
         ImGui.SameLine();
         DrawSortDropdown();
-        
+        ImGui.SameLine();
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 50);
+        DrawUnlockCounter();
+
         ImGui.Separator();
 
         ImGui.Text("Show columns:");
@@ -118,6 +128,12 @@ public class MountListWindow : IPluginComponent, IInitializable
         ImGui.End();
     }
 
+    private void DrawUnlockCounter()
+    {
+        var (unlockedCount, totalCount) = GetUnlockStats();
+        ImGui.Text($"Mounts Unlocked: {unlockedCount} / {totalCount}");
+    }
+
     private void DrawSearchBar()
     {
         ImGui.Text("Search:");
@@ -131,7 +147,7 @@ public class MountListWindow : IPluginComponent, IInitializable
         var filtered = FilterTableEntities();
         if (filtered.Count == 0)
         {
-            ImGui.TextColored(new Vector4(1f, 0.7f, 0.7f, 1f), "No mounts found");
+            ImGui.TextColored(Constants.RedTextColor, "No mounts found");
             return;
         }
         
@@ -166,7 +182,7 @@ public class MountListWindow : IPluginComponent, IInitializable
                 if (_configuration.ShowDatabaseActions) AddTextColumn(mount.HasActions ? "Yes" : "No");
                 if (_configuration.ShowDatabaseUniqueBGM) AddTextColumn(mount.HasUniqueMusic ? "Yes" : "No");
                 if (_configuration.ShowDatabasePatch) AddTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.Patch));
-                if (_configuration.ShowDatabaseUnlockStatus) AddTextColumn(GetColoredText(mount.IsMountUnlocked));
+                if (_configuration.ShowDatabaseUnlockStatus) HandleUnlockTextColumn(mount);
                 
                 AddTextResizableColumn(_cashContainer.GetCachedData(mount.Id, TargetData.AcquiredBy));
             }
@@ -175,13 +191,20 @@ public class MountListWindow : IPluginComponent, IInitializable
         }
     }
 
-    private string GetColoredText(bool isUnlocked)
+    private static void HandleUnlockTextColumn(MountModel model)
     {
-        var sb = new SeStringBuilder();
-        sb.PushColorType(isUnlocked ? 43u : 518);
-        sb.Append(isUnlocked? "Unlocked" : "Locked");
-        sb.PopColorType();
-        return sb.ToSeString();
+        ImGui.TableNextColumn();
+        var color = model.IsMountUnlocked ? Constants.GreenTextColor : Constants.RedTextColor;
+        var text = model.IsMountUnlocked ? "Unlocked" : "Locked";
+        var cellWidth = ImGui.GetColumnWidth();
+        var textSize = ImGui.CalcTextSize(text);
+        var cursorPos = ImGui.GetCursorScreenPos();
+        var offsetX = (cellWidth - textSize.X) * 0.5f;
+        
+        ImGui.SetCursorScreenPos(new Vector2(cursorPos.X + offsetX, cursorPos.Y));
+        ImGui.PushStyleColor(ImGuiCol.Text, color); 
+        ImGui.TextUnformatted(text);                                      
+        ImGui.PopStyleColor();
     }
 
     private List<MountModel> FilterTableEntities()
