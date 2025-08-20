@@ -6,7 +6,6 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Common.Math;
 using ImGuiNET;
-using Lumina.Text;
 using WhichMount.ComponentInjector;
 using WhichMount.Models;
 using WhichMount.Utils;
