@@ -8,14 +8,30 @@ using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using HtmlAgilityPack;
 using Lumina.Excel.Sheets;
+using WhichMount.ComponentInjector;
 
 namespace WhichMount.Utils;
 
-public class Parse
+public class Parse : IPluginComponent, IInitializable
 {
-    public async Task Main(IDataManager dataManager)
+    private readonly IDataManager _dataManager;
+    private readonly IChatGui _chatGui;
+
+    public Parse(IDataManager dataManager, IChatGui chatGui)
     {
-                var httpClient = new HttpClient();
+        _dataManager = dataManager;
+        _chatGui = chatGui;
+        _chatGui.Print($"Created");
+    }
+    
+    public async void Initialize()
+    {
+        Main();
+    }
+    
+    public async Task Main()
+    {
+        var httpClient = new HttpClient();
         var response = await httpClient.GetStringAsync("https://ffxiv.consolegameswiki.com/wiki/Mounts");
 
         var htmlDocument = new HtmlDocument();
@@ -28,7 +44,7 @@ public class Parse
             return;
         }
 
-        var mountTable = mountTables[8];
+        var mountTable = mountTables[9];
         var rows = mountTable.SelectNodes(".//tr").Skip(1); // Skip header row
 
         var mountsData = new List<string[]>();
@@ -42,7 +58,7 @@ public class Parse
                 if (nameNode != null)
                 {
                     var name = HtmlEntity.DeEntitize(nameNode.InnerText.Trim()).Replace('\u00A0', ' ');
-                    var mount = dataManager.GetExcelSheet<Mount>()?.FirstOrDefault(m => 
+                    var mount = _dataManager.GetExcelSheet<Mount>()?.FirstOrDefault(m => 
                         string.Equals(m.Singular.ToDalamudString().ToString(), name, StringComparison.OrdinalIgnoreCase));
                     var mountId = mount?.RowId.ToString() ?? "Unknown ID";
 
@@ -71,6 +87,8 @@ public class Parse
             }
         }
 
-        Console.WriteLine($"Data saved to {csvFile}");
+        _chatGui.Print($"Data saved to {csvFile}");
     }
+
+    public void Release() { }
 }

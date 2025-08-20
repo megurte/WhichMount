@@ -4,6 +4,7 @@ using DalamudInjector;
 using WhichMount.ComponentInjector;
 using WhichMount.Models;
 using WhichMount.UI;
+using WhichMount.Utils;
 
 namespace WhichMount;
 
@@ -35,6 +36,15 @@ public class WhichMountPlugin : IDalamudPlugin
         _container.Bind<MountInfoTooltip>();
         _container.Bind<ConfigWindow>();
         _container.Bind<CommandHandler>();
+        
+        ParseMounts();
+    }
+    
+    public async void ParseMounts()
+    {
+        _container.Bind<Parse>();
+
+        //await parser.Main();
     }
     
     public void Dispose()
