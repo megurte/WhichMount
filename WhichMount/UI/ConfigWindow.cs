@@ -1,7 +1,7 @@
 ﻿using System;
 using Dalamud.Plugin;
 using FFXIVClientStructs.FFXIV.Common.Math;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using WhichMount.ComponentInjector;
 
 namespace WhichMount.UI;

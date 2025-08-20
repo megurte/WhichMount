@@ -5,7 +5,7 @@ using Dalamud.Interface.Textures;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Common.Math;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using WhichMount.ComponentInjector;
 using WhichMount.Models;
 using WhichMount.Utils;
@@ -242,7 +242,7 @@ public class MountListWindow : IPluginComponent, IInitializable
     {
         var icon = GetIcon(mount.IconId).GetWrapOrEmpty();
         ImGui.TableNextColumn();
-        ImGui.Image(icon.ImGuiHandle, new Vector2(64, 64));
+        ImGui.Image(icon.Handle, new Vector2(64, 64));
     }
     
     private void DrawCheckbox(string label, Func<bool> getter, Action<bool> setter)
