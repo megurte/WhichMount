@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
-using Dalamud.Game.Gui.ContextMenu;
-using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using Lumina.Excel.Sheets;
+﻿using Dalamud.Game.Gui.ContextMenu;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
+using WhichMount.ComponentInjector;
 using WhichMount.Models;
 using WhichMount.Utils;
 
-namespace WhichMount;
+namespace WhichMount.UI;
  
 #pragma warning disable CA1416
 
-public class ContextMenuHandler
+public class ContextMenuHandler : IPluginComponent, IInitializable
 {
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly IChatGui _chatGui;
@@ -19,14 +18,16 @@ public class ContextMenuHandler
     private readonly IObjectTable _objectTable;
     private readonly IContextMenu _contextMenu;
     private readonly Configuration _configuration;
-    
+    private readonly CashContainer _cashContainer;
+
     public ContextMenuHandler(
         IDalamudPluginInterface pluginInterface,
         IChatGui chatGui, 
         IDataManager dataManager, 
         IObjectTable objectTable, 
         IContextMenu contextMenu,
-        Configuration configuration)
+        Configuration configuration,
+        CashContainer cashContainer)
     {
         _pluginInterface = pluginInterface;
         _chatGui = chatGui;
@@ -34,15 +35,18 @@ public class ContextMenuHandler
         _objectTable = objectTable;
         _contextMenu = contextMenu;
         _configuration = configuration;
+        _cashContainer = cashContainer;
+    }
+    
+    public void Initialize()
+    {
         _contextMenu.OnMenuOpened += OnOpenContextMenu;
     }
     
     private void OnOpenContextMenu(IMenuOpenedArgs menuOpenedArgs)
     {
-        if (!_pluginInterface.UiBuilder.ShouldModifyUi || !IsMenuValid(menuOpenedArgs))
-        {
-            return;
-        }
+        if (!_pluginInterface.UiBuilder.ShouldModifyUi || !IsMenuValid(menuOpenedArgs)) return;
+        if (!_configuration.EnableContextMenu) return;
 
         menuOpenedArgs.AddMenuItem(new MenuItem
         {
@@ -72,7 +76,7 @@ public class ContextMenuHandler
             return;
         }
         
-        var mountModel = new MountModel(_dataManager, mountId, targetCharacter.Name.ToString());
+        var mountModel = new MountModel(_dataManager, _cashContainer, mountId, targetCharacter.Name.ToString());
 
         if (!mountModel.TryInitData())
         {
@@ -84,6 +88,7 @@ public class ContextMenuHandler
         view.BindModel(mountModel);
     }
     
+   
     private bool IsMenuValid(IMenuArgs menuOpenedArgs)
     {
         if (menuOpenedArgs.Target is not MenuTargetDefault menuTargetDefault)
@@ -117,7 +122,7 @@ public class ContextMenuHandler
         return false;
     }
     
-    public void Dispose()
+    public void Release()
     {
         _contextMenu.OnMenuOpened -= OnOpenContextMenu;
     }

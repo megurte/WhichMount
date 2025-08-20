@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Excel.Sheets;
 using WhichMount.Utils;
 
@@ -22,34 +21,27 @@ public enum TargetData
     Patch = 8,
 }
 
-public class MountModel {
-    
+public unsafe class MountModel 
+{
     public uint Id { get; }
     public string Owner { get; }
+    public uint IconId => _mountItem.Icon;
     public string Name => _mountItem.Singular.ToDalamudString().ToTitleCase();
     public int NumberSeats => _mountItem.ExtraSeats + 1;
     public bool HasActions => _mountItem.MountAction.RowId != 0;
-    public bool HasUniqueMusic => _uniqueMusicMounts.Contains(_mountItem);
+    public bool HasUniqueMusic => _cashContainer.HasUniqueMusic(Id);
+    public bool IsMountUnlocked => PlayerState.Instance()->IsMountUnlocked(Id);
     
     private const string ResourceName = "WhichMount.Resources.MountList.csv";
     
     private readonly IDataManager _dataManager;
+    private readonly CashContainer _cashContainer;
     private Mount _mountItem;
-    private HashSet<Mount> _uniqueMusicMounts
-    {
-        get
-        {
-            return _dataManager.Excel.GetSheet<Mount>()!
-                               .GroupBy(mount => mount.RideBGM.RowId)
-                               .Where(group => group.Count() == 1)
-                               .Select(group => group.First())
-                               .ToHashSet();
-        }
-    }
-
-    public MountModel(IDataManager dataManager, uint id, string owner)
+    
+    public MountModel(IDataManager dataManager, CashContainer cashContainer, uint id, string owner)
     {
         _dataManager = dataManager;
+        _cashContainer = cashContainer;
         Id = id;
         Owner = owner;
     }
@@ -62,7 +54,7 @@ public class MountModel {
     
     public Mount GetMountObject(uint mountId)
     {
-        return _dataManager.GetExcelSheet<Mount>()!.GetRow(mountId);
+        return _dataManager.GetExcelSheet<Mount>().GetRow(mountId);
     }
     
     public string GetDataByTable(TargetData targetData)

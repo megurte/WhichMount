@@ -1,8 +1,7 @@
 using Dalamud.Plugin.Services;
 using WhichMount.Models;
-using WhichMount.Utils;
 
-namespace WhichMount;
+namespace WhichMount.UI;
 
 public class ChatView : IViewBinder
 {
@@ -17,7 +16,7 @@ public class ChatView : IViewBinder
     
     public void BindModel(MountModel model)
     {
-                
+        _chatGui.Print("===================");
         _chatGui.Print($"{model.Owner}'s mount: {model.Name}");
         _chatGui.Print($"Acquired by: {model.GetDataByTable(TargetData.AcquiredBy)}");
         
