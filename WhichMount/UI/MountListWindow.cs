@@ -20,7 +20,8 @@ public class MountListWindow : IPluginComponent, IInitializable
         Id,
         Patch,
         Unlocked,
-        Locked
+        Locked,
+        MarketBoard,
     }
     
     private List<MountModel> Mounts => _cashContainer.MountModels;
@@ -72,6 +73,9 @@ public class MountListWindow : IPluginComponent, IInitializable
             case SortType.Locked:
                 Mounts.Sort((a, b) => a.IsMountUnlocked.CompareTo(b.IsMountUnlocked));
                 break;
+            case SortType.MarketBoard:
+                Mounts.Sort((b, a) => a.IsMarketBoardAvailable.CompareTo(b.IsMarketBoardAvailable));
+                break;
         }
     }
     
@@ -111,6 +115,7 @@ public class MountListWindow : IPluginComponent, IInitializable
         ImGui.SameLine(); DrawCheckbox("Seats", () => _configuration.ShowDatabaseSeats, v => _configuration.ShowDatabaseSeats = v);
         ImGui.SameLine(); DrawCheckbox("Actions", () => _configuration.ShowDatabaseActions, v => _configuration.ShowDatabaseActions = v);
         ImGui.SameLine(); DrawCheckbox("Unique BGM", () => _configuration.ShowDatabaseUniqueBGM, v => _configuration.ShowDatabaseUniqueBGM = v);
+        ImGui.SameLine(); DrawCheckbox("Market Board availability", () => _configuration.ShowDatabaseMBAvailable, v => _configuration.ShowDatabaseMBAvailable = v);
         ImGui.SameLine(); DrawCheckbox("Patch", () => _configuration.ShowDatabasePatch, v => _configuration.ShowDatabasePatch = v);
         ImGui.SameLine(); DrawCheckbox("Unlocked", () => _configuration.ShowDatabaseUnlockStatus, v => _configuration.ShowDatabaseUnlockStatus = v);
         
@@ -119,6 +124,7 @@ public class MountListWindow : IPluginComponent, IInitializable
         if (_configuration.ShowDatabaseSeats) columnCount++;
         if (_configuration.ShowDatabaseActions) columnCount++;
         if (_configuration.ShowDatabaseUniqueBGM) columnCount++;
+        if (_configuration.ShowDatabaseMBAvailable) columnCount++;
         if (_configuration.ShowDatabasePatch) columnCount++;
         if (_configuration.ShowDatabaseUnlockStatus) columnCount++;
         
@@ -176,11 +182,12 @@ public class MountListWindow : IPluginComponent, IInitializable
 
                 AddTextColumn(mount.Name);
 
-                if (_configuration.ShowDatabaseMountId) AddTextColumn(mount.Id.ToString());
-                if (_configuration.ShowDatabaseSeats) AddTextColumn(mount.NumberSeats.ToString());
-                if (_configuration.ShowDatabaseActions) AddTextColumn(mount.HasActions ? "Yes" : "No");
-                if (_configuration.ShowDatabaseUniqueBGM) AddTextColumn(mount.HasUniqueMusic ? "Yes" : "No");
-                if (_configuration.ShowDatabasePatch) AddTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.Patch));
+                if (_configuration.ShowDatabaseMountId) AddTextColumn(mount.Id.ToString(), true);
+                if (_configuration.ShowDatabaseSeats) AddTextColumn(mount.NumberSeats.ToString(), true);
+                if (_configuration.ShowDatabaseActions) AddTextColumn(mount.HasActions ? "Yes" : "No", GetBooleanColor(mount.HasActions), true);
+                if (_configuration.ShowDatabaseUniqueBGM) AddTextColumn(mount.HasUniqueMusic ? "Yes" : "No", GetBooleanColor(mount.HasUniqueMusic), true);
+                if (_configuration.ShowDatabaseMBAvailable) AddTextColumn(mount.IsMarketBoardAvailable ? "Yes" : "No", GetBooleanColor(mount.IsMarketBoardAvailable), true);
+                if (_configuration.ShowDatabasePatch) AddTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.Patch), true);
                 if (_configuration.ShowDatabaseUnlockStatus) HandleUnlockTextColumn(mount);
                 
                 AddTextResizableColumn(_cashContainer.GetCachedData(mount.Id, TargetData.AcquiredBy));
@@ -193,7 +200,7 @@ public class MountListWindow : IPluginComponent, IInitializable
     private static void HandleUnlockTextColumn(MountModel model)
     {
         ImGui.TableNextColumn();
-        var color = model.IsMountUnlocked ? Constants.GreenTextColor : Constants.RedTextColor;
+        var color = GetBooleanColor(model.IsMountUnlocked);
         var text = model.IsMountUnlocked ? "Unlocked" : "Locked";
         var cellWidth = ImGui.GetColumnWidth();
         var textSize = ImGui.CalcTextSize(text);
@@ -204,6 +211,11 @@ public class MountListWindow : IPluginComponent, IInitializable
         ImGui.PushStyleColor(ImGuiCol.Text, color); 
         ImGui.TextUnformatted(text);                                      
         ImGui.PopStyleColor();
+    }
+
+    private static Vector4 GetBooleanColor(bool condition)
+    {
+        return condition ? Constants.GreenTextColor : Constants.RedTextColor;
     }
 
     private List<MountModel> FilterTableEntities()
@@ -221,15 +233,40 @@ public class MountListWindow : IPluginComponent, IInitializable
         if (_configuration.ShowDatabaseSeats) ImGui.TableSetupColumn("Seats", ImGuiTableColumnFlags.WidthFixed, 50);
         if (_configuration.ShowDatabaseActions) ImGui.TableSetupColumn("Actions", ImGuiTableColumnFlags.WidthFixed, 70);
         if (_configuration.ShowDatabaseUniqueBGM) ImGui.TableSetupColumn("Unique BGM", ImGuiTableColumnFlags.WidthFixed, 90);
+        if (_configuration.ShowDatabaseMBAvailable) ImGui.TableSetupColumn("MB available", ImGuiTableColumnFlags.WidthFixed, 90);
         if (_configuration.ShowDatabasePatch) ImGui.TableSetupColumn("Patch", ImGuiTableColumnFlags.WidthFixed, 60);
         if (_configuration.ShowDatabaseUnlockStatus) ImGui.TableSetupColumn("Unlocked", ImGuiTableColumnFlags.WidthFixed, 70);
         ImGui.TableSetupColumn("Acquired By", ImGuiTableColumnFlags.WidthFixed, 746f);
     }
 
-    private static void AddTextColumn(string msg)
+    private static void AddTextColumn(string msg, bool centerAlight = false)
     {
         ImGui.TableNextColumn();
+        if (centerAlight)
+        {
+            var cellWidth = ImGui.GetColumnWidth();
+            var textSize = ImGui.CalcTextSize(msg);
+            var cursorPos = ImGui.GetCursorScreenPos();
+            var offsetX = (cellWidth - textSize.X) * 0.5f;
+            ImGui.SetCursorScreenPos(new Vector2(cursorPos.X + offsetX, cursorPos.Y));
+        }
         ImGui.TextUnformatted(msg);
+    }
+    
+    private static void AddTextColumn(string msg, Vector4 color, bool centerAlight = false)
+    {
+        ImGui.TableNextColumn();
+        if (centerAlight)
+        {
+            var cellWidth = ImGui.GetColumnWidth();
+            var textSize = ImGui.CalcTextSize(msg);
+            var cursorPos = ImGui.GetCursorScreenPos();
+            var offsetX = (cellWidth - textSize.X) * 0.5f;
+            ImGui.SetCursorScreenPos(new Vector2(cursorPos.X + offsetX, cursorPos.Y));
+        }
+        ImGui.PushStyleColor(ImGuiCol.Text, color); 
+        ImGui.TextUnformatted(msg);
+        ImGui.PopStyleColor();
     }
     
     private static void AddTextResizableColumn(string msg)

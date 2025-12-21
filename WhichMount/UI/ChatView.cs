@@ -28,6 +28,8 @@ public class ChatView : IViewBinder
             _chatGui.Print($"Has actions: {(model.HasActions ? "Yes" : "No")}");
         if (_configuration.ShowHasUniqueMusic)
             _chatGui.Print($"Has unique music: {(model.HasUniqueMusic ? "Yes" : "No")}");
+        if (_configuration.ShowMBAvailable)
+            _chatGui.Print($"Is available on Market board: {(model.IsMarketBoardAvailable ? "Yes" : "No")}");
         if (_configuration.ShowAvailability)
             _chatGui.Print($"Is currently obtainable: {(model.GetDataByTable(TargetData.IsObtainable) == "1" ? "Yes" : "No")}");
         if (_configuration.AddedInPatch)

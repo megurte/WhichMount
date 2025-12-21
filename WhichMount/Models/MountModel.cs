@@ -12,13 +12,14 @@ public enum TargetData
 {
     Name = 0,
     Id = 1,
-    Icon = 2,
-    AcquisitionType = 3,
-    AcquiredBy = 4,
-    Seats = 5,
-    IsObtainable = 6,
-    CashShop = 7,
-    Patch = 8,
+    //Icon = 2,
+    AcquisitionType = 2,
+    AcquiredBy = 3,
+    IsObtainable = 4,
+    CashShop = 5,
+    MarketBoard = 6,
+    Seats = 7,
+    Patch = 8
 }
 
 public unsafe class MountModel 
@@ -31,6 +32,7 @@ public unsafe class MountModel
     public bool HasActions => _mountItem.MountAction.RowId != 0;
     public bool HasUniqueMusic => _cashContainer.HasUniqueMusic(Id);
     public bool IsMountUnlocked => PlayerState.Instance()->IsMountUnlocked(Id);
+    public bool IsMarketBoardAvailable => _cashContainer.GetCachedData(Id, TargetData.MarketBoard) == "1";
     
     private const string ResourceName = "WhichMount.Resources.MountList.csv";
     
