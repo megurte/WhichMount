@@ -14,6 +14,9 @@ namespace WhichMount.Utils;
 
 public class Parse : IPluginComponent, IInitializable
 {
+    private const int TableNumber = 0; 
+    private const int NameCellNumber = 1; 
+    
     private readonly IDataManager _dataManager;
     private readonly IChatGui _chatGui;
 
@@ -44,33 +47,33 @@ public class Parse : IPluginComponent, IInitializable
             return;
         }
 
-        var mountTable = mountTables[9];
+        var mountTable = mountTables[TableNumber];
         var rows = mountTable.SelectNodes(".//tr").Skip(1); // Skip header row
 
-        var mountsData = new List<string[]>();
+        var mountsData = new List<List<string>>();
 
         foreach (var row in rows)
         {
             var cells = row.SelectNodes("td");
             if (cells != null && cells.Count >= 1)
             {
-                var nameNode = cells[0].SelectSingleNode(".//a");
+                var nameNode = cells[NameCellNumber].SelectSingleNode(".//a");
                 if (nameNode != null)
                 {
                     var name = HtmlEntity.DeEntitize(nameNode.InnerText.Trim()).Replace('\u00A0', ' ');
                     var mount = _dataManager.GetExcelSheet<Mount>()?.FirstOrDefault(m => 
                         string.Equals(m.Singular.ToDalamudString().ToString(), name, StringComparison.OrdinalIgnoreCase));
                     var mountId = mount?.RowId.ToString() ?? "Unknown ID";
+                    var startCellIndex = NameCellNumber + 2;;
 
-                    var rowData = new string[cells.Count + 1];
-                    rowData[0] = name.Replace("|", "").Trim();
-                    rowData[1] = mountId;                     
-                    for (int i = 1; i < cells.Count; i++)
+                    var rowData = new List<string>(cells.Count + 1);
+                    rowData.Add(name.Replace("|", "").Trim()); // Name
+                    rowData.Add(mountId); // ID
+                    
+                    for (var i = startCellIndex; i < cells.Count; i++)
                     {
-                        var cellText = HtmlEntity.DeEntitize(cells[i].InnerText.Trim())
-                                                 .Replace('\u00A0', ' ')
-                                                 .Replace("|", "");
-                        rowData[i + 1] = string.IsNullOrEmpty(cellText) ? "" : cellText; 
+                        var cellText = ToOneLine(HtmlEntity.DeEntitize(cells[i].InnerText));
+                        rowData.Add(string.IsNullOrEmpty(cellText) ? "" : cellText);
                     }
                     mountsData.Add(rowData);
                 }
@@ -88,6 +91,18 @@ public class Parse : IPluginComponent, IInitializable
         }
 
         _chatGui.Print($"Data saved to {csvFile}");
+    }
+    
+    private string ToOneLine(string s)
+    {
+        if (string.IsNullOrEmpty(s)) return "";
+
+        return s.Replace('\u00A0', ' ')
+                .Replace("\r", " ")
+                .Replace("\n", " ")
+                .Replace("\t", " ")
+                .Replace("|", "")
+                .Trim();
     }
 
     public void Release() { }
