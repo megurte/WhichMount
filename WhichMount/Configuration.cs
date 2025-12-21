@@ -18,6 +18,7 @@ public class Configuration : IPluginConfiguration
     public bool ShowSeats { get; set; } = false;
     public bool ShowHasActions { get; set; } = false;
     public bool ShowHasUniqueMusic { get; set; } = false;
+    public bool ShowMBAvailable { get; set; } = false;
     public bool AddedInPatch { get; set; } = false;
 
     // ▶ Database Window
@@ -25,6 +26,7 @@ public class Configuration : IPluginConfiguration
     public bool ShowDatabaseSeats { get; set; } = true;
     public bool ShowDatabaseActions { get; set; } = true;
     public bool ShowDatabaseUniqueBGM { get; set; } = true;
+    public bool ShowDatabaseMBAvailable { get; set; } = true;
     public bool ShowDatabasePatch { get; set; } = true;
 
     // ▶ Tooltip

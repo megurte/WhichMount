@@ -72,6 +72,7 @@ public class ConfigWindow : IPluginComponent, IInitializable
         DrawCheckbox("Show Seats",            _configuration.ShowSeats,            v => _configuration.ShowSeats = v);
         DrawCheckbox("Show Has Actions",      _configuration.ShowHasActions,       v => _configuration.ShowHasActions = v);
         DrawCheckbox("Show Unique BGM",       _configuration.ShowHasUniqueMusic,   v => _configuration.ShowHasUniqueMusic = v);
+        DrawCheckbox("Show Available on MB",  _configuration.ShowMBAvailable,      v => _configuration.ShowMBAvailable = v);
         DrawCheckbox("Show Patch",            _configuration.AddedInPatch,         v => _configuration.AddedInPatch = v);
     }
     
@@ -81,6 +82,7 @@ public class ConfigWindow : IPluginComponent, IInitializable
         DrawCheckbox("Show Seats",            _configuration.ShowDatabaseSeats,       v => _configuration.ShowDatabaseSeats = v);
         DrawCheckbox("Show Has Actions",      _configuration.ShowDatabaseActions,     v => _configuration.ShowDatabaseActions = v);
         DrawCheckbox("Show Unique BGM",       _configuration.ShowDatabaseUniqueBGM,   v => _configuration.ShowDatabaseUniqueBGM = v);
+        DrawCheckbox("Show Available on MB",  _configuration.ShowDatabaseMBAvailable, v => _configuration.ShowDatabaseMBAvailable = v);
         DrawCheckbox("Show Patch",            _configuration.ShowDatabasePatch,       v => _configuration.ShowDatabasePatch = v);
         DrawCheckbox("Show Unlock",           _configuration.ShowDatabaseUnlockStatus,v => _configuration.ShowDatabaseUnlockStatus = v);
     }
