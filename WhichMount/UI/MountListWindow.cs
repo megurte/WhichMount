@@ -12,7 +12,8 @@ using WhichMount.Utils;
 
 namespace WhichMount.UI;
 
-public class MountListWindow : IPluginComponent, IInitializable
+[InjectFields]
+public class MountListWindow : DalamudWindow, IPluginComponent, IInitializable
 {
     private enum SortType
     {
@@ -25,26 +26,15 @@ public class MountListWindow : IPluginComponent, IInitializable
     }
     
     private List<MountModel> Mounts => _cashContainer.MountModels;
-    private readonly IDalamudPluginInterface _pluginInterface;
-    private readonly CashContainer _cashContainer;
-    private readonly ITextureProvider _textureProvider;
-    private readonly Configuration _configuration;
+    
+    [Inject] private IDalamudPluginInterface _pluginInterface;
+    [Inject] private CashContainer _cashContainer;
+    [Inject] private ITextureProvider _textureProvider;
+    [Inject] private Configuration _configuration;
 
     private bool _isOpen = false;
     private string _searchTerm = string.Empty;
     private SortType _sortType = SortType.Alphabet;
-
-    public MountListWindow(
-        IDalamudPluginInterface pluginInterface, 
-        CashContainer cashContainer, 
-        ITextureProvider textureProvider, 
-        Configuration configuration)
-    {
-        _pluginInterface = pluginInterface;
-        _cashContainer = cashContainer;
-        _textureProvider = textureProvider;
-        _configuration = configuration;
-    }
     
     public void Initialize()
     {
@@ -86,7 +76,7 @@ public class MountListWindow : IPluginComponent, IInitializable
         return (unlocked, total);
     }
 
-    public void Draw()
+    public override void Draw()
     {
         if (!_isOpen)
             return;

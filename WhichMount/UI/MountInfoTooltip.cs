@@ -16,7 +16,11 @@ public unsafe class MountInfoTooltip : IInitializable, IPluginComponent
     private readonly IDataManager _dataManager;
 
     private Hook<AgentHUD.Delegates.UpdateTargetInfo> _updateTargetInfoHook;
-    public MountInfoTooltip(IGameInteropProvider gameInteropProvider, CashContainer cashContainer, Configuration configuration, IDataManager dataManager)
+    public MountInfoTooltip(
+        IGameInteropProvider gameInteropProvider, 
+        CashContainer cashContainer, 
+        Configuration configuration, 
+        IDataManager dataManager)
     {
         _gameInteropProvider = gameInteropProvider;
         _cashContainer = cashContainer;
@@ -56,26 +60,23 @@ public unsafe class MountInfoTooltip : IInitializable, IPluginComponent
             var mountModel = new MountModel(_dataManager, _cashContainer, mountId, "N/A");
             mountModel.TryInitData();
             sb.Append($"{mountModel.Name}");
-
-            if (chara->EntityId != localPlayer->EntityId)
+            
+            if (_configuration.ShowUnlockedTooltip)
             {
-                if (_configuration.ShowUnlockedTooltip)
-                {
-                    sb.AppendNewLine();
-                    var isUnlocked = mountModel.IsMountUnlocked;
-                    sb.PushColorType(isUnlocked ? 43u : 518);
-                    sb.Append(isUnlocked ? "Unlocked" : "Locked");
-                    sb.PopColorType();
-                }
-
-                if (_configuration.ShowObtainableTooltip)
-                {
-                    sb.AppendNewLine();
-                    var isObtainable = _cashContainer.GetCachedData(mountId, TargetData.IsObtainable);
-                    sb.Append(isObtainable == "1" ? "Obtainable" : "Unobtainable");
-                }
+                sb.AppendNewLine();
+                var isUnlocked = mountModel.IsMountUnlocked;
+                sb.PushColorType(isUnlocked ? 43u : 518);
+                sb.Append(isUnlocked ? "Unlocked" : "Locked");
+                sb.PopColorType();
             }
 
+            if (_configuration.ShowObtainableTooltip)
+            {
+                sb.AppendNewLine();
+                var isObtainable = _cashContainer.GetCachedData(mountId, TargetData.IsObtainable);
+                sb.Append(isObtainable == "1" ? "Obtainable" : "Unobtainable");
+            }
+            
             StatusUtils.AddPermanentStatus(0, 216201, 0, 0, default, sb.ToSeString());
         }
     }

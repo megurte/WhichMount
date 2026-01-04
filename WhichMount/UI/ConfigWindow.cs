@@ -8,19 +8,13 @@ namespace WhichMount.UI;
 
 #pragma warning disable CA1416
 
-public class ConfigWindow : IPluginComponent, IInitializable
+[InjectFields]
+public class ConfigWindow : DalamudWindow, IPluginComponent, IInitializable
 {
-    private readonly IDalamudPluginInterface _pluginInterface;
-    private readonly WhichMountPlugin _whichMountPlugin;
-    private readonly Configuration _configuration;
+    [Inject] private IDalamudPluginInterface _pluginInterface;
+    [Inject] private WhichMountPlugin _whichMountPlugin;
+    [Inject] private Configuration _configuration;
     private bool _showConfig;
-
-    public ConfigWindow(IDalamudPluginInterface pluginInterface, WhichMountPlugin whichMount, Configuration configuration)
-    {
-        _pluginInterface = pluginInterface;
-        _whichMountPlugin = whichMount;
-        _configuration = configuration;
-    }
     
     public void Initialize()
     {
@@ -29,13 +23,17 @@ public class ConfigWindow : IPluginComponent, IInitializable
 
     public void Show() => _showConfig = true;
     
-    private void Draw()
+    public override void Draw()
     {
-        if (!_showConfig)
-            return;
+        if (!_showConfig) return;
+        DrawWindow();
+    }
 
+    private void DrawWindow()
+    {
         ImGui.SetNextWindowSize(new Vector2(294, 270), ImGuiCond.Always);
-        ImGui.Begin($"{_whichMountPlugin.Name} configuration", ref _showConfig, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize);
+        if (!ImGui.Begin($"{_whichMountPlugin.Name} configuration", ref _showConfig, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize))
+            return;
 
         if (ImGui.BeginTabBar("##WhichMountTabs"))
         {
@@ -62,7 +60,7 @@ public class ConfigWindow : IPluginComponent, IInitializable
 
         ImGui.End();
     }
-    
+
     private void DrawContextMenuTab()
     {
         DrawCheckbox("Enable Context Menu",   _configuration.EnableContextMenu,    v => _configuration.EnableContextMenu = v);
