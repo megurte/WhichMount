@@ -1,4 +1,9 @@
 # Dalamud Mount Search Plugin
+<a href="https://github.com/megurte/WhichMount">
+  <img alt="Downloads"
+       src="https://img.shields.io/badge/dynamic/json?label=Downloads&query=$[?(@.Name=='WhichMount')].DownloadCount&url=https://kamori.goats.dev/Plugin/DownloadCounts&logo=download&color=blue">
+</a>
+
 A Final Fantasy XIV Dalamud plugin that shows information about other players' mounts and their acquisition methods via the target's context menu button.
 
 To install the plugin, use official [FFXIV QuickLauncher](https://github.com/goatcorp/FFXIVQuickLauncher) and download it from the `All Plugins` section.
