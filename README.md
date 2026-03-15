@@ -1,5 +1,9 @@
 # Dalamud Mount Search Plugin
 <a href="https://github.com/megurte/WhichMount">
+  <img alt="Live Version"
+       src="https://img.shields.io/badge/dynamic/xml?label=Live%20version&query=//Version&url=https://raw.githubusercontent.com/megurte/WhichMount/master/WhichMount/WhichMount.csproj&color=green&logo=dotnet">
+</a>
+<a href="https://github.com/megurte/WhichMount">
   <img alt="Plugin Downloads"
        src="https://img.shields.io/badge/dynamic/json?label=Downloads&query=$.WhichMount&url=https://kamori.goats.dev/Plugin/DownloadCounts&logo=download&color=blue">
 </a>
