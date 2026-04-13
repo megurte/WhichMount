@@ -11,7 +11,7 @@ public class Configuration : IPluginConfiguration
     
     public int Version { get; set; } = 1;
     
-    // ▶ Context Menu Settings
+    // Context Menu Settings
     public bool EnableContextMenu { get; set; } = true;
     public bool ShowAvailability { get; set; } = false;
     public bool ShowMountId { get; set; } = false;
@@ -21,7 +21,7 @@ public class Configuration : IPluginConfiguration
     public bool ShowMBAvailable { get; set; } = false;
     public bool AddedInPatch { get; set; } = false;
 
-    // ▶ Database Window
+    // Database Window
     public bool ShowDatabaseMountId { get; set; } = true;
     public bool ShowDatabaseSeats { get; set; } = true;
     public bool ShowDatabaseActions { get; set; } = true;
@@ -29,7 +29,7 @@ public class Configuration : IPluginConfiguration
     public bool ShowDatabaseMBAvailable { get; set; } = true;
     public bool ShowDatabasePatch { get; set; } = true;
 
-    // ▶ Tooltip
+    // Tooltip
     public bool ShowTooltip { get; set; } = true;
     public bool ShowUnlockedTooltip { get; set; } = true;
     public bool ShowObtainableTooltip { get; set; } = true;
