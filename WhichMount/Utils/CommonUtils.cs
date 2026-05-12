@@ -33,7 +33,7 @@ public static class CommonUtils
     
         public static string GetRegionCode(World world)
         {
-            return world.DataCenter.Value.Region switch
+            return world.DataCenter.Value.Region.RowId switch
             {
                 1 => "JP",
                 2 => "NA",
