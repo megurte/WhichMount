@@ -1,13 +1,15 @@
 ﻿using Dalamud.Configuration;
 using System;
 using Dalamud.Plugin;
+using Newtonsoft.Json;
 
 namespace WhichMount;
 
 [Serializable]
 public class Configuration : IPluginConfiguration
 {
-    [NonSerialized] private IDalamudPluginInterface _pluginInterface = null!;
+    [JsonIgnore][NonSerialized] 
+    private IDalamudPluginInterface _pluginInterface = null!;
     
     public int Version { get; set; } = 1;
     
@@ -35,11 +37,11 @@ public class Configuration : IPluginConfiguration
     public bool ShowObtainableTooltip { get; set; } = true;
     public bool ShowDatabaseUnlockStatus { get; set; } = true;
 
-    public Configuration(IDalamudPluginInterface pluginInterface)
+    public void Initialize(IDalamudPluginInterface pluginInterface)
     {
         _pluginInterface = pluginInterface;
     }
-    
+
     public void Save()
     {
         _pluginInterface.SavePluginConfig(this);

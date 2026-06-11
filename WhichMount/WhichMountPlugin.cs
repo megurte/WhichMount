@@ -1,5 +1,4 @@
 ﻿using Dalamud.Plugin;
-using Dalamud.Plugin.Services;
 using DalamudInjector;
 using WhichMount.ComponentInjector;
 using WhichMount.Models;
@@ -20,7 +19,8 @@ public class WhichMountPlugin : IDalamudPlugin
 
     public WhichMountPlugin(IDalamudPluginInterface pluginInterface)
     {
-        _configuration = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration(pluginInterface);
+        _configuration = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+        _configuration.Initialize(pluginInterface);
 
         _serviceInstaller = new ServiceInstaller(pluginInterface);
         _service = _serviceInstaller.Service;
@@ -30,7 +30,10 @@ public class WhichMountPlugin : IDalamudPlugin
         _container.BindInstance(_configuration);
 
         _container.Bind<CashContainer>();
+        _container.Bind<MountTrackContainer>();
         _container.Bind<ContextMenuHandler>();
+        _container.Bind<MountDatabaseTab>();
+        _container.Bind<MountTracksTab>();
         _container.Bind<MountListWindow>();
         _container.Bind<MountInfoTooltip>();
         _container.Bind<ConfigWindow>();
