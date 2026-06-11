@@ -139,7 +139,7 @@ public class MountDatabaseTab : IInitializable
 
             SetupTableColumns();
 
-            ImGui.TableHeadersRow();
+            DrawTableHeaders();
 
             foreach (var mount in filtered)
             {
@@ -186,6 +186,21 @@ public class MountDatabaseTab : IInitializable
         if (_configuration.ShowDatabasePatch) ImGui.TableSetupColumn("Patch", ImGuiTableColumnFlags.WidthFixed, 60);
         if (_configuration.ShowDatabaseUnlockStatus) ImGui.TableSetupColumn("Unlocked", ImGuiTableColumnFlags.WidthFixed, 70);
         ImGui.TableSetupColumn("Acquired By", ImGuiTableColumnFlags.WidthFixed, 746f);
+    }
+
+    private void DrawTableHeaders()
+    {
+        ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+        ImGui.TableNextColumn(); ImGui.TableHeader("Icon");
+        ImGui.TableNextColumn(); ImGui.TableHeader("Name");
+        if (_configuration.ShowDatabaseMountId) { ImGui.TableNextColumn(); ImGui.TableHeader("Mount ID"); }
+        if (_configuration.ShowDatabaseSeats) AddCenteredHeader("Seats");
+        if (_configuration.ShowDatabaseActions) AddCenteredHeader("Actions");
+        if (_configuration.ShowDatabaseUniqueBGM) AddCenteredHeader("Unique BGM");
+        if (_configuration.ShowDatabaseMBAvailable) AddCenteredHeader("MB available");
+        if (_configuration.ShowDatabasePatch) AddCenteredHeader("Patch");
+        if (_configuration.ShowDatabaseUnlockStatus) AddCenteredHeader("Unlocked");
+        ImGui.TableNextColumn(); ImGui.TableHeader("Acquired By");
     }
 
     private void DrawCheckbox(string label, Func<bool> getter, Action<bool> setter)

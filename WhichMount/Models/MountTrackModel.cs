@@ -3,12 +3,20 @@ using System.Linq;
 
 namespace WhichMount.Models;
 
-public class MountTrackModel(string name, MountModel reward, IReadOnlyList<MountModel> members)
+public class MountTrackMemberModel(MountModel mount, uint totemItemId, uint totemIconId)
 {
-    public string Name { get; } = name;
-    public MountModel Reward { get; } = reward;
-    public IReadOnlyList<MountModel> Members { get; } = members;
+    public MountModel Mount => mount;
+    public uint TotemItemId => totemItemId;
+    public uint TotemIconId => totemIconId;
+    public bool HasTotem => TotemItemId != 0;
+}
 
-    public int CollectedCount => Members.Count(mount => mount.IsMountUnlocked);
+public class MountTrackModel(string name, MountModel reward, IReadOnlyList<MountTrackMemberModel> members)
+{
+    public string Name => name;
+    public MountModel Reward => reward;
+    public IReadOnlyList<MountTrackMemberModel> Members => members;
+    public int CollectedCount => Members.Count(member => member.Mount.IsMountUnlocked);
     public bool IsRewardUnlocked => Reward.IsMountUnlocked;
+    public bool HasTotems => Members.Any(member => member.HasTotem);
 }

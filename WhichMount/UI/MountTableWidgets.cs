@@ -61,6 +61,17 @@ public static class MountTableWidgets
         AddTextColumn(unlocked ? "Unlocked" : "Locked", GetBooleanColor(unlocked), true);
     }
 
+    public static void AddCenteredHeader(string label)
+    {
+        ImGui.TableNextColumn();
+        var cellWidth = ImGui.GetColumnWidth();
+        var cursor = ImGui.GetCursorScreenPos();
+        ImGui.TableHeader($"##{label}");
+        var textSize = ImGui.CalcTextSize(label);
+        var textPos = new Vector2(cursor.X + ((cellWidth - textSize.X) * 0.5f), cursor.Y);
+        ImGui.GetWindowDrawList().AddText(textPos, ImGui.GetColorU32(ImGuiCol.Text), label);
+    }
+
     private static void CenterInColumn(string text)
     {
         var cellWidth = ImGui.GetColumnWidth();

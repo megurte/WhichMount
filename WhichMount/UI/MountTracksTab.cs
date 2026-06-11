@@ -1,3 +1,4 @@
+using Dalamud.Interface.Textures;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Common.Math;
 using Dalamud.Bindings.ImGui;
@@ -16,6 +17,7 @@ public class MountTracksTab
     [Inject] private MountTrackContainer _trackContainer;
     [Inject] private CashContainer _cashContainer;
     [Inject] private ITextureProvider _textureProvider;
+    [Inject] private TotemTracker _totemTracker;
 
     public void Draw()
     {
@@ -88,26 +90,80 @@ public class MountTracksTab
     private void DrawMembersTable(MountTrackModel track)
     {
         var flags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg;
-        if (!ImGui.BeginTable($"##TrackMounts{track.Reward.Id}", 4, flags))
+        var columnCount = track.HasTotems ? 5 : 4;
+        if (!ImGui.BeginTable($"##TrackMounts{track.Reward.Id}", columnCount, flags))
             return;
 
         ImGui.TableSetupColumn("Icon", ImGuiTableColumnFlags.WidthFixed, 64);
         ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 250f);
         ImGui.TableSetupColumn("Unlocked", ImGuiTableColumnFlags.WidthFixed, 90);
+        if (track.HasTotems) ImGui.TableSetupColumn("Totems", ImGuiTableColumnFlags.WidthFixed, 100);
         ImGui.TableSetupColumn("Acquired By", ImGuiTableColumnFlags.WidthStretch);
-        ImGui.TableHeadersRow();
 
-        foreach (var mount in track.Members)
+        ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+        ImGui.TableNextColumn(); ImGui.TableHeader("Icon");
+        ImGui.TableNextColumn(); ImGui.TableHeader("Name");
+        AddCenteredHeader("Unlocked");
+        if (track.HasTotems) AddCenteredHeader("Totems");
+        ImGui.TableNextColumn(); ImGui.TableHeader("Acquired By");
+
+        foreach (var member in track.Members)
         {
+            var mount = member.Mount;
             ImGui.TableNextRow();
 
             AddIconColumn(_textureProvider, mount.IconId);
             AddTextColumn(mount.Name);
             AddUnlockStatusColumn(mount.IsMountUnlocked);
+            if (track.HasTotems) AddTotemColumn(member);
             AddWrappedTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.AcquiredBy));
         }
 
         ImGui.EndTable();
+    }
+
+    private void AddTotemColumn(MountTrackMemberModel member)
+    {
+        if (!member.HasTotem)
+        {
+            AddTextColumn("-", true);
+            return;
+        }
+
+        ImGui.TableNextColumn();
+
+        var count = _totemTracker.GetCount(member.TotemItemId);
+        var enough = count.Total >= MountTracks.TotemCost;
+        var text = $"{count.Total} / {MountTracks.TotemCost}";
+
+        var iconSize = ImGui.GetTextLineHeight() + 4f;
+        var contentWidth = iconSize + ImGui.GetStyle().ItemSpacing.X + ImGui.CalcTextSize(text).X;
+        var offsetX = (ImGui.GetColumnWidth() - contentWidth) * 0.5f;
+        var cursor = ImGui.GetCursorScreenPos();
+        if (offsetX > 0)
+            ImGui.SetCursorScreenPos(new Vector2(cursor.X + offsetX, cursor.Y));
+
+        var icon = _textureProvider.GetFromGameIcon(new GameIconLookup(member.TotemIconId)).GetWrapOrEmpty();
+        ImGui.Image(icon.Handle, new Vector2(iconSize, iconSize));
+        var hovered = ImGui.IsItemHovered();
+
+        ImGui.SameLine();
+        ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 2f);
+        if (enough)
+            ImGui.TextColored(Constants.GreenTextColor, text);
+        else
+            ImGui.TextUnformatted(text);
+        hovered |= ImGui.IsItemHovered();
+
+        if (hovered)
+        {
+            ImGui.BeginTooltip();
+            ImGui.Text($"Inventory: {count.Inventory}");
+            ImGui.Text($"Saddlebag: {count.Saddlebag}");
+            ImGui.Text($"Retainers: {count.Retainers}");
+            ImGui.TextDisabled("Saddlebag and retainers are counted as of the last time they were opened");
+            ImGui.EndTooltip();
+        }
     }
 }
 

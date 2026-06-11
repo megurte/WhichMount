@@ -31,6 +31,7 @@ public class WhichMountPlugin : IDalamudPlugin
 
         _container.Bind<CashContainer>();
         _container.Bind<MountTrackContainer>();
+        _container.Bind<TotemTracker>();
         _container.Bind<ContextMenuHandler>();
         _container.Bind<MountDatabaseTab>();
         _container.Bind<MountTracksTab>();
@@ -42,7 +43,7 @@ public class WhichMountPlugin : IDalamudPlugin
     
     public void Dispose()
     {
-        _container.Dispose();
+        _service.Dispose();
     }
 }
 
