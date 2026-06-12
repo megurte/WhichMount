@@ -5,6 +5,8 @@ namespace WhichMount.Utils;
 
 public static class StringUtils
 {
+    public static string FormatAsMountLink(this string mountName) => $"[Mount: {mountName}]";
+    
     public static CultureInfo Culture { get; set; } = new ("en-US");
     
     public static string ToTitleCase(this string str) {

@@ -20,8 +20,6 @@ public class ServiceInstaller
         Service.AddDalamudService<IObjectTable>(pluginInterface);
         Service.AddDalamudService<IClientState>(pluginInterface);
         Service.AddDalamudService<IContextMenu>(pluginInterface);
-        Service.AddDalamudService<IGameInventory>(pluginInterface);
-        Service.AddDalamudService<IPlayerState>(pluginInterface);
         Service.AddDalamudService<IPluginLog>(pluginInterface);
         Service.AddDalamudService<ICommandManager>(pluginInterface);
         Service.AddDalamudService<ITextureProvider>(pluginInterface);

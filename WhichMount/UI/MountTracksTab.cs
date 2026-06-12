@@ -15,9 +15,10 @@ namespace WhichMount.UI;
 public class MountTracksTab
 {
     [Inject] private MountTrackContainer _trackContainer;
-    [Inject] private CashContainer _cashContainer;
+    [Inject] private CacheContainer _cacheContainer;
     [Inject] private ITextureProvider _textureProvider;
     [Inject] private TotemTracker _totemTracker;
+    [Inject] private MountChatLinks _chatLinks;
 
     public void Draw()
     {
@@ -112,11 +113,11 @@ public class MountTracksTab
             var mount = member.Mount;
             ImGui.TableNextRow();
 
-            AddIconColumn(_textureProvider, mount.IconId);
+            AddIconColumn(_textureProvider, mount, _chatLinks);
             AddTextColumn(mount.Name);
             AddUnlockStatusColumn(mount.IsMountUnlocked);
             if (track.HasTotems) AddTotemColumn(member);
-            AddWrappedTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.AcquiredBy));
+            AddWrappedTextColumn(_cacheContainer.GetCachedData(mount.Id, TargetData.AcquiredBy));
         }
 
         ImGui.EndTable();
@@ -135,24 +136,34 @@ public class MountTracksTab
         var count = _totemTracker.GetCount(member.TotemItemId);
         var enough = count.Total >= MountTracks.TotemCost;
         var text = $"{count.Total} / {MountTracks.TotemCost}";
-
         var iconSize = ImGui.GetTextLineHeight() + 4f;
         var contentWidth = iconSize + ImGui.GetStyle().ItemSpacing.X + ImGui.CalcTextSize(text).X;
         var offsetX = (ImGui.GetColumnWidth() - contentWidth) * 0.5f;
         var cursor = ImGui.GetCursorScreenPos();
+        
         if (offsetX > 0)
             ImGui.SetCursorScreenPos(new Vector2(cursor.X + offsetX, cursor.Y));
 
         var icon = _textureProvider.GetFromGameIcon(new GameIconLookup(member.TotemIconId)).GetWrapOrEmpty();
         ImGui.Image(icon.Handle, new Vector2(iconSize, iconSize));
-        var hovered = ImGui.IsItemHovered();
+        var iconHovered = ImGui.IsItemHovered();
+
+        if (iconHovered)
+            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+
+        if (ImGui.IsItemClicked())
+            _chatLinks.ShareItemToChat(member.TotemItemId);
+
+        var hovered = iconHovered;
 
         ImGui.SameLine();
         ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 2f);
+        
         if (enough)
             ImGui.TextColored(Constants.GreenTextColor, text);
         else
             ImGui.TextUnformatted(text);
+        
         hovered |= ImGui.IsItemHovered();
 
         if (hovered)
@@ -162,6 +173,8 @@ public class MountTracksTab
             ImGui.Text($"Saddlebag: {count.Saddlebag}");
             ImGui.Text($"Retainers: {count.Retainers}");
             ImGui.TextDisabled("Saddlebag and retainers are counted as of the last time they were opened");
+            if (iconHovered)
+                ImGui.TextDisabled("Click the icon to link this totem in chat");
             ImGui.EndTooltip();
         }
     }

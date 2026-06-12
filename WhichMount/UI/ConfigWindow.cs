@@ -14,6 +14,7 @@ public class ConfigWindow : DalamudWindow, IPluginComponent, IInitializable
     [Inject] private IDalamudPluginInterface _pluginInterface;
     [Inject] private WhichMountPlugin _whichMountPlugin;
     [Inject] private Configuration _configuration;
+
     private bool _showConfig;
     
     public void Initialize()

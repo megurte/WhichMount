@@ -2,6 +2,7 @@ using Dalamud.Interface.Textures;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Common.Math;
 using Dalamud.Bindings.ImGui;
+using WhichMount.Models;
 using WhichMount.Utils;
 
 namespace WhichMount.UI;
@@ -22,10 +23,21 @@ public static class MountTableWidgets
         ImGui.Image(icon.Handle, new Vector2(IconSize, IconSize));
     }
 
-    public static void AddIconColumn(ITextureProvider textureProvider, uint iconId)
+    public static void AddIconColumn(ITextureProvider textureProvider, MountModel mount, MountChatLinks chatLinks)
     {
         ImGui.TableNextColumn();
-        DrawMountIcon(textureProvider, iconId);
+        DrawMountIcon(textureProvider, mount.IconId);
+
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+            ImGui.SetTooltip(chatLinks.IsNativeLink(mount)
+                                 ? "Click to link this mount in chat"
+                                 : "Click to link this mount in chat\n(clickable only for Plugins users)");
+        }
+
+        if (ImGui.IsItemClicked())
+            chatLinks.ShareToChat(mount);
     }
 
     public static void AddTextColumn(string msg, bool centerAlign = false)

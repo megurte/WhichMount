@@ -18,16 +18,18 @@ public class ContextMenuHandler : IPluginComponent, IInitializable
     private readonly IObjectTable _objectTable;
     private readonly IContextMenu _contextMenu;
     private readonly Configuration _configuration;
-    private readonly CashContainer _cashContainer;
+    private readonly CacheContainer _cacheContainer;
+    private readonly ChatView _chatView;
 
     public ContextMenuHandler(
         IDalamudPluginInterface pluginInterface,
-        IChatGui chatGui, 
-        IDataManager dataManager, 
-        IObjectTable objectTable, 
+        IChatGui chatGui,
+        IDataManager dataManager,
+        IObjectTable objectTable,
         IContextMenu contextMenu,
         Configuration configuration,
-        CashContainer cashContainer)
+        CacheContainer cacheContainer,
+        ChatView chatView)
     {
         _pluginInterface = pluginInterface;
         _chatGui = chatGui;
@@ -35,7 +37,8 @@ public class ContextMenuHandler : IPluginComponent, IInitializable
         _objectTable = objectTable;
         _contextMenu = contextMenu;
         _configuration = configuration;
-        _cashContainer = cashContainer;
+        _cacheContainer = cacheContainer;
+        _chatView = chatView;
     }
     
     public void Initialize()
@@ -51,7 +54,7 @@ public class ContextMenuHandler : IPluginComponent, IInitializable
         menuOpenedArgs.AddMenuItem(new MenuItem
         {
             PrefixChar = 'M',
-            Name = "Search Mount",
+            Name = "Find Mount",
             OnClicked = FetchAndDisplayMountInfo 
         });
     }
@@ -76,7 +79,7 @@ public class ContextMenuHandler : IPluginComponent, IInitializable
             return;
         }
         
-        var mountModel = new MountModel(_dataManager, _cashContainer, mountId, targetCharacter.Name.ToString());
+        var mountModel = new MountModel(_dataManager, _cacheContainer, mountId, targetCharacter.Name.ToString());
 
         if (!mountModel.TryInitData())
         {
@@ -84,8 +87,7 @@ public class ContextMenuHandler : IPluginComponent, IInitializable
             return;
         }
 
-        var view = new ChatView(_chatGui, _configuration);
-        view.BindModel(mountModel);
+        _chatView.BindModel(mountModel);
     }
     
    

@@ -16,6 +16,11 @@ namespace WhichMount.UI;
 [InjectFields]
 public class MountDatabaseTab : IInitializable
 {
+    [Inject] private CacheContainer _cacheContainer;
+    [Inject] private ITextureProvider _textureProvider;
+    [Inject] private Configuration _configuration;
+    [Inject] private MountChatLinks _chatLinks;
+
     private enum SortType
     {
         Alphabet,
@@ -26,18 +31,32 @@ public class MountDatabaseTab : IInitializable
         MarketBoard,
     }
 
-    private List<MountModel> Mounts => _cashContainer.MountModels;
+    private static readonly (string Label, int Major)[] ExpansionFilters =
+    [
+        ("All", 0),
+        (Expansions.ARealmReborn, 2),
+        (Expansions.Heavensward, 3),
+        (Expansions.Stormblood, 4),
+        (Expansions.Shadowbringers, 5),
+        (Expansions.Endwalker, 6),
+        (Expansions.Dawntrail, 7),
+    ];
 
-    [Inject] private CashContainer _cashContainer;
-    [Inject] private ITextureProvider _textureProvider;
-    [Inject] private Configuration _configuration;
-
+    private List<MountModel> _mounts = [];
     private string _searchTerm = string.Empty;
     private SortType _sortType = SortType.Alphabet;
+    private int _expansionIndex;
 
     public void Initialize()
     {
+        _mounts = _cacheContainer.MountModels.Where(m => m.IconId != 0).ToList();
         SortMounts();
+    }
+
+    public void SetSearch(string term)
+    {
+        _searchTerm = term;
+        _expansionIndex = 0;
     }
 
     public void Draw()
@@ -45,6 +64,8 @@ public class MountDatabaseTab : IInitializable
         DrawSearchBar();
         ImGui.SameLine();
         DrawSortDropdown();
+        ImGui.SameLine();
+        DrawExpansionDropdown();
         ImGui.SameLine();
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 50);
         DrawUnlockCounter();
@@ -74,33 +95,24 @@ public class MountDatabaseTab : IInitializable
 
     private void SortMounts()
     {
-        switch (_sortType)
+        Comparison<MountModel> byName = (a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
+        int ThenByName(int primary, MountModel a, MountModel b) => primary != 0 ? primary : byName(a, b);
+
+        _mounts.Sort(_sortType switch
         {
-            case SortType.Alphabet:
-                Mounts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
-                break;
-            case SortType.Id:
-                Mounts.Sort((a, b) => a.Id.CompareTo(b.Id));
-                break;
-            case SortType.Patch:
-                Mounts.Sort(_cashContainer.PatchSort);
-                break;
-            case SortType.Unlocked:
-                Mounts.Sort((a, b) => b.IsMountUnlocked.CompareTo(a.IsMountUnlocked));
-                break;
-            case SortType.Locked:
-                Mounts.Sort((a, b) => a.IsMountUnlocked.CompareTo(b.IsMountUnlocked));
-                break;
-            case SortType.MarketBoard:
-                Mounts.Sort((b, a) => a.IsMarketBoardAvailable.CompareTo(b.IsMarketBoardAvailable));
-                break;
-        }
+            SortType.Id => (a, b) => a.Id.CompareTo(b.Id),
+            SortType.Patch => _cacheContainer.PatchSort,
+            SortType.Unlocked => (a, b) => ThenByName(b.IsMountUnlocked.CompareTo(a.IsMountUnlocked), a, b),
+            SortType.Locked => (a, b) => ThenByName(a.IsMountUnlocked.CompareTo(b.IsMountUnlocked), a, b),
+            SortType.MarketBoard => (a, b) => ThenByName(b.IsMarketBoardAvailable.CompareTo(a.IsMarketBoardAvailable), a, b),
+            _ => byName,
+        });
     }
 
     private (int unlocked, int total) GetUnlockStats()
     {
-        var total = Mounts.Count;
-        var unlocked = Mounts.Count(m => m.IsMountUnlocked);
+        var total = _mounts.Count;
+        var unlocked = _mounts.Count(m => m.IsMountUnlocked);
         return (unlocked, total);
     }
 
@@ -141,37 +153,62 @@ public class MountDatabaseTab : IInitializable
 
             DrawTableHeaders();
 
-            foreach (var mount in filtered)
+            var clipper = new ImGuiListClipper();
+            clipper.Begin(filtered.Count, RowHeight);
+            while (clipper.Step())
             {
-                // Exclude mounts that doesn't exist in the game
-                if (mount.IconId == 0) continue;
-
-                ImGui.TableNextRow();
-
-                AddIconColumn(_textureProvider, mount.IconId);
-
-                AddTextColumn(mount.Name);
-
-                if (_configuration.ShowDatabaseMountId) AddTextColumn(mount.Id.ToString(), true);
-                if (_configuration.ShowDatabaseSeats) AddTextColumn(mount.NumberSeats.ToString(), true);
-                if (_configuration.ShowDatabaseActions) AddTextColumn(mount.HasActions ? "Yes" : "No", GetBooleanColor(mount.HasActions), true);
-                if (_configuration.ShowDatabaseUniqueBGM) AddTextColumn(mount.HasUniqueMusic ? "Yes" : "No", GetBooleanColor(mount.HasUniqueMusic), true);
-                if (_configuration.ShowDatabaseMBAvailable) AddTextColumn(mount.IsMarketBoardAvailable ? "Yes" : "No", GetBooleanColor(mount.IsMarketBoardAvailable), true);
-                if (_configuration.ShowDatabasePatch) AddTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.Patch), true);
-                if (_configuration.ShowDatabaseUnlockStatus) AddUnlockStatusColumn(mount.IsMountUnlocked);
-
-                AddWrappedTextColumn(_cashContainer.GetCachedData(mount.Id, TargetData.AcquiredBy));
+                for (var i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+                {
+                    DrawTableRow(filtered[i]);
+                }
             }
+            clipper.End();
 
             ImGui.EndTable();
         }
     }
 
+    private void DrawTableRow(MountModel mount)
+    {
+        ImGui.TableNextRow();
+
+        AddIconColumn(_textureProvider, mount, _chatLinks);
+
+        AddTextColumn(mount.Name);
+
+        if (_configuration.ShowDatabaseMountId) AddTextColumn(mount.Id.ToString(), true);
+        if (_configuration.ShowDatabaseSeats) AddTextColumn(mount.NumberSeats.ToString(), true);
+        if (_configuration.ShowDatabaseActions) AddTextColumn(mount.HasActions ? "Yes" : "No", GetBooleanColor(mount.HasActions), true);
+        if (_configuration.ShowDatabaseUniqueBGM) AddTextColumn(mount.HasUniqueMusic ? "Yes" : "No", GetBooleanColor(mount.HasUniqueMusic), true);
+        if (_configuration.ShowDatabaseMBAvailable) AddTextColumn(mount.IsMarketBoardAvailable ? "Yes" : "No", GetBooleanColor(mount.IsMarketBoardAvailable), true);
+        if (_configuration.ShowDatabasePatch) AddTextColumn(_cacheContainer.GetCachedData(mount.Id, TargetData.Patch), true);
+        if (_configuration.ShowDatabaseUnlockStatus) AddUnlockStatusColumn(mount.IsMountUnlocked);
+
+        AddWrappedTextColumn(_cacheContainer.GetCachedData(mount.Id, TargetData.AcquiredBy));
+    }
+
     private List<MountModel> FilterTableEntities()
     {
-        return string.IsNullOrWhiteSpace(_searchTerm)
-                   ? Mounts
-                   : Mounts.Where(m => m.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+        var major = ExpansionFilters[_expansionIndex].Major;
+        var hasSearch = !string.IsNullOrWhiteSpace(_searchTerm);
+
+        if (major == 0 && !hasSearch)
+            return _mounts;
+
+        return _mounts.Where(m => (major == 0 || MatchesExpansion(m, major)) 
+                                  && (!hasSearch || m.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)))
+                      .ToList();
+    }
+
+    private bool MatchesExpansion(MountModel mount, int major)
+    {
+        var patch = _cacheContainer.GetCachedData(mount.Id, TargetData.Patch);
+        var dot = patch.IndexOf('.');
+        if (dot <= 0 || !int.TryParse(patch[..dot], out var patchMajor))
+            return false;
+
+        // 1.x legacy mounts count as ARR
+        return major == 2 ? patchMajor <= 2 : patchMajor == major;
     }
 
     private void SetupTableColumns()
@@ -229,6 +266,30 @@ public class MountDatabaseTab : IInitializable
                 {
                     _sortType = type;
                     SortMounts();
+                }
+
+                if (isSelected)
+                    ImGui.SetItemDefaultFocus();
+            }
+
+            ImGui.EndCombo();
+        }
+    }
+
+    private void DrawExpansionDropdown()
+    {
+        ImGui.Text("Expansion:");
+        ImGui.SameLine();
+
+        ImGui.SetNextItemWidth(150);
+        if (ImGui.BeginCombo("##ExpansionFilter", ExpansionFilters[_expansionIndex].Label))
+        {
+            for (var i = 0; i < ExpansionFilters.Length; i++)
+            {
+                var isSelected = i == _expansionIndex;
+                if (ImGui.Selectable(ExpansionFilters[i].Label, isSelected))
+                {
+                    _expansionIndex = i;
                 }
 
                 if (isSelected)

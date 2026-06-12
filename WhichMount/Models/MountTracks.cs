@@ -1,3 +1,5 @@
+using WhichMount.Utils;
+
 namespace WhichMount.Models;
 
 public class MountTrackMember(uint mountId, uint totemItemId = 0)
@@ -20,7 +22,7 @@ public static class MountTracks
 
     public static readonly MountTrackDefinition[] All =
     [
-        new("A Realm Reborn", rewardId: 47, 
+        new(Expansions.ARealmReborn, rewardId: 47, 
         [
             new MountTrackMember(28),
             new MountTrackMember(29),
@@ -29,7 +31,7 @@ public static class MountTracks
             new MountTrackMember(40), 
             new MountTrackMember(43)
         ]),
-        new("Heavensward", rewardId: 105, 
+        new(Expansions.Heavensward, rewardId: 105, 
         [
             new MountTrackMember(75, 12672),  
             new MountTrackMember(76, 12673),  
@@ -39,7 +41,7 @@ public static class MountTracks
             new MountTrackMember(98, 16188),  
             new MountTrackMember(104, 17461)  
         ]),
-        new("Stormblood", rewardId: 181, 
+        new(Expansions.Stormblood, rewardId: 181, 
         [
             new MountTrackMember(116, 19109), 
             new MountTrackMember(115, 19110), 
@@ -49,7 +51,7 @@ public static class MountTracks
             new MountTrackMember(172, 23962), 
             new MountTrackMember(182, 24797)  
         ]),
-        new("Shadowbringers", rewardId: 245,
+        new(Expansions.Shadowbringers, rewardId: 245,
         [
             new MountTrackMember(189, 27391), 
             new MountTrackMember(192, 27392), 
@@ -59,7 +61,7 @@ public static class MountTracks
             new MountTrackMember(238, 32132), 
             new MountTrackMember(249, 33480)  
         ]),
-        new("Endwalker", rewardId: 328,
+        new(Expansions.Endwalker, rewardId: 328,
         [
             new MountTrackMember(261, 35815), 
             new MountTrackMember(262, 35816), 
@@ -69,7 +71,7 @@ public static class MountTracks
             new MountTrackMember(325, 40295), 
             new MountTrackMember(332, 41053)  
         ]),
-        new("Dawntrail", rewardId: 420,
+        new(Expansions.Dawntrail, rewardId: 420,
         [
             new MountTrackMember(345, 43539), 
             new MountTrackMember(346, 43540), 

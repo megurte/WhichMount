@@ -10,25 +10,26 @@ using WhichMount.ComponentInjector;
 
 namespace WhichMount.Models;
 
-public class CashContainer : IPluginComponent
+[InjectFields]
+public class CacheContainer : IPluginComponent, IInitializable
 {
+    [Inject] private IDataManager _dataManager;
+
     public List<MountModel> MountModels => _mountModelList;
     
-    private HashSet<uint> _bgmMountCash;
-    private Dictionary<uint, Dictionary<TargetData, string>> _tableData = new();
+    private HashSet<uint> _bgmMountCache;
     private ExcelSheet<Mount>? _excelSheet;
-    private readonly IDataManager _dataManager;
+    private readonly Dictionary<uint, Dictionary<TargetData, string>> _tableData = new();
     private readonly List<MountModel> _mountModelList = new();
-    
-    public CashContainer(IDataManager dataManager)
+
+    public void Initialize()
     {
-        _dataManager = dataManager;
-        InitCashedData();
+        InitCachedData();
     }
 
-    private void InitCashedData()
+    private void InitCachedData()
     {
-        _bgmMountCash = _dataManager.Excel
+        _bgmMountCache = _dataManager.Excel
                                     .GetSheet<Mount>()
                                     .GroupBy(mount => mount.RideBGM.RowId)
                                     .Where(group => group.Count() == 1)
@@ -84,14 +85,11 @@ public class CashContainer : IPluginComponent
                ? value 
                : "Unknown";
 
-    public bool HasUniqueMusic(uint mountId)
-    {
-        return _bgmMountCash.Contains(mountId);
-    }
+    public bool HasUniqueMusic(uint mountId) => _bgmMountCache.Contains(mountId);
 
     public void Release()
     {
-        _bgmMountCash.Clear();
+        _bgmMountCache.Clear();
         _tableData.Clear();
     }
 }

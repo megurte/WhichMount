@@ -44,10 +44,10 @@ public static class CommonUtils
         }
     }
     
-    public static int PatchSort(this CashContainer cashContainer, MountModel a, MountModel b)
+    public static int PatchSort(this CacheContainer cacheContainer, MountModel a, MountModel b)
     {
-        var patchA = cashContainer.GetCachedData(a.Id, TargetData.Patch);
-        var patchB = cashContainer.GetCachedData(b.Id, TargetData.Patch);
+        var patchA = cacheContainer.GetCachedData(a.Id, TargetData.Patch);
+        var patchB = cacheContainer.GetCachedData(b.Id, TargetData.Patch);
 
         var isUnknownA = string.IsNullOrWhiteSpace(patchA) || patchA == "Unknown";
         var isUnknownB = string.IsNullOrWhiteSpace(patchB) || patchB == "Unknown";

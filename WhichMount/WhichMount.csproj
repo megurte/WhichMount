@@ -3,12 +3,14 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
-    <Version>1.5.0.0</Version>
+    <Version>1.5.5.0</Version>
     <Description>Searching for other player's mount</Description>
     <PackageProjectUrl>https://github.com/megurte/whichmount</PackageProjectUrl>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
     <IsPackable>false</IsPackable>
     <RootNamespace>WhichMount</RootNamespace>
+    <!-- fields with these warns are assigned via reflection by the DI container -->
+    <NoWarn>$(NoWarn);CS8618;CS0649;CS0169</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

@@ -6,28 +6,17 @@ using WhichMount.UI;
 
 namespace WhichMount;
 
+[InjectFields]
 public class CommandHandler : IPluginComponent, IInitializable
 {
     private const string ConfigCommand = "/mountsconfig";
-    private const string MountDataBaseCommand = "/mountlist";
-    
-    private readonly IDalamudPluginInterface _pluginInterface;
-    private readonly ICommandManager _commandManager;
-    private readonly ConfigWindow _configWindow;
-    private readonly MountListWindow _mountListWindow;
+    private const string WhichMountListWindowCommand = "/mountlist";
+     
+    [Inject] private IDalamudPluginInterface _pluginInterface;
+    [Inject] private ICommandManager _commandManager;
+    [Inject] private ConfigWindow _configWindow;
+    [Inject] private MountListWindow _mountListWindow;
 
-    public CommandHandler(
-        IDalamudPluginInterface pluginInterface,
-        ICommandManager commandManager, 
-        ConfigWindow configWindow,
-        MountListWindow mountListWindow)
-    {
-        _pluginInterface = pluginInterface;
-        _commandManager = commandManager;
-        _configWindow = configWindow;
-        _mountListWindow = mountListWindow;
-    }
-    
     public void Initialize()
     {
         RegisterCommands();
@@ -41,7 +30,7 @@ public class CommandHandler : IPluginComponent, IInitializable
         {
             HelpMessage = "Open mount search configuration."
         });
-        _commandManager.AddHandler(MountDataBaseCommand, new CommandInfo((_, _) => _mountListWindow.Show())
+        _commandManager.AddHandler(WhichMountListWindowCommand, new CommandInfo((_, _) => _mountListWindow.Show())
         {
             HelpMessage = "Show mount database."
         });
@@ -51,6 +40,6 @@ public class CommandHandler : IPluginComponent, IInitializable
     {
         _pluginInterface.UiBuilder.OpenConfigUi -= _configWindow.Show;
         _commandManager.RemoveHandler(ConfigCommand);
-        _commandManager.RemoveHandler(MountDataBaseCommand);
+        _commandManager.RemoveHandler(WhichMountListWindowCommand);
     }
 }

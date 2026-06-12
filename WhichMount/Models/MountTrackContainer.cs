@@ -6,16 +6,20 @@ using WhichMount.ComponentInjector;
 
 namespace WhichMount.Models;
 
-public class MountTrackContainer : IPluginComponent
+[InjectFields]
+public class MountTrackContainer : IPluginComponent, IInitializable
 {
+    [Inject] private CacheContainer _cacheContainer;
+    [Inject] private IDataManager _dataManager;
+    
     public IReadOnlyList<MountTrackModel> Tracks => _tracks;
 
     private readonly List<MountTrackModel> _tracks = [];
-
-    public MountTrackContainer(CashContainer cashContainer, IDataManager dataManager)
+    
+    public void Initialize()
     {
-        var mountsById = cashContainer.MountModels.ToDictionary(mount => mount.Id);
-        var itemSheet = dataManager.GetExcelSheet<Item>();
+        var mountsById = _cacheContainer.MountModels.ToDictionary(mount => mount.Id);
+        var itemSheet = _dataManager.GetExcelSheet<Item>();
 
         foreach (var definition in MountTracks.All)
         {

@@ -11,19 +11,20 @@ namespace WhichMount.UI;
 public unsafe class MountInfoTooltip : IInitializable, IPluginComponent
 {
     private readonly IGameInteropProvider _gameInteropProvider;
-    private readonly CashContainer _cashContainer;
+    private readonly CacheContainer _cacheContainer;
     private readonly Configuration _configuration;
     private readonly IDataManager _dataManager;
 
     private Hook<AgentHUD.Delegates.UpdateTargetInfo> _updateTargetInfoHook;
+    
     public MountInfoTooltip(
         IGameInteropProvider gameInteropProvider, 
-        CashContainer cashContainer, 
+        CacheContainer cacheContainer, 
         Configuration configuration, 
         IDataManager dataManager)
     {
         _gameInteropProvider = gameInteropProvider;
-        _cashContainer = cashContainer;
+        _cacheContainer = cacheContainer;
         _configuration = configuration;
         _dataManager = dataManager;
     }
@@ -57,7 +58,7 @@ public unsafe class MountInfoTooltip : IInitializable, IPluginComponent
         if (mountId != 0)
         { 
             var sb = new Lumina.Text.SeStringBuilder();
-            var mountModel = new MountModel(_dataManager, _cashContainer, mountId, "N/A");
+            var mountModel = new MountModel(_dataManager, _cacheContainer, mountId, "N/A");
             mountModel.TryInitData();
             sb.Append($"{mountModel.Name}");
             
@@ -73,11 +74,11 @@ public unsafe class MountInfoTooltip : IInitializable, IPluginComponent
             if (_configuration.ShowObtainableTooltip)
             {
                 sb.AppendNewLine();
-                var isObtainable = _cashContainer.GetCachedData(mountId, TargetData.IsObtainable);
+                var isObtainable = _cacheContainer.GetCachedData(mountId, TargetData.IsObtainable);
                 sb.Append(isObtainable == "1" ? "Obtainable" : "Unobtainable");
             }
             
-            StatusUtils.AddPermanentStatus(0, 216201, 0, 0, default, sb.ToSeString());
+            StatusUtils.AddPermanentStatus(0, 216201, 0, 0, default, sb.ToReadOnlySeString());
         }
     }
 

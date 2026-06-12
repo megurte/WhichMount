@@ -29,13 +29,18 @@ public class WhichMountPlugin : IDalamudPlugin
         _container.BindInstance(pluginInterface);
         _container.BindInstance(_configuration);
 
-        _container.Bind<CashContainer>();
+        _container.Bind<CacheContainer>();
+        _container.Bind<MountItemMap>();
+        _container.Bind<NativeMountLinkHandler>();
+        _container.Bind<MarkerMountLinkHandler>();
+        _container.Bind<MountChatLinks>();
         _container.Bind<MountTrackContainer>();
         _container.Bind<TotemTracker>();
-        _container.Bind<ContextMenuHandler>();
         _container.Bind<MountDatabaseTab>();
         _container.Bind<MountTracksTab>();
         _container.Bind<MountListWindow>();
+        _container.Bind<ChatView>();
+        _container.Bind<ContextMenuHandler>();
         _container.Bind<MountInfoTooltip>();
         _container.Bind<ConfigWindow>();
         _container.Bind<CommandHandler>();
